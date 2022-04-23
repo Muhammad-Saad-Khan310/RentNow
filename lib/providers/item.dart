@@ -8,6 +8,7 @@ class ProductItem {
   final double price;
   final String address;
   final String categoryId;
+  final String categoyTitle;
 
   ProductItem(
       {required this.id,
@@ -16,5 +17,6 @@ class ProductItem {
       required this.imageUrl,
       required this.price,
       required this.address,
-      required this.categoryId});
+      required this.categoryId,
+      required this.categoyTitle});
 }

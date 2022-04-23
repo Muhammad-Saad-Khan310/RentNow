@@ -7,7 +7,9 @@ class CategoriesWidget extends StatelessWidget {
   final String title;
   final String imageUrl;
   final String categoryId;
-  CategoriesWidget(this.id, this.title, this.imageUrl, this.categoryId);
+  final String categoryTitle;
+  CategoriesWidget(
+      this.id, this.title, this.imageUrl, this.categoryId, this.categoryTitle);
   // const CategoriesWidget({Key? key}) : super(key: key);
 
   @override
@@ -17,11 +19,15 @@ class CategoriesWidget extends StatelessWidget {
         InkWell(
           onTap: () {
             Navigator.of(context).pushNamed(SelectedCategoryScreen.routeName,
-                arguments: categoryId);
+                arguments: {
+                  "categoryId": categoryId,
+                  "categoryTitle": categoryTitle
+                });
           },
           child: Column(
             children: [
               Card(
+                color: Colors.amber,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 elevation: 4,
@@ -42,7 +48,7 @@ class CategoriesWidget extends StatelessWidget {
                           child: Image.network(
                             imageUrl,
                             height: 80,
-                            width: 160,
+                            width: 140,
                             fit: BoxFit.cover,
                           ),
                         ),

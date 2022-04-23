@@ -63,7 +63,8 @@ class CategoriesItemsScreen extends StatelessWidget {
                   imageUrl = categoryData[index].CategoryImage;
                   String categoryId = categoryData[index].CategoryId;
                   // categoryData.map((catData) => CategoriesWidget()).toList();
-                  return CategoriesWidget(id, title, imageUrl, categoryId);
+                  return CategoriesWidget(id, title, imageUrl, categoryId,
+                      categoryData[index].CategoryTitle);
                 },
                 itemCount: 4,
                 scrollDirection: Axis.horizontal,
@@ -98,15 +99,15 @@ class ItemListView extends StatelessWidget {
       width: double.infinity,
       height: 500,
       child: ListView.builder(
+        itemCount: item.length,
         itemBuilder: (ctx, index) {
           return ItemsWidget(
             id: item[index].id,
             itemTitle: item[index].title,
             itemImage: item[index].imageUrl,
-            rentPrice: 44.0,
+            rentPrice: item[index].price,
           );
         },
-        itemCount: item.length,
       ),
     );
   }

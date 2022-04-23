@@ -16,11 +16,14 @@ class SelectedCategoryScreen extends StatefulWidget {
 class _SelectedCategoryScreenState extends State<SelectedCategoryScreen> {
   @override
   Widget build(BuildContext context) {
-    final categroyId = ModalRoute.of(context)!.settings.arguments as String;
-    final loadedData = Provider.of<Items>(context).findCategoryItem(categroyId);
+    final routeArgs =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    final id = routeArgs["categoryId"].toString();
+    final title = routeArgs["categoryTitle"];
+    final loadedData = Provider.of<Items>(context).findCategoryItem(id);
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Cateogy"),
+          title: Text(title as String),
         ),
         body: Padding(
           padding: const EdgeInsets.only(

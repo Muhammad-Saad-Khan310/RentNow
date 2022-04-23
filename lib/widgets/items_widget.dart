@@ -24,12 +24,15 @@ class ItemsWidget extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(ProductOverview.routeName, arguments: id);
+            Navigator.of(context).pushNamed(
+              ProductOverview.routeName,
+              arguments: id,
+            );
           },
           child: Column(
             children: [
               Card(
+                color: const Color.fromRGBO(40, 169, 254, 1),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 elevation: 4,
@@ -55,14 +58,14 @@ class ItemsWidget extends StatelessWidget {
                           top: 0,
                           right: 0,
                           child: Container(
-                            width: 150,
+                            width: 100,
                             height: 40,
                             decoration: const BoxDecoration(
-                                color: Colors.blue,
+                                color: Colors.green,
                                 borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(15.0))),
                             padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 30),
+                                vertical: 8, horizontal: 10),
                             child: const Text(
                               "Available",
                               style:

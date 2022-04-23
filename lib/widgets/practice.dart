@@ -15,7 +15,7 @@ class Practice extends StatelessWidget {
     return Scaffold(
       body: ListView.builder(
         itemBuilder: (ctx, index) {
-          return CategoriesWidget("s", "d", "s", "s");
+          return CategoriesWidget("s", "d", "s", "s", "s");
         },
         itemCount: 3,
         scrollDirection: Axis.horizontal,
