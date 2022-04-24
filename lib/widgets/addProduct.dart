@@ -1,7 +1,9 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/item.dart';
+import '../providers/items.dart';
 
 class AddProduct extends StatefulWidget {
   static const routeName = "/add-product";
@@ -14,15 +16,15 @@ class AddProduct extends StatefulWidget {
 class _AddProductState extends State<AddProduct> {
   final _form = GlobalKey<FormState>();
   var _addItem = ProductItem(
-      id: "",
+      id: "p22",
       title: "",
       description: "",
       phoneNumber: 0,
       imageUrl: "",
       price: 0,
       address: "",
-      categoryId: "",
-      categoyTitle: "");
+      categoryId: "c",
+      categoyTitle: "Car");
 
   InputDecoration _Decoration(String fieldName, IconData iconName) {
     return InputDecoration(
@@ -119,6 +121,8 @@ class _AddProductState extends State<AddProduct> {
       return;
     }
     _form.currentState!.save();
+    Provider.of<Items>(context).addItem(_addItem);
+    Navigator.of(context).pop();
 
     print(_addItem.title);
     print(_addItem.imageUrl);

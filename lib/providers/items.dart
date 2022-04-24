@@ -119,7 +119,18 @@ class Items with ChangeNotifier {
         .toList();
   }
 
-  void showAll() {
+  void addItem(ProductItem product) {
+    final newProduct = ProductItem(
+        id: DateTime.now().toString(),
+        title: product.title,
+        description: product.description,
+        phoneNumber: product.phoneNumber,
+        imageUrl: product.imageUrl,
+        price: product.price,
+        address: product.address,
+        categoryId: product.categoryId,
+        categoyTitle: product.categoyTitle);
+    _items.add(newProduct);
     notifyListeners();
   }
 }
