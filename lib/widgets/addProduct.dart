@@ -101,13 +101,25 @@ class _AddProductState extends State<AddProduct> {
             categoryId: _addItem.categoryId,
             categoyTitle: _addItem.categoyTitle);
       },
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "Please enter Price.";
+        }
+        return null;
+      },
     );
   }
 
 // ignore: prefer_final_fields
 
   void _saveForm() {
+    // This below line return boolean value
+    final isValid = _form.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
     _form.currentState!.save();
+
     print(_addItem.title);
     print(_addItem.imageUrl);
     print(_addItem.price);
@@ -159,6 +171,12 @@ class _AddProductState extends State<AddProduct> {
                               categoryId: _addItem.categoryId,
                               categoyTitle: _addItem.categoyTitle);
                         },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter Product title";
+                          }
+                          return null;
+                        },
                       ),
                       // InputField(
                       //     "Product Title", Icons.add_box, TextInputType.name),
@@ -203,6 +221,18 @@ class _AddProductState extends State<AddProduct> {
                               categoryId: _addItem.categoryId,
                               categoyTitle: _addItem.categoyTitle);
                         },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter rent Price.";
+                          }
+                          if (double.tryParse(value) == null) {
+                            return "Please enter a valid Price number.";
+                          }
+                          if (double.tryParse(value)! <= 10) {
+                            return "Please enter a number greater than 10.";
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 15),
                       // InputField("Phone No", Icons.phone, TextInputType.number),
@@ -221,6 +251,18 @@ class _AddProductState extends State<AddProduct> {
                               address: _addItem.address,
                               categoryId: _addItem.categoryId,
                               categoyTitle: _addItem.categoyTitle);
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter contact number.";
+                          }
+                          if (int.tryParse(value) == null) {
+                            return "Please enter a valid number.";
+                          }
+                          if (value.length != 11) {
+                            return "Please enter a valid number.";
+                          }
+                          return null;
                         },
                       ),
                       const SizedBox(
@@ -242,6 +284,12 @@ class _AddProductState extends State<AddProduct> {
                               address: value!,
                               categoryId: _addItem.categoryId,
                               categoyTitle: _addItem.categoyTitle);
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter item address.";
+                          }
+                          return null;
                         },
                       ),
                       const SizedBox(
