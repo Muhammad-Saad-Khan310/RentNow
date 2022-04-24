@@ -8,6 +8,7 @@ class Items with ChangeNotifier {
         id: "p1",
         title: "Camera",
         description: "Beautiful Product",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://image.shutterstock.com/image-photo/camera-260nw-610909205.jpg",
         price: 15.0,
@@ -18,6 +19,7 @@ class Items with ChangeNotifier {
         id: "p2",
         title: "Car",
         description: "2020 Model",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://images.hgmsites.net/lrg/2020-honda-civic-sport-manual-angular-front-exterior-view_100751892_l.jpg",
         price: 3000.0,
@@ -28,6 +30,7 @@ class Items with ChangeNotifier {
         id: "p3",
         title: "clothes",
         description: "Beaufitul Clothes",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHNoaXJ0fGVufDB8fDB8fA%3D%3D&w=1000&q=80",
         price: 22.2,
@@ -38,6 +41,7 @@ class Items with ChangeNotifier {
         id: "p4",
         title: "Honda Civic Car",
         description: "Beaufitul Clothes",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://www.rentcars247.com/btPublic/bt-uploads/large/civic31.jpg",
         price: 2400,
@@ -48,6 +52,7 @@ class Items with ChangeNotifier {
         id: "p5",
         title: "Coat",
         description: "Beaufitul Clothes",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://kapok.pk/wp-content/uploads/2021/08/Skin-and-Off-White-Masoori-Prince-Coat-1.jpg",
         price: 2400,
@@ -58,6 +63,7 @@ class Items with ChangeNotifier {
         id: "p6",
         title: "Toyota",
         description: "Beaufitul Car",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
         price: 2400,
@@ -68,6 +74,7 @@ class Items with ChangeNotifier {
         id: "p7",
         title: "Toyota",
         description: "Beaufitul Car",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
         price: 2400,
@@ -78,6 +85,7 @@ class Items with ChangeNotifier {
         id: "p8",
         title: "Suzuki",
         description: "Beaufitul Car",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://1auto.co/storage/ready_for_sales/20210709155718_2022-chevrolet-corvette-z06-1607016574.jpg",
         price: 2400,
@@ -88,6 +96,7 @@ class Items with ChangeNotifier {
         id: "p9",
         title: "Suzuki",
         description: "Beaufitul Car",
+        phoneNumber: 03074635923,
         imageUrl:
             "https://i.pinimg.com/originals/f0/6b/3a/f06b3ad09ef4cc68eb6e1fb3a0962385.jpg",
         price: 2400,
