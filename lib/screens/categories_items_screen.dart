@@ -7,9 +7,16 @@ import '../widgets/categories_widgets.dart';
 import '../providers/product_categories.dart';
 import '../providers/items.dart';
 
-class CategoriesItemsScreen extends StatelessWidget {
+class CategoriesItemsScreen extends StatefulWidget {
   const CategoriesItemsScreen({Key? key}) : super(key: key);
 
+  static const routeName = "/CategoriesItemsScreen";
+
+  @override
+  State<CategoriesItemsScreen> createState() => _CategoriesItemsScreenState();
+}
+
+class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   Widget InputField(String text) {
     return Padding(
       padding: const EdgeInsets.only(
@@ -30,11 +37,6 @@ class CategoriesItemsScreen extends StatelessWidget {
     );
   }
 
-//   @override
-//   State<CategoriesItemsScreen> createState() => _CategoriesItemsScreenState();
-// }
-
-// class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
 //   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

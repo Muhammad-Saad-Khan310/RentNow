@@ -22,7 +22,13 @@ import './widgets/login.dart';
 import './providers/items.dart';
 import './screens/selected_category_screen.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -46,6 +52,8 @@ class MyApp extends StatelessWidget {
         ),
         home: RentItem(),
         routes: {
+          CategoriesItemsScreen.routeName: (ctx) =>
+              const CategoriesItemsScreen(),
           RentItem.routeName: (ctx) => RentItem(),
           BecomeRenter.routeName: (ctx) => BecomeRenter(),
           AddProduct.routeName: (ctx) => AddProduct(),
