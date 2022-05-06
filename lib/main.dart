@@ -26,9 +26,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           fontFamily: "Roboto",
         ),
+        // home: Practice(),
         home: RentItem(),
         routes: {
           CategoriesItemsScreen.routeName: (ctx) =>

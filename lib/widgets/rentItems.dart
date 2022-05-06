@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:provider/provider.dart';
 
 import 'userProductsWidgets.dart';
 import './addProduct.dart';
 import './userProfile.dart';
 import '../screens/categories_items_screen.dart';
+import '../providers/items.dart';
 
 import './appDrawer.dart';
 
@@ -17,6 +18,26 @@ class RentItem extends StatefulWidget {
 }
 
 class _RentItemState extends State<RentItem> {
+  var _isInit = true;
+  var _isLoading = false;
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      Provider.of<Items>(context).fetchAndSetItems().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+
+    super.didChangeDependencies();
+  }
+
   int currentIndex = 0;
   final List<Widget> appBarText = [
     Text("All Products"),
@@ -64,7 +85,11 @@ class _RentItemState extends State<RentItem> {
         title: appBarText[currentIndex],
       ),
       drawer: AppDrawer(),
-      body: CategoriesItemsScreen(),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : CategoriesItemsScreen(),
       // bottomNavigationBar: Theme(
       //   data: Theme.of(context)
       //       .copyWith(iconTheme: IconThemeData(color: Colors.white)),

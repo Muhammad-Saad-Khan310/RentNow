@@ -19,11 +19,11 @@ class _SelectedCategoryScreenState extends State<SelectedCategoryScreen> {
     final routeArgs =
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     final id = routeArgs["categoryId"].toString();
-    final title = routeArgs["categoryTitle"];
-    final loadedData = Provider.of<Items>(context).findCategoryItem(id);
+    final title = routeArgs["categoryTitle"].toString();
+    final loadedData = Provider.of<Items>(context).findCategoryItem(title);
     return Scaffold(
         appBar: AppBar(
-          title: Text(title as String),
+          title: Text(title),
         ),
         body: Padding(
           padding: const EdgeInsets.only(

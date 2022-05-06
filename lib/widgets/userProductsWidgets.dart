@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import './addProduct.dart';
+import '../providers/items.dart';
 
 class UserProductsWidget extends StatelessWidget {
   // static const routeName = "/user-products";
@@ -12,6 +16,7 @@ class UserProductsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
     return Column(
       children: [
         Container(
@@ -39,11 +44,25 @@ class UserProductsWidget extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.edit),
                     color: Colors.blue,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(AddProduct.routeName, arguments: id);
+                    },
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {},
+                    icon: const Icon(Icons.delete),
+                    onPressed: () async {
+                      try {
+                        await Provider.of<Items>(context, listen: false)
+                            .deleteItem(id);
+                      } catch (error) {
+                        scaffold.showSnackBar(
+                          const SnackBar(
+                            content: Text("Deleting failed"),
+                          ),
+                        );
+                      }
+                    },
                     color: Colors.red,
                   )
                 ],

@@ -50,7 +50,8 @@ class ProductOverview extends StatelessWidget {
                 ),
               ),
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -60,26 +61,47 @@ class ProductOverview extends StatelessWidget {
                         Text(
                           // "Canon DSLR",
                           loadedItem.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
-                        Text(
+                        const Text(
                           "10 Min ago",
                           style: TextStyle(color: Colors.blue, fontSize: 18),
                         ),
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.only(top: 20),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on,
                             color: Colors.black,
                           ),
+                          const SizedBox(
+                            width: 10,
+                          ),
                           Text(
                             loadedItem.address,
-                            style: TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 15),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.phone,
+                            color: Colors.black,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            loadedItem.phoneNumber,
+                            style: const TextStyle(fontSize: 15),
                           )
                         ],
                       ),
@@ -89,7 +111,7 @@ class ProductOverview extends StatelessWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.only(top: 14),
-                          child: Text(
+                          child: const Text(
                             "Description",
                             style: TextStyle(
                               fontSize: 20,
@@ -99,7 +121,7 @@ class ProductOverview extends StatelessWidget {
                         ),
                         Padding(
                           // padding: EdgeInsets.fromLTRB(0, 25, 0, 46),
-                          padding: EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 15),
                           child: Text(loadedItem.description),
                         )
                       ],
@@ -108,12 +130,12 @@ class ProductOverview extends StatelessWidget {
                         child: Align(
                       alignment: FractionalOffset.bottomCenter,
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Color.fromRGBO(249, 251, 252, 1)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(loadedItem.price.toString()),
+                            Text("RS " + loadedItem.price.toString()),
                             const Text(
                               "Available",
                               style: TextStyle(

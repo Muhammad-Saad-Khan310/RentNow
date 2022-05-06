@@ -7,7 +7,7 @@ class ItemsWidget extends StatelessWidget {
   final String itemTitle;
   // final String categoryImage;
   final String itemImage;
-  final double rentPrice;
+  final String rentPrice;
 
   // const Categores_Items({ Key? key }) : super(key: key);
   ItemsWidget(
@@ -88,7 +88,7 @@ class ItemsWidget extends StatelessWidget {
                           ),
                           Text(
                             "RS " + "$rentPrice",
-                            style: TextStyle(fontSize: 20, color: Colors.blue),
+                            style: TextStyle(fontSize: 20, color: Colors.white),
                           )
                         ],
                       ),

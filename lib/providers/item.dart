@@ -4,12 +4,12 @@ class ProductItem {
   final String id;
   final String title;
   final String description;
-  final int phoneNumber;
+  final String phoneNumber;
   final String imageUrl;
-  final double price;
+  final String price;
   final String address;
   final String categoryId;
-  final String categoyTitle;
+  final String categoryTitle;
 
   ProductItem(
       {required this.id,
@@ -20,5 +20,5 @@ class ProductItem {
       required this.price,
       required this.address,
       required this.categoryId,
-      required this.categoyTitle});
+      required this.categoryTitle});
 }

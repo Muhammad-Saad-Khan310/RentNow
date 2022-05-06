@@ -17,6 +17,28 @@ class CategoriesItemsScreen extends StatefulWidget {
 }
 
 class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
+  // var _isInit = true;
+  // var _isLoading = false;
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+
+  //     Provider.of<Items>(context).fetchAndSetItems().then((_) {
+
+  //       setState(() {
+  //         _isLoading = false;
+  //       });
+
+  //     });
+  //   }
+  //   _isInit = false;
+
+  //   super.didChangeDependencies();
+  // }
+
   Widget InputField(String text) {
     return Padding(
       padding: const EdgeInsets.only(
