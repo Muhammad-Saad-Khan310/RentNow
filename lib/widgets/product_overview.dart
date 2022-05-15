@@ -136,12 +136,20 @@ class ProductOverview extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("RS " + loadedItem.price.toString()),
-                            const Text(
-                              "Available",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            loadedItem.available
+                                ? const Text("Available")
+                                : const Text(
+                                    "Not Available",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                            // Text(
+                            //   loadedItem.available,
+                            //   style: TextStyle(
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
                             ElevatedButton(
                                 onPressed: () {}, child: const Text("Chat"))
                           ],

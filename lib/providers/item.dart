@@ -10,6 +10,7 @@ class ProductItem {
   final String address;
   final String categoryId;
   final String categoryTitle;
+  final bool available;
 
   ProductItem(
       {required this.id,
@@ -20,5 +21,6 @@ class ProductItem {
       required this.price,
       required this.address,
       required this.categoryId,
-      required this.categoryTitle});
+      required this.categoryTitle,
+      required this.available});
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './providers/auth.dart';
 
 import 'package:rentnow/screens/user_products_screen.dart';
 import './widgets/signup.dart';
@@ -21,6 +22,7 @@ import './widgets/login.dart';
 
 import './providers/items.dart';
 import './screens/selected_category_screen.dart';
+import './providers/renter.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,14 +42,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => Items(),
+        ChangeNotifierProvider(create: (ctx) => Auth()),
+        ChangeNotifierProxyProvider<Auth, Items>(
+          create: (ctx) => Items("", "", []),
+          update: (ctx, auth, previousProduct) => Items(
+              auth.token ?? "",
+              auth.userId ?? "",
+              previousProduct == null ? [] : previousProduct.items),
+        ),
+        ChangeNotifierProxyProvider<Auth, Renter>(
+          create: (ctx) => Renter("", ""),
+          update: (ctx, auth, previousData) =>
+              Renter(auth.userId ?? "", auth.token ?? ""),
         ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          // primarySwatch: Colors.blue,
+          primarySwatch: Colors.teal,
+
           fontFamily: "Roboto",
         ),
         // home: Practice(),

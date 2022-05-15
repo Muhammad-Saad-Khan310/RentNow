@@ -28,7 +28,8 @@ class _AddProductState extends State<AddProduct> {
       price: "",
       address: "",
       categoryId: "",
-      categoryTitle: "Car");
+      categoryTitle: "Car",
+      available: true);
 
   var _initValues = {
     'title': '',
@@ -37,7 +38,8 @@ class _AddProductState extends State<AddProduct> {
     'imageUrl': '',
     'price': '',
     'address': '',
-    'categoryTitle': ''
+    'categoryTitle': '',
+    'available': bool,
   };
   var _isInit = true;
   var _isLoading = false;
@@ -51,6 +53,7 @@ class _AddProductState extends State<AddProduct> {
         _addItem =
             Provider.of<Items>(context, listen: false).findById(productId);
         selectedValue = _addItem.categoryTitle;
+        _available = _addItem.available;
         _initValues = {
           'title': _addItem.title,
           'description': _addItem.description,
@@ -58,7 +61,8 @@ class _AddProductState extends State<AddProduct> {
           'imageUrl': _addItem.imageUrl,
           'price': _addItem.price,
           'address': _addItem.address,
-          'categoryTitle': _addItem.categoryTitle
+          'categoryTitle': _addItem.categoryTitle,
+          'available': _addItem.available,
         };
       }
     }
@@ -68,14 +72,17 @@ class _AddProductState extends State<AddProduct> {
 
   InputDecoration _Decoration(String fieldName, IconData iconName) {
     return InputDecoration(
-        labelText: fieldName,
-        prefixIcon: Icon(
-          iconName,
-          color: Colors.blue,
-        ),
-        filled: true,
-        fillColor: const Color.fromRGBO(255, 255, 255, 100),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)));
+      labelText: fieldName,
+      prefixIcon: Icon(
+        iconName,
+        color: Colors.blue,
+      ),
+      filled: true,
+      fillColor: const Color.fromRGBO(255, 255, 255, 100),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+    );
   }
 
   // Widget InputField(
@@ -143,7 +150,8 @@ class _AddProductState extends State<AddProduct> {
             price: _addItem.price,
             address: _addItem.address,
             categoryId: _addItem.categoryId,
-            categoryTitle: selectedValue);
+            categoryTitle: selectedValue,
+            available: _available);
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -201,17 +209,10 @@ class _AddProductState extends State<AddProduct> {
     });
     // Navigator.of(context).pop();
     Navigator.of(context).pushNamed(RentItem.routeName);
-    // print(_addItem.title);
-    // print(_addItem.id);
-    // print(_addItem.imageUrl);
-    // print(_addItem.price);
-    // print(_addItem.description);
-    // print(_addItem.phoneNumber);
-    // print(_addItem.address);
-    // print(_addItem.categoyTitle);
   }
 
   List<String> items = ["Vechiles", "Clothes", "Utensils", "Appliances"];
+  var _available = true;
 
   @override
   Widget build(BuildContext context) {
@@ -254,32 +255,60 @@ class _AddProductState extends State<AddProduct> {
                         child: Column(
                           children: [
                             Container(
-                              // decoration: BoxDecoration(color: Colors.lightBlue),
+                              // decoration:
+                              //     BoxDecoration(color: Colors.lightBlue),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text("Select Category"),
-                                  DropdownButton<String>(
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedValue = newValue!;
-                                      });
-                                    },
-                                    value: selectedValue,
-                                    items: items.map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      },
-                                    ).toList(),
-                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      DropdownButton<String>(
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            selectedValue = newValue!;
+                                          });
+                                        },
+                                        value: selectedValue,
+                                        items:
+                                            items.map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          },
+                                        ).toList(),
+                                      ),
+                                      Row(
+                                        // height: 50,
+                                        // width: 32,
+                                        children: [
+                                          const Text("Available"),
+                                          Switch(
+                                            activeColor: Colors.blue,
+                                            value: _available,
+                                            onChanged: (bool value) {
+                                              setState(() {
+                                                _available = value;
+                                                print(_available);
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             TextFormField(
-                              initialValue: _initValues["title"],
+                              initialValue: _initValues["title"] as String,
                               decoration:
                                   _Decoration("Product Title", Icons.add_box),
                               textInputAction: TextInputAction.next,
@@ -294,7 +323,8 @@ class _AddProductState extends State<AddProduct> {
                                     price: _addItem.price,
                                     address: _addItem.address,
                                     categoryId: _addItem.categoryId,
-                                    categoryTitle: selectedValue);
+                                    categoryTitle: selectedValue,
+                                    available: _available);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -310,7 +340,7 @@ class _AddProductState extends State<AddProduct> {
                             ),
                             // InputField("Image Url", Icons.image, TextInputType.url),
                             TextFormField(
-                              initialValue: _initValues["imageUrl"],
+                              initialValue: _initValues["imageUrl"] as String,
                               decoration: _Decoration("Image Url", Icons.image),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.url,
@@ -324,7 +354,8 @@ class _AddProductState extends State<AddProduct> {
                                     price: _addItem.price,
                                     address: _addItem.address,
                                     categoryId: _addItem.categoryId,
-                                    categoryTitle: selectedValue);
+                                    categoryTitle: selectedValue,
+                                    available: _available);
                               },
                             ),
                             const SizedBox(
@@ -332,7 +363,7 @@ class _AddProductState extends State<AddProduct> {
                             ),
                             // InputField("Price", Icons.money, TextInputType.number),
                             TextFormField(
-                              initialValue: _initValues["price"],
+                              initialValue: _initValues["price"] as String,
                               decoration: _Decoration("Price", Icons.money),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.number,
@@ -346,7 +377,8 @@ class _AddProductState extends State<AddProduct> {
                                     price: value!,
                                     address: _addItem.address,
                                     categoryId: _addItem.categoryId,
-                                    categoryTitle: selectedValue);
+                                    categoryTitle: selectedValue,
+                                    available: _available);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -364,7 +396,8 @@ class _AddProductState extends State<AddProduct> {
                             const SizedBox(height: 15),
                             // InputField("Phone No", Icons.phone, TextInputType.number),
                             TextFormField(
-                              initialValue: _initValues["phoneNumber"],
+                              initialValue:
+                                  _initValues["phoneNumber"] as String,
                               decoration: _Decoration("Phone No", Icons.phone),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.number,
@@ -378,7 +411,8 @@ class _AddProductState extends State<AddProduct> {
                                     price: _addItem.price,
                                     address: _addItem.address,
                                     categoryId: _addItem.categoryId,
-                                    categoryTitle: selectedValue);
+                                    categoryTitle: selectedValue,
+                                    available: _available);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -398,7 +432,7 @@ class _AddProductState extends State<AddProduct> {
                             ),
                             // InputField("Address", Icons.home, TextInputType.name),
                             TextFormField(
-                              initialValue: _initValues["address"],
+                              initialValue: _initValues["address"] as String,
                               decoration: _Decoration("Address", Icons.home),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
@@ -412,7 +446,8 @@ class _AddProductState extends State<AddProduct> {
                                     price: _addItem.price,
                                     address: value!,
                                     categoryId: _addItem.categoryId,
-                                    categoryTitle: selectedValue);
+                                    categoryTitle: selectedValue,
+                                    available: _available);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -424,8 +459,10 @@ class _AddProductState extends State<AddProduct> {
                             const SizedBox(
                               height: 15,
                             ),
-                            InputFieldDescription("Descrition",
-                                Icons.description, _initValues["description"]!),
+                            InputFieldDescription(
+                                "Descrition",
+                                Icons.description,
+                                _initValues["description"] as String),
                             const SizedBox(
                               height: 45,
                             ),

@@ -18,25 +18,25 @@ class RentItem extends StatefulWidget {
 }
 
 class _RentItemState extends State<RentItem> {
-  var _isInit = true;
-  var _isLoading = false;
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
+  // var _isInit = true;
+  // var _isLoading = false;
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
 
-      Provider.of<Items>(context).fetchAndSetItems().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-    _isInit = false;
+  //     Provider.of<Items>(context).fetchAndSetItems().then((_) {
+  //       setState(() {
+  //         _isLoading = false;
+  //       });
+  //     });
+  //   }
+  //   _isInit = false;
 
-    super.didChangeDependencies();
-  }
+  //   super.didChangeDependencies();
+  // }
 
   int currentIndex = 0;
   final List<Widget> appBarText = [
@@ -85,11 +85,7 @@ class _RentItemState extends State<RentItem> {
         title: appBarText[currentIndex],
       ),
       drawer: AppDrawer(),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : CategoriesItemsScreen(),
+      body: CategoriesItemsScreen(),
       // bottomNavigationBar: Theme(
       //   data: Theme.of(context)
       //       .copyWith(iconTheme: IconThemeData(color: Colors.white)),

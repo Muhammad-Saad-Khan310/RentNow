@@ -31,10 +31,12 @@ class _SelectedCategoryScreenState extends State<SelectedCategoryScreen> {
           child: ListView.builder(
             itemBuilder: (ctx, index) {
               return ItemsWidget(
-                  id: loadedData[index].id,
-                  itemTitle: loadedData[index].title,
-                  itemImage: loadedData[index].imageUrl,
-                  rentPrice: loadedData[index].price);
+                id: loadedData[index].id,
+                itemTitle: loadedData[index].title,
+                itemImage: loadedData[index].imageUrl,
+                rentPrice: loadedData[index].price,
+                isAvailable: loadedData[index].available,
+              );
             },
             itemCount: loadedData.length,
           ),

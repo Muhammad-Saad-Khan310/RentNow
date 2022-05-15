@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
+import './rentItems.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rentnow/widgets/becomeRenter.dart';
 import './signup.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import '../models/http_exception.dart';
+// import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import '../screens/user_products_screen.dart';
 
 class Login extends StatefulWidget {
   static const routeName = '/Login';
@@ -13,12 +18,42 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final _auth = FirebaseAuth.instance;
+  final _formKey = GlobalKey<FormState>();
+  Map<String, String> _authData = {
+    'email': '',
+    'password': '',
+  };
+  var _isLoading = false;
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("An error occured!"),
+        content: Text(message),
+        actions: [
+          FlatButton(
+            child: const Text("Ok"),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
 
-  late String email;
-  late String password;
-
-  bool showSpinner = false;
+  // Widget InputField(String InputFieldName, IconData icon,) {
+  InputDecoration Decoration(String fieldName, IconData iconName) {
+    return InputDecoration(
+        labelText: fieldName,
+        prefixIcon: Icon(
+          iconName,
+          color: Colors.blue,
+        ),
+        filled: true,
+        fillColor: const Color.fromRGBO(255, 255, 255, 100),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)));
+  }
 
   @override
   void initState() {
@@ -45,52 +80,91 @@ class _LoginState extends State<Login> {
   //   );
   // }
 
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) {
+      // Invalid!
+      return;
+    }
+    _formKey.currentState!.save();
+
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      var data = Provider.of<Auth>(context, listen: false);
+      await data.login(_authData['email']!, _authData['password']!);
+
+      if (data.isAllowed) {
+        Navigator.of(context)
+            .pushReplacementNamed(UserProductsScreen.routeName);
+      }
+    } on HttpException catch (error) {
+      var errorMessage = "Authenticate failed";
+      if (error.toString().contains("EMAIL_NOT_FOUND")) {
+        errorMessage = "Could not find a user with that email.";
+      } else if (error.toString().contains("INVALID_PASSWORD")) {
+        errorMessage = "Invalid Password";
+      }
+      _showErrorDialog(errorMessage);
+    } catch (error) {
+      var errorMessage = "Could not authenticate you. Please try again later.";
+      _showErrorDialog(errorMessage);
+    }
+    // if (_authMode == AuthMode.Login) {
+    //   // Log user in
+    // } else {
+    //   // Sign user up
+    // }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: showSpinner,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 85, 0, 10),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(
-                        "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="),
-                  ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 85, 0, 10),
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                      "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="),
                 ),
-                const Text(
-                  "Login",
-                  style: TextStyle(fontSize: 30.0),
-                ),
-                const SizedBox(
-                  height: 22,
-                ),
-                Container(
-                  margin: const EdgeInsets.all(20),
+              ),
+              const Text(
+                "Login",
+                style: TextStyle(fontSize: 30.0),
+              ),
+              const SizedBox(
+                height: 22,
+              ),
+              Container(
+                margin: const EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
                   child: Column(
                     children: [
                       // InputField("Email", Icons.email),
-                      TextField(
+                      TextFormField(
                         // here we will get the email entered
-                        onChanged: (value) {
-                          email = value;
+
+                        decoration: Decoration("Email", Icons.email),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter email";
+                          }
+                          return null;
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon: const Icon(
-                            Icons.email,
-                            color: Colors.blue,
-                          ),
-                          filled: true,
-                          fillColor: const Color.fromRGBO(255, 255, 255, 100),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
+                        onSaved: (value) {
+                          _authData['email'] = value!;
+                        },
                       ),
 
                       const SizedBox(
@@ -98,25 +172,20 @@ class _LoginState extends State<Login> {
                       ),
                       // InputField("Password", Icons.lock),
 
-                      TextField(
-                        keyboardType: TextInputType.emailAddress,
+                      TextFormField(
+                        keyboardType: TextInputType.name,
                         obscureText: true,
-                        //here we will get the password entered
-                        onChanged: (value) {
-                          password = value;
+                        decoration: Decoration("Password", Icons.lock),
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter Password";
+                          }
+                          return null;
                         },
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          prefixIcon: const Icon(
-                            Icons.email,
-                            color: Colors.blue,
-                          ),
-                          filled: true,
-                          fillColor: const Color.fromRGBO(255, 255, 255, 100),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
+                        onSaved: (value) {
+                          _authData['password'] = value!;
+                        },
                       ),
 
                       const SizedBox(
@@ -129,54 +198,42 @@ class _LoginState extends State<Login> {
                       const SizedBox(
                         height: 25,
                       ),
-                      ButtonTheme(
-                        minWidth: MediaQuery.of(context).size.width,
-                        height: 60.0,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all<EdgeInsets>(
-                              const EdgeInsets.only(
-                                  left: 150.0,
-                                  right: 150.0,
-                                  top: 20,
-                                  bottom: 20),
-                            ),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                      _isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ButtonTheme(
+                              minWidth: MediaQuery.of(context).size.width,
+                              height: 60.0,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  padding:
+                                      MaterialStateProperty.all<EdgeInsets>(
+                                    const EdgeInsets.only(
+                                        left: 130.0,
+                                        right: 130.0,
+                                        top: 20,
+                                        bottom: 20),
+                                  ),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Log In",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  _submit();
+                                },
+
+                                // shape: RoundedRectangleBorder(
+                                //   borderRadius: BorderRadius.circular(15),
+                                // ),
                               ),
                             ),
-                          ),
-                          child: const Text(
-                            "Log In",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () async {
-                            setState(() {
-                              showSpinner = true;
-                            });
-                            try {
-                              final user =
-                                  await _auth.signInWithEmailAndPassword(
-                                      email: email, password: password);
-
-                              if (user != null) {
-                                Navigator.pushNamed(
-                                    context, BecomeRenter.routeName);
-                              }
-                              setState(() {
-                                showSpinner = false;
-                              });
-                            } catch (e) {
-                              print(e);
-                            }
-                          },
-
-                          // shape: RoundedRectangleBorder(
-                          //   borderRadius: BorderRadius.circular(15),
-                          // ),
-                        ),
-                      ),
                       const SizedBox(
                         height: 35,
                       ),
@@ -198,9 +255,9 @@ class _LoginState extends State<Login> {
                       )
                     ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

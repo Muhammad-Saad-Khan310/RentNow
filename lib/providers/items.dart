@@ -108,6 +108,10 @@ class Items with ChangeNotifier {
     //     categoyTitle: "Vechiles"),
   ];
 
+  final String authToken;
+  final String userId;
+  Items(this.authToken, this.userId, this._items);
+
   List<ProductItem> get items {
     return [..._items];
   }
@@ -122,28 +126,31 @@ class Items with ChangeNotifier {
         .toList();
   }
 
-  Future<void> fetchAndSetItems() async {
+  Future<void> fetchAndSetItems([bool filterByUser = false]) async {
+    final filterString = filterByUser
+        ? '?auth=$authToken&orderBy="creatorId"&equalTo="$userId"'
+        : '';
     final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json");
+        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json$filterString");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      final List<ProductItem> loadedItem = [];
+      List<ProductItem> loadedItem = [];
 
       extractedData.forEach((itemId, itemData) {
         loadedItem.insert(
             0,
             ProductItem(
-              id: itemId,
-              title: itemData['title'],
-              description: itemData['description'],
-              phoneNumber: itemData['phoneNumber'],
-              imageUrl: itemData['imageUrl'],
-              price: itemData['price'],
-              address: itemData['address'],
-              categoryTitle: itemData['categoryTitle'],
-              categoryId: itemData['categoryId'],
-            ));
+                id: itemId,
+                title: itemData['title'],
+                description: itemData['description'],
+                phoneNumber: itemData['phoneNumber'],
+                imageUrl: itemData['imageUrl'],
+                price: itemData['price'],
+                address: itemData['address'],
+                categoryTitle: itemData['categoryTitle'],
+                categoryId: itemData['categoryId'],
+                available: itemData['available']));
       });
       _items = loadedItem;
       notifyListeners();
@@ -154,7 +161,7 @@ class Items with ChangeNotifier {
 
   Future<void> addItem(ProductItem product) async {
     final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json");
+        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json?auth=$authToken");
     try {
       final response = await http.post(
         url,
@@ -167,6 +174,8 @@ class Items with ChangeNotifier {
           'address': product.address,
           'categoryId': product.categoryId,
           'categoryTitle': product.categoryTitle,
+          'creatorId': userId,
+          'available': product.available
         }),
       );
       final newProduct = ProductItem(
@@ -178,7 +187,8 @@ class Items with ChangeNotifier {
           price: product.price,
           address: product.address,
           categoryId: product.categoryId,
-          categoryTitle: product.categoryTitle);
+          categoryTitle: product.categoryTitle,
+          available: product.available);
       _items.add(newProduct);
       // _items.insert(0, newProduct);
 
@@ -193,7 +203,7 @@ class Items with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url = Uri.parse(
-          "https://rentnow-f12ca-default-rtdb.firebaseio.com/items/$id.json");
+          "https://rentnow-f12ca-default-rtdb.firebaseio.com/items/$id.json?auth=$authToken");
       http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -204,6 +214,7 @@ class Items with ChangeNotifier {
             'categoryTitle': newProduct.categoryTitle,
             'categoryId': newProduct.categoryId,
             'address': newProduct.address,
+            'available': newProduct.available,
           }));
       _items[prodIndex] = newProduct;
       notifyListeners();
@@ -214,7 +225,7 @@ class Items with ChangeNotifier {
 
   Future<void> deleteItem(String id) async {
     final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items/$id.json");
+        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items/$id.json?auth=$authToken");
 
     final existingItemIndex = _items.indexWhere((item) => item.id == id);
     ProductItem? existingItem = _items[existingItemIndex];
@@ -230,4 +241,6 @@ class Items with ChangeNotifier {
 
     // _items.removeWhere((item) => item.id == id);
   }
+
+  // void
 }

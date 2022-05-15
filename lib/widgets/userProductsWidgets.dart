@@ -50,21 +50,53 @@ class UserProductsWidget extends StatelessWidget {
                     },
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () async {
-                      try {
-                        await Provider.of<Items>(context, listen: false)
-                            .deleteItem(id);
-                      } catch (error) {
-                        scaffold.showSnackBar(
-                          const SnackBar(
-                            content: Text("Deleting failed"),
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Alert!"),
+                            content: const Text(
+                                "Are you sure You want to Delete this Item?"),
+                            actions: [
+                              FlatButton(
+                                child: const Text("Yes"),
+                                onPressed: () async {
+                                  try {
+                                    Navigator.of(context).pop();
+                                    await Provider.of<Items>(context,
+                                            listen: false)
+                                        .deleteItem(id);
+                                  } catch (error) {
+                                    scaffold.showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Deleting failed"),
+                                      ),
+                                    );
+                                  }
+                                },
+                              )
+                            ],
                           ),
                         );
                       }
-                    },
-                    color: Colors.red,
-                  )
+                      // onPressed: () async {
+                      // try {
+                      //   await Provider.of<Items>(context, listen: false)
+                      //       .deleteItem(id);
+                      // } catch (error) {
+                      //   scaffold.showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text("Deleting failed"),
+                      //     ),
+                      //   );
+                      // }
+                      // },
+                      // color: Colors.red,
+                      )
                 ],
               ),
             ),

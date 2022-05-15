@@ -27,7 +27,7 @@ class CategoriesWidget extends StatelessWidget {
           child: Column(
             children: [
               Card(
-                color: Colors.amber,
+                color: Colors.teal,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 elevation: 4,
@@ -61,7 +61,8 @@ class CategoriesWidget extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: const TextStyle(fontSize: 25),
+                            style: const TextStyle(
+                                fontSize: 25, color: Colors.white),
                           ),
                         ],
                       ),

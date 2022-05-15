@@ -8,6 +8,7 @@ class ItemsWidget extends StatelessWidget {
   // final String categoryImage;
   final String itemImage;
   final String rentPrice;
+  final bool isAvailable;
 
   // const Categores_Items({ Key? key }) : super(key: key);
   ItemsWidget(
@@ -16,7 +17,8 @@ class ItemsWidget extends StatelessWidget {
       required this.itemTitle,
       // required this.categoryImage,
       required this.itemImage,
-      required this.rentPrice});
+      required this.rentPrice,
+      required this.isAvailable});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class ItemsWidget extends StatelessWidget {
           child: Column(
             children: [
               Card(
-                color: const Color.fromRGBO(40, 169, 254, 1),
+                color: Color.fromARGB(255, 222, 230, 235),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 elevation: 4,
@@ -58,21 +60,29 @@ class ItemsWidget extends StatelessWidget {
                           top: 0,
                           right: 0,
                           child: Container(
-                            width: 100,
+                            width: 120,
                             height: 40,
                             decoration: const BoxDecoration(
                                 color: Colors.green,
                                 borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(15.0))),
                             padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 10),
-                            child: const Text(
-                              "Available",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                              softWrap: true,
-                              overflow: TextOverflow.fade,
-                            ),
+                                vertical: 8, horizontal: 8),
+                            child: isAvailable
+                                ? const Text(
+                                    "Available",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                    softWrap: true,
+                                    overflow: TextOverflow.fade,
+                                  )
+                                : const Text(
+                                    "Not Available",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white),
+                                    softWrap: true,
+                                    overflow: TextOverflow.fade,
+                                  ),
                           ),
                         ),
                       ],
@@ -88,7 +98,9 @@ class ItemsWidget extends StatelessWidget {
                           ),
                           Text(
                             "RS " + "$rentPrice",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
                           )
                         ],
                       ),
