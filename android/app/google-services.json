@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "320520817863",
+    "firebase_url": "https://rentnow-f12ca-default-rtdb.firebaseio.com",
+    "project_id": "rentnow-f12ca",
+    "storage_bucket": "rentnow-f12ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320520817863:android:8cd8e3408df3b4bac902e2",
+        "android_client_info": {
+          "package_name": "com.example.rentnow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320520817863-tk3ovngsa3u6jmkdhf37r035s9o31a0a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZAGxfZFmDiMxNmKTs8q7zhpsrx9n_zwI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "320520817863-tk3ovngsa3u6jmkdhf37r035s9o31a0a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "320520817863-6k0bpep4775q9bccth5f2qk81gflabmc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shahkar.rentnow"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

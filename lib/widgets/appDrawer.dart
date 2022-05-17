@@ -55,7 +55,10 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.home),
+            leading: const Icon(
+              Icons.home,
+              color: Colors.teal,
+            ),
             title: const Text("All Products"),
             onTap: () async {
               await Provider.of<Items>(context, listen: false)
@@ -63,8 +66,7 @@ class _AppDrawerState extends State<AppDrawer> {
               Navigator.of(context).pushNamed(RentItem.routeName);
             },
           ),
-
-          const Divider(),
+          userData.isAllowed ? const Divider() : Container(),
           // ListTile(
           //   leading: const Icon(Icons.add_box),
           //   title: const Text("Add Product"),
@@ -94,7 +96,10 @@ class _AppDrawerState extends State<AppDrawer> {
           //     }),
           userData.isAllowed
               ? ListTile(
-                  leading: const Icon(Icons.add_box),
+                  leading: const Icon(
+                    Icons.add_box,
+                    color: Colors.teal,
+                  ),
                   title: const Text("Add Product"),
                   onTap: () {
                     renterData.showAddProductForm().then((value) => {
@@ -136,7 +141,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     // );
                   },
                 )
-              : Text(""),
+              : Container(),
 
           const Divider(),
 
@@ -145,17 +150,20 @@ class _AppDrawerState extends State<AppDrawer> {
               builder: (ctx, AsyncSnapshot<bool> snapshot) {
                 if (snapshot.data == true) {
                   return ListTile(
-                    leading: const Icon(Icons.person_pin_rounded),
+                    leading: const Icon(
+                      Icons.person_pin_rounded,
+                      color: Colors.teal,
+                    ),
                     title: const Text("Become Renter"),
                     onTap: () {
                       Navigator.of(context).pushNamed(BecomeRenter.routeName);
                     },
                   );
                 } else {
-                  return const Text("");
+                  return Container();
                 }
               }),
-          const Divider(),
+          userData.isAllowed ? const Divider() : Container(),
 
           // renterData
           //     ? ListTile(
@@ -166,18 +174,26 @@ class _AppDrawerState extends State<AppDrawer> {
           //         },
           //       )
           //     : Text("some"),
-          ListTile(
-            leading: const Icon(Icons.person_add),
-            title: const Text("SignUp"),
-            onTap: () {
-              Navigator.of(context).pushNamed(SignUp.routeName);
-            },
-          ),
+          userData.isAllowed
+              ? Container()
+              : ListTile(
+                  leading: const Icon(
+                    Icons.person_add,
+                    color: Colors.teal,
+                  ),
+                  title: const Text("SignUp"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(SignUp.routeName);
+                  },
+                ),
 
           const Divider(),
           userData.isAllowed
               ? ListTile(
-                  leading: const Icon(Icons.person),
+                  leading: const Icon(
+                    Icons.person,
+                    color: Colors.teal,
+                  ),
                   title: const Text("My Items"),
                   onTap: () {
                     Navigator.of(context)
@@ -189,20 +205,26 @@ class _AppDrawerState extends State<AppDrawer> {
                   },
                 )
               : ListTile(
-                  leading: const Icon(Icons.login),
+                  leading: const Icon(
+                    Icons.login,
+                    color: Colors.teal,
+                  ),
                   title: const Text("Login"),
                   onTap: () {
-                    Navigator.of(context).pushReplacementNamed(Login.routeName);
+                    Navigator.of(context).pushNamed(Login.routeName);
                   },
                 ),
           // const Divider(),
-          // ListTile(
-          //   leading: const Icon(Icons.person_pin_rounded),
-          //   title: const Text("Become Renter"),
-          //   onTap: () {
-          //     Navigator.of(context).pushNamed(BecomeRenter.routeName);
-          //   },
-          // ),
+          ListTile(
+            leading: const Icon(
+              Icons.person_pin_rounded,
+              color: Colors.teal,
+            ),
+            title: const Text("Become Renter"),
+            onTap: () {
+              Navigator.of(context).pushNamed(BecomeRenter.routeName);
+            },
+          ),
           // const Divider(),
           // ListTile(
           //   leading: const Icon(Icons.details),
@@ -211,10 +233,14 @@ class _AppDrawerState extends State<AppDrawer> {
           //     Navigator.of(context).pushNamed(ProductOverview.routeName);
           //   },
           // ),
+
           const Divider(),
           userData.isAllowed
               ? ListTile(
-                  leading: const Icon(Icons.exit_to_app),
+                  leading: const Icon(
+                    Icons.exit_to_app,
+                    color: Colors.teal,
+                  ),
                   title: const Text("Logout"),
                   onTap: () {
                     userData.logout();

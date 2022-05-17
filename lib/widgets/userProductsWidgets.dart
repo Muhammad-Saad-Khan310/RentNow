@@ -78,7 +78,12 @@ class UserProductsWidget extends StatelessWidget {
                                     );
                                   }
                                 },
-                              )
+                              ),
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("No"))
                             ],
                           ),
                         );

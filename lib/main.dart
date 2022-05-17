@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './providers/auth.dart';
 
-import 'package:rentnow/screens/user_products_screen.dart';
+import '/screens/user_products_screen.dart';
 import './widgets/signup.dart';
 import './widgets/becomeRenter.dart';
 import './widgets/addProduct.dart';
 import './widgets/rentItems.dart';
-import './widgets/appDrawer.dart';
+
 import 'widgets/login.dart';
 import './widgets/product_overview.dart';
 
@@ -28,11 +28,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
+// Future main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

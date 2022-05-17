@@ -194,7 +194,6 @@ class Items with ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      print(error);
       rethrow;
     }
   }

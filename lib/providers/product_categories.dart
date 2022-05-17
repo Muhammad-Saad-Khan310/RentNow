@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-
 class ProductCategories {
   final String CategoryId;
   final String CategoryTitle;
@@ -12,7 +9,7 @@ class ProductCategories {
 final categoryData = [
   ProductCategories(
       "V",
-      "Vechiles",
+      "Vehicles",
       // "https://www.sundayobserver.lk/sites/default/files/styles/large/public/news/2017/08/12/tag-Vehicle.jpg?itok=WNN4d2nD"),
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6VKUoxcKm65J4NScLCvPSCwcCFCHjB8RJPkperho9bztYtXe4lPisXU1G0DrSgx39Z0I&usqp=CAU"),
   ProductCategories(

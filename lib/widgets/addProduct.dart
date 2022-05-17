@@ -1,12 +1,21 @@
 // ignore: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/retry.dart';
+
 import 'package:provider/provider.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:rentnow/widgets/rentItems.dart';
 
 import '../providers/item.dart';
 import '../providers/items.dart';
-import '../screens/categories_items_screen.dart';
+import '../Api/firebase_api.dart';
 
 class AddProduct extends StatefulWidget {
   static const routeName = "/add-product";
@@ -19,6 +28,10 @@ class AddProduct extends StatefulWidget {
 class _AddProductState extends State<AddProduct> {
   final _form = GlobalKey<FormState>();
   String selectedValue = "Vechiles";
+  File? file;
+  UploadTask? task;
+  bool imagePresent = false;
+  String? previousUrl;
   var _addItem = ProductItem(
       id: "",
       title: "",
@@ -54,6 +67,10 @@ class _AddProductState extends State<AddProduct> {
             Provider.of<Items>(context, listen: false).findById(productId);
         selectedValue = _addItem.categoryTitle;
         _available = _addItem.available;
+        print("======");
+        // print(_addItem.imageUrl.);
+        file = File(_addItem.imageUrl);
+        previousUrl = _addItem.imageUrl;
         _initValues = {
           'title': _addItem.title,
           'description': _addItem.description,
@@ -75,7 +92,7 @@ class _AddProductState extends State<AddProduct> {
       labelText: fieldName,
       prefixIcon: Icon(
         iconName,
-        color: Colors.blue,
+        color: Colors.teal,
       ),
       filled: true,
       fillColor: const Color.fromRGBO(255, 255, 255, 100),
@@ -85,38 +102,6 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  // Widget InputField(
-  //     String InputFieldName, IconData iconName, TextInputType keyType) {
-  //   return TextFormField(
-  //     decoration: InputDecoration(
-  //       labelText: InputFieldName,
-  //       prefixIcon: Icon(
-  //         iconName,
-  //         color: Colors.blue,
-  //       ),
-  //       filled: true,
-  //       fillColor: const Color.fromRGBO(255, 255, 255, 100),
-  //       border: OutlineInputBorder(
-  //         borderRadius: BorderRadius.circular(15.0),
-  //       ),
-  //     ),
-  //     textInputAction: TextInputAction.next,
-  //     keyboardType: keyType,
-  //     onSaved: (value) {
-  //       list.add(value);
-  //       // _addItem = ProductItem(
-  //       //     id: "",
-  //       //     title: value!,
-  //       //     description: value,
-  //       //     imageUrl: value,
-  //       //     price: 80.7,
-  //       //     address: value,
-  //       //     categoryId: value,
-  //       //     categoyTitle: value);
-  //     },
-  //   );
-  // }
-
   Widget InputFieldDescription(
       String InputFieldName, IconData iconName, String preValue) {
     return TextFormField(
@@ -125,7 +110,7 @@ class _AddProductState extends State<AddProduct> {
         labelText: InputFieldName,
         prefixIcon: Icon(
           iconName,
-          color: Colors.blue,
+          color: Colors.teal,
         ),
         filled: true,
         fillColor: const Color.fromRGBO(255, 255, 255, 100),
@@ -211,6 +196,191 @@ class _AddProductState extends State<AddProduct> {
     Navigator.of(context).pushNamed(RentItem.routeName);
   }
 
+  // Widget selectFile(String btnName) {
+  //   return ElevatedButton(
+  //     child: file != null
+  //         ? basename(file!.path)
+  //         : Text(
+  //             "⍓︎ " + btnName,
+  //             style: const TextStyle(color: Colors.black),
+  //           ),
+  //     onPressed: () async {
+  //       imagePresent = true;
+  //       final result =
+  //           await FilePicker.platform.pickFiles(allowMultiple: false);
+  //       if (result == null) {
+  //         imagePresent = false;
+  //         return;
+  //       }
+
+  //       final path = result.files.single.path!;
+  //       setState(() => file = File(path));
+  //     },
+  //     style: ElevatedButton.styleFrom(
+  //         primary: Colors.white,
+  //         minimumSize: const Size.fromHeight(60),
+  //         shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(15.0))),
+  //   );
+  // }
+  Widget selectFile(String btnName) {
+    return ElevatedButton(
+      child: file != null
+          ? basename(file!.path)
+          : Text(
+              "⍓︎ " + btnName,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal),
+            ),
+      onPressed: () async {
+        try {
+          imagePresent = true;
+          final image =
+              await ImagePicker().pickImage(source: ImageSource.gallery);
+          if (image == null) return;
+          final imageTemporary = File(image.path);
+          file = imageTemporary;
+          setState(() {
+            file = imageTemporary;
+          });
+        } on PlatformException catch (e) {
+          print("failed to pick image");
+        }
+      },
+      style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+          minimumSize: const Size.fromHeight(60),
+          shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Colors.teal),
+              borderRadius: BorderRadius.circular(15.0))),
+    );
+  }
+
+  Widget uploadFile(String btnName) {
+    return ElevatedButton(
+      // style
+      child: Row(
+        children: [
+          Text(btnName),
+          const SizedBox(
+            width: 10,
+          ),
+          const Icon(Icons.send),
+        ],
+      ),
+      onPressed: () async {
+        if (imagePresent) {
+          if (file != null) {
+            final fileName = basename(file!.path);
+            final destination = 'files/$fileName';
+
+            task = FirebaseApi.uploadFile(destination, file!);
+            setState(() {});
+            if (task == null) {
+              return;
+            }
+            final snapshot = await task!.whenComplete(() {});
+            final urlDownload = await snapshot.ref.getDownloadURL();
+            _addItem = ProductItem(
+                id: _addItem.id,
+                title: _addItem.title,
+                description: _addItem.description,
+                phoneNumber: _addItem.phoneNumber,
+                imageUrl: urlDownload,
+                price: _addItem.price,
+                address: _addItem.address,
+                categoryId: _addItem.categoryId,
+                categoryTitle: selectedValue,
+                available: _available);
+            print(urlDownload);
+            _saveForm();
+
+            return;
+          }
+          return;
+        } else {
+          _addItem = ProductItem(
+              id: _addItem.id,
+              title: _addItem.title,
+              description: _addItem.description,
+              phoneNumber: _addItem.phoneNumber,
+              imageUrl: previousUrl!,
+              price: _addItem.price,
+              address: _addItem.address,
+              categoryId: _addItem.categoryId,
+              categoryTitle: selectedValue,
+              available: _available);
+
+          _saveForm();
+        }
+      },
+
+      // style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
+      style: ButtonStyle(
+        padding: MaterialStateProperty.all<EdgeInsets>(
+          const EdgeInsets.only(left: 120.0, right: 100.0, top: 20, bottom: 20),
+        ),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //   Future<void> uploadFile() async {
+  //       if (file != null) {
+  //         final fileName = basename(file!.path);
+  //         final destination = 'files/$fileName';
+
+  //         task = FirebaseApi.uploadFile(destination, file!);
+  //         if (task == null) {
+  //           return;
+  //         }
+  //         final snapshot = await task!.whenComplete(() {});
+  //         final urlDownload = await snapshot.ref.getDownloadURL();
+  //         _addItem = ProductItem(
+  //                                   id: _addItem.id,
+  //                                   title: _addItem.title,
+  //                                   description: _addItem.description,
+  //                                   phoneNumber: _addItem.phoneNumber,
+  //                                   imageUrl: urlDownload,
+  //                                   price: _addItem.price,
+  //                                   address: _addItem.address,
+  //                                   categoryId: _addItem.categoryId,
+  //                                   categoryTitle: selectedValue,
+  //                                   available: _available);
+  //         print(urlDownload);
+  //         _saveForm();
+
+  //         return;
+  //       }
+  //       return;
+  //     }
+  // }
+  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
+        stream: task.snapshotEvents,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final snap = snapshot.data;
+            final progress = snap!.bytesTransferred / snap.totalBytes;
+            final percentage = (progress * 100).toStringAsFixed(2);
+            return Text(
+              "Please wait...$percentage%",
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            );
+          } else {
+            return Container();
+          }
+        },
+      );
+
   List<String> items = ["Vechiles", "Clothes", "Utensils", "Appliances"];
   var _available = true;
 
@@ -224,9 +394,11 @@ class _AddProductState extends State<AddProduct> {
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                Text(
-                  "Please Wait ...",
-                  style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
+                Center(
+                  child: Text(
+                    "Please Wait ...",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             )
@@ -293,7 +465,6 @@ class _AddProductState extends State<AddProduct> {
                                             onChanged: (bool value) {
                                               setState(() {
                                                 _available = value;
-                                                print(_available);
                                               });
                                             },
                                           ),
@@ -304,8 +475,13 @@ class _AddProductState extends State<AddProduct> {
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
+                            ),
+                            selectFile("Select Image"),
+
+                            const SizedBox(
+                              height: 15,
                             ),
                             TextFormField(
                               initialValue: _initValues["title"] as String,
@@ -335,33 +511,32 @@ class _AddProductState extends State<AddProduct> {
                             ),
                             // InputField(
                             //     "Product Title", Icons.add_box, TextInputType.name),
-                            const SizedBox(
-                              height: 15,
-                            ),
+
                             // InputField("Image Url", Icons.image, TextInputType.url),
-                            TextFormField(
-                              initialValue: _initValues["imageUrl"] as String,
-                              decoration: _Decoration("Image Url", Icons.image),
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.url,
-                              onSaved: (value) {
-                                _addItem = ProductItem(
-                                    id: _addItem.id,
-                                    title: _addItem.title,
-                                    description: _addItem.description,
-                                    phoneNumber: _addItem.phoneNumber,
-                                    imageUrl: value!,
-                                    price: _addItem.price,
-                                    address: _addItem.address,
-                                    categoryId: _addItem.categoryId,
-                                    categoryTitle: selectedValue,
-                                    available: _available);
-                              },
-                            ),
+
+                            // TextFormField(
+                            //   initialValue: _initValues["imageUrl"] as String,
+                            //   decoration: _Decoration("Image Url", Icons.image),
+                            //   textInputAction: TextInputAction.next,
+                            //   keyboardType: TextInputType.url,
+                            //   onSaved: (value) {
+                            //     _addItem = ProductItem(
+                            //         id: _addItem.id,
+                            //         title: _addItem.title,
+                            //         description: _addItem.description,
+                            //         phoneNumber: _addItem.phoneNumber,
+                            //         imageUrl: value!,
+                            //         price: _addItem.price,
+                            //         address: _addItem.address,
+                            //         categoryId: _addItem.categoryId,
+                            //         categoryTitle: selectedValue,
+                            //         available: _available);
+                            //   },
+                            // ),
                             const SizedBox(
                               height: 15,
                             ),
-                            // InputField("Price", Icons.money, TextInputType.number),
+
                             TextFormField(
                               initialValue: _initValues["price"] as String,
                               decoration: _Decoration("Price", Icons.money),
@@ -463,25 +638,29 @@ class _AddProductState extends State<AddProduct> {
                                 "Descrition",
                                 Icons.description,
                                 _initValues["description"] as String),
+                            task != null
+                                ? buildUploadStatus(task!)
+                                : Container(),
                             const SizedBox(
                               height: 45,
                             ),
-                            ButtonTheme(
-                              minWidth: MediaQuery.of(context).size.width,
-                              height: 60.0,
-                              child: RaisedButton(
-                                child: const Text(
-                                  "Submit",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                onPressed: () {
-                                  _saveForm();
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                            ),
+                            // ButtonTheme(
+                            //   minWidth: MediaQuery.of(context).size.width,
+                            //   height: 60.0,
+                            //   child: RaisedButton(
+                            //     child: const Text(
+                            //       "Submit",
+                            //       style: TextStyle(color: Colors.white),
+                            //     ),
+                            //     onPressed: () {
+                            //       _saveForm();
+                            //     },
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(15),
+                            //     ),
+                            //   ),
+                            // ),
+                            uploadFile("Submit"),
                           ],
                         ),
                       )
@@ -490,6 +669,14 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
             ),
+    );
+  }
+
+  basename(String pat) {
+    String actualPath = pat.split("/").last;
+    return Text(
+      actualPath,
+      style: const TextStyle(color: Colors.black),
     );
   }
 }

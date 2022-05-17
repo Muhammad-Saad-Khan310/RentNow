@@ -49,7 +49,7 @@ class _SignUpState extends State<SignUp> {
         labelText: fieldName,
         prefixIcon: Icon(
           iconName,
-          color: Colors.blue,
+          color: Colors.teal,
         ),
         filled: true,
         fillColor: const Color.fromRGBO(255, 255, 255, 100),
