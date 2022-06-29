@@ -6,6 +6,7 @@ import '../models/http_exception.dart';
 import './item.dart';
 
 class Items with ChangeNotifier {
+  List<ProductItem> _userItems = [];
   List<ProductItem> _items = [
     // ProductItem(
     //     id: "p1",
@@ -116,6 +117,10 @@ class Items with ChangeNotifier {
     return [..._items];
   }
 
+  List<ProductItem> get userItems {
+    return [..._userItems];
+  }
+
   ProductItem findById(String id) {
     return _items.firstWhere((prodItem) => prodItem.id == id);
   }
@@ -138,21 +143,29 @@ class Items with ChangeNotifier {
       List<ProductItem> loadedItem = [];
 
       extractedData.forEach((itemId, itemData) {
-        loadedItem.insert(
-            0,
-            ProductItem(
-                id: itemId,
-                title: itemData['title'],
-                description: itemData['description'],
-                phoneNumber: itemData['phoneNumber'],
-                imageUrl: itemData['imageUrl'],
-                price: itemData['price'],
-                address: itemData['address'],
-                categoryTitle: itemData['categoryTitle'],
-                categoryId: itemData['categoryId'],
-                available: itemData['available']));
+        if (itemData['validItem']) {
+          loadedItem.insert(
+              0,
+              ProductItem(
+                  id: itemId,
+                  title: itemData['title'],
+                  description: itemData['description'],
+                  phoneNumber: itemData['phoneNumber'],
+                  imageUrl: itemData['imageUrl'],
+                  price: itemData['price'],
+                  address: itemData['address'],
+                  categoryTitle: itemData['categoryTitle'],
+                  categoryId: itemData['categoryId'],
+                  available: itemData['available'],
+                  validItem: itemData!['validItem']));
+        }
       });
-      _items = loadedItem;
+      if (filterByUser) {
+        _userItems = loadedItem;
+      } else {
+        _items = loadedItem;
+      }
+
       notifyListeners();
     } catch (error) {
       rethrow;
@@ -175,21 +188,23 @@ class Items with ChangeNotifier {
           'categoryId': product.categoryId,
           'categoryTitle': product.categoryTitle,
           'creatorId': userId,
-          'available': product.available
+          'available': product.available,
+          'validItem': product.validItem,
         }),
       );
-      final newProduct = ProductItem(
-          id: json.decode(response.body)['name'],
-          title: product.title,
-          description: product.description,
-          phoneNumber: product.phoneNumber,
-          imageUrl: product.imageUrl,
-          price: product.price,
-          address: product.address,
-          categoryId: product.categoryId,
-          categoryTitle: product.categoryTitle,
-          available: product.available);
-      _items.add(newProduct);
+      // final newProduct = ProductItem(
+      //     id: json.decode(response.body)['name'],
+      //     title: product.title,
+      //     description: product.description,
+      //     phoneNumber: product.phoneNumber,
+      //     imageUrl: product.imageUrl,
+      //     price: product.price,
+      //     address: product.address,
+      //     categoryId: product.categoryId,
+      //     categoryTitle: product.categoryTitle,
+      //     available: product.available,
+      //     validItem: false);
+      // _items.add(newProduct);
       // _items.insert(0, newProduct);
 
       notifyListeners();

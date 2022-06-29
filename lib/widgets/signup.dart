@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rentnow/widgets/userProfile.dart';
 
+import '../providers/renter.dart';
+import '../screens/profile_screen.dart';
 import '../widgets/login.dart';
 import '../providers/auth.dart';
 import '../models/http_exception.dart';
@@ -23,6 +26,7 @@ class _SignUpState extends State<SignUp> {
   Map<String, String> _authData = {
     'email': '',
     'password': '',
+    'confirmPassword': '',
   };
   var _isLoading = false;
   void _showErrorDialog(String message) {
@@ -32,7 +36,7 @@ class _SignUpState extends State<SignUp> {
         title: const Text("An error occured!"),
         content: Text(message),
         actions: [
-          FlatButton(
+          TextButton(
             child: Text("Ok"),
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -65,33 +69,39 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       _isLoading = true;
     });
-    try {
-      var data = Provider.of<Auth>(context, listen: false);
-      await data.signup(_authData['email']!, _authData['password']!);
-      if (data.isAllowed) {
-        Navigator.of(context)
-            .pushReplacementNamed(UserProductsScreen.routeName);
-      }
-    } on HttpException catch (error) {
-      var errorMessage = "Authenticate failed";
-      if (error.toString().contains("EMAIL_EXISTS")) {
-        errorMessage = "This email address is already in use.";
-      } else if (error.toString().contains("INVALID_EMAIL")) {
-        errorMessage = "This is not a valid email.";
-      } else if (error.toString().contains("WEAK_PASSWORD")) {
-        errorMessage = "This password is too weak.";
-      }
+    if (_authData['password'] != _authData['confirmPassword']) {
+      var errorMessage = "Password and Confirm Password not match";
       _showErrorDialog(errorMessage);
-    } catch (error) {
-      var errorMessage = "Could not authenticate you. Please try again later.";
-      _showErrorDialog(errorMessage);
-    }
+    } else {
+      try {
+        var data = Provider.of<Auth>(context, listen: false);
+        await data.signup(_authData['email']!, _authData['password']!);
 
-    // if (_authMode == AuthMode.Login) {
-    //   // Log user in
-    // } else {
-    //   // Sign user up
-    // }
+        if (data.isAuth) {
+          Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
+        }
+      } on HttpException catch (error) {
+        var errorMessage = "Authenticate failed";
+        if (error.toString().contains("EMAIL_EXISTS")) {
+          errorMessage = "This email address is already in use.";
+        } else if (error.toString().contains("INVALID_EMAIL")) {
+          errorMessage = "This is not a valid email.";
+        } else if (error.toString().contains("WEAK_PASSWORD")) {
+          errorMessage = "This password is too weak.";
+        }
+        _showErrorDialog(errorMessage);
+      } catch (error) {
+        var errorMessage =
+            "Could not authenticate you. Please try again later.";
+        _showErrorDialog(errorMessage);
+      }
+
+      // if (_authMode == AuthMode.Login) {
+      //   // Log user in
+      // } else {
+      //   // Sign user up
+      // }
+    }
     setState(() {
       _isLoading = false;
     });
@@ -107,14 +117,17 @@ class _SignUpState extends State<SignUp> {
               const Padding(
                 padding: EdgeInsets.fromLTRB(0, 65, 0, 10),
                 child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(
-                      "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="),
-                ),
+                    radius: 50,
+                    backgroundImage: AssetImage('assets/images/app_logo.png')
+                    // NetworkImage(
+                    //     "https://cdn.shoplightspeed.com/shops/608305/files/31868432/rent-now-circle.png"
+                    //     // "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="
+                    //     ),
+                    ),
               ),
               const Text(
                 "Sign Up",
-                style: TextStyle(fontSize: 30.0),
+                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 22,
@@ -179,9 +192,9 @@ class _SignUpState extends State<SignUp> {
                           }
                           return null;
                         },
-                        // onSaved: (value) {
-                        //   _authData['email'] = value!;
-                        // },
+                        onSaved: (value) {
+                          _authData['confirmPassword'] = value!;
+                        },
                       ),
                       const SizedBox(
                         height: 25,

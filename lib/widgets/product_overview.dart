@@ -151,7 +151,8 @@ class ProductOverview extends StatelessWidget {
                             //   ),
                             // ),
                             ElevatedButton(
-                                onPressed: () {}, child: const Text("Chat"))
+                                onPressed: () {},
+                                child: const Text("Report Item"))
                           ],
                         ),
                       ),

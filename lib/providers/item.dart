@@ -11,6 +11,7 @@ class ProductItem {
   final String categoryId;
   final String categoryTitle;
   final bool available;
+  final bool validItem;
 
   ProductItem(
       {required this.id,
@@ -22,5 +23,6 @@ class ProductItem {
       required this.address,
       required this.categoryId,
       required this.categoryTitle,
-      required this.available});
+      required this.available,
+      required this.validItem});
 }

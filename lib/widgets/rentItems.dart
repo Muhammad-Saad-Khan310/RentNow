@@ -50,7 +50,7 @@ class _RentItemState extends State<RentItem> {
     CategoriesItemsScreen(),
     // UserProductsWidget(),
     AddProduct(),
-    UserProfile(),
+    // UserProfile(),
   ];
 
   void onTappedBar(int index) {

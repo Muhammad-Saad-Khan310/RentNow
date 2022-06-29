@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth.dart';
+import '../screens/profile_screen.dart';
 import './rentItems.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rentnow/widgets/becomeRenter.dart';
@@ -19,7 +20,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
@@ -31,7 +32,7 @@ class _LoginState extends State<Login> {
         title: const Text("An error occured!"),
         content: Text(message),
         actions: [
-          FlatButton(
+          TextButton(
             child: const Text("Ok"),
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -43,6 +44,7 @@ class _LoginState extends State<Login> {
   }
 
   // Widget InputField(String InputFieldName, IconData icon,) {
+  // ignore: non_constant_identifier_names
   InputDecoration Decoration(String fieldName, IconData iconName) {
     return InputDecoration(
         labelText: fieldName,
@@ -95,8 +97,7 @@ class _LoginState extends State<Login> {
       await data.login(_authData['email']!, _authData['password']!);
 
       if (data.isAllowed) {
-        Navigator.of(context)
-            .pushReplacementNamed(UserProductsScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
       }
     } on HttpException catch (error) {
       var errorMessage = "Authenticate failed";
@@ -107,6 +108,7 @@ class _LoginState extends State<Login> {
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
+      print(error);
       var errorMessage = "Could not authenticate you. Please try again later.";
       _showErrorDialog(errorMessage);
     }
@@ -132,13 +134,14 @@ class _LoginState extends State<Login> {
                 padding: EdgeInsets.fromLTRB(0, 85, 0, 10),
                 child: CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage(
-                      "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="),
+                  backgroundImage: AssetImage('assets/images/app_logo.png'),
+                  //   NetworkImage(
+                  //       "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="),
                 ),
               ),
               const Text(
                 "Login",
-                style: TextStyle(fontSize: 30.0),
+                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 22,

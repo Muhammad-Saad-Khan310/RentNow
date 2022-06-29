@@ -24,6 +24,12 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   List<ProductItem> ltmData = [];
   var _isInit = true;
   var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -31,14 +37,13 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
         _isLoading = true;
       });
 
-      Provider.of<Items>(context).fetchAndSetItems().then((_) {
+      Provider.of<Items>(context).fetchAndSetItems(false).then((_) {
         setState(() {
           _isLoading = false;
         });
       });
     }
     _isInit = false;
-
     super.didChangeDependencies();
   }
 
@@ -55,6 +60,9 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   }
 
   void searchItem(String query) {
+    if (query.isEmpty) {
+      Navigator.of(context).pushReplacementNamed(RentItem.routeName);
+    }
     final suggestion = ltmData.where((element) {
       final itemTitle = element.title.toLowerCase();
       final input = query.toLowerCase();
@@ -68,6 +76,7 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: non_constant_identifier_names
     final Itm = Provider.of<Items>(context);
     if (ltmData.isEmpty) {
       ltmData = Itm.items;

@@ -15,6 +15,7 @@ import 'package:rentnow/widgets/rentItems.dart';
 
 import '../providers/item.dart';
 import '../providers/items.dart';
+import '../providers/renter.dart';
 import '../Api/firebase_api.dart';
 
 class AddProduct extends StatefulWidget {
@@ -27,7 +28,7 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   final _form = GlobalKey<FormState>();
-  String selectedValue = "Vechiles";
+  String selectedValue = "Vehicles";
   File? file;
   UploadTask? task;
   bool imagePresent = false;
@@ -42,7 +43,8 @@ class _AddProductState extends State<AddProduct> {
       address: "",
       categoryId: "",
       categoryTitle: "Car",
-      available: true);
+      available: true,
+      validItem: false);
 
   var _initValues = {
     'title': '',
@@ -53,6 +55,7 @@ class _AddProductState extends State<AddProduct> {
     'address': '',
     'categoryTitle': '',
     'available': bool,
+    'validItem': bool,
   };
   var _isInit = true;
   var _isLoading = false;
@@ -67,7 +70,7 @@ class _AddProductState extends State<AddProduct> {
             Provider.of<Items>(context, listen: false).findById(productId);
         selectedValue = _addItem.categoryTitle;
         _available = _addItem.available;
-        print("======");
+
         // print(_addItem.imageUrl.);
         file = File(_addItem.imageUrl);
         previousUrl = _addItem.imageUrl;
@@ -80,6 +83,7 @@ class _AddProductState extends State<AddProduct> {
           'address': _addItem.address,
           'categoryTitle': _addItem.categoryTitle,
           'available': _addItem.available,
+          'validItem': _addItem.validItem,
         };
       }
     }
@@ -136,7 +140,8 @@ class _AddProductState extends State<AddProduct> {
             address: _addItem.address,
             categoryId: _addItem.categoryId,
             categoryTitle: selectedValue,
-            available: _available);
+            available: _available,
+            validItem: _addItem.validItem);
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -171,7 +176,7 @@ class _AddProductState extends State<AddProduct> {
             title: const Text("Error occurs"),
             content: const Text("Something went wrong"),
             actions: [
-              FlatButton(
+              TextButton(
                 child: const Text("Ok"),
                 onPressed: () {
                   Navigator.of(ctx).pop();
@@ -293,8 +298,9 @@ class _AddProductState extends State<AddProduct> {
                 address: _addItem.address,
                 categoryId: _addItem.categoryId,
                 categoryTitle: selectedValue,
-                available: _available);
-            print(urlDownload);
+                available: _available,
+                validItem: _addItem.validItem);
+
             _saveForm();
 
             return;
@@ -311,7 +317,8 @@ class _AddProductState extends State<AddProduct> {
               address: _addItem.address,
               categoryId: _addItem.categoryId,
               categoryTitle: selectedValue,
-              available: _available);
+              available: _available,
+              validItem: _addItem.validItem);
 
           _saveForm();
         }
@@ -381,7 +388,7 @@ class _AddProductState extends State<AddProduct> {
         },
       );
 
-  List<String> items = ["Vechiles", "Clothes", "Utensils", "Appliances"];
+  List<String> items = ["Vehicles", "Clothes", "Utensils", "Appliances"];
   var _available = true;
 
   @override
@@ -414,7 +421,7 @@ class _AddProductState extends State<AddProduct> {
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 10.0),
                         child: Text(
-                          "Add Product",
+                          "Add Item",
                           style: TextStyle(
                               fontSize: 25.0, fontWeight: FontWeight.bold),
                         ),
@@ -500,7 +507,8 @@ class _AddProductState extends State<AddProduct> {
                                     address: _addItem.address,
                                     categoryId: _addItem.categoryId,
                                     categoryTitle: selectedValue,
-                                    available: _available);
+                                    available: _available,
+                                    validItem: _addItem.validItem);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -553,7 +561,8 @@ class _AddProductState extends State<AddProduct> {
                                     address: _addItem.address,
                                     categoryId: _addItem.categoryId,
                                     categoryTitle: selectedValue,
-                                    available: _available);
+                                    available: _available,
+                                    validItem: _addItem.validItem);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -587,7 +596,8 @@ class _AddProductState extends State<AddProduct> {
                                     address: _addItem.address,
                                     categoryId: _addItem.categoryId,
                                     categoryTitle: selectedValue,
-                                    available: _available);
+                                    available: _available,
+                                    validItem: _addItem.validItem);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -622,7 +632,8 @@ class _AddProductState extends State<AddProduct> {
                                     address: value!,
                                     categoryId: _addItem.categoryId,
                                     categoryTitle: selectedValue,
-                                    available: _available);
+                                    available: _available,
+                                    validItem: _addItem.validItem);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {

@@ -31,11 +31,15 @@ class UserProductsWidget extends StatelessWidget {
               title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            leading: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(8.0),
-                  bottomLeft: Radius.circular(8.0)),
-              child: Image.network(imageUrl, fit: BoxFit.scaleDown),
+            leading: Container(
+              width: 75,
+              // width: double.infinity,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    bottomLeft: Radius.circular(8.0)),
+                child: Image.network(imageUrl, fit: BoxFit.fill),
+              ),
             ),
             trailing: Container(
               width: 100,
@@ -62,7 +66,7 @@ class UserProductsWidget extends StatelessWidget {
                             content: const Text(
                                 "Are you sure You want to Delete this Item?"),
                             actions: [
-                              FlatButton(
+                              TextButton(
                                 child: const Text("Yes"),
                                 onPressed: () async {
                                   try {
@@ -71,15 +75,25 @@ class UserProductsWidget extends StatelessWidget {
                                             listen: false)
                                         .deleteItem(id);
                                   } catch (error) {
-                                    scaffold.showSnackBar(
-                                      const SnackBar(
-                                        content: Text("Deleting failed"),
+                                    final snackBar = SnackBar(
+                                      content: const Text('Deleting failed'),
+                                      backgroundColor: (Colors.black12),
+                                      action: SnackBarAction(
+                                        label: 'dismiss',
+                                        onPressed: () {},
                                       ),
                                     );
+                                    // ScaffoldMessenger.of(context)
+                                    //     .showSnackBar(snackBar);
+                                    // final snackBar = SnackBar(
+                                    //   const SnackBar(
+                                    //     content: Text("Deleting failed"),
+                                    //   ),
+                                    // );
                                   }
                                 },
                               ),
-                              FlatButton(
+                              TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },

@@ -17,10 +17,7 @@ class FirebaseApi {
     try {
       final ref = FirebaseStorage.instance.ref(destination);
       return ref.putData(data);
-    } on FirebaseException catch (e) {
-      print("===========");
-      print(e);
-      print("===============");
+    } on FirebaseException {
       return null;
     }
   }

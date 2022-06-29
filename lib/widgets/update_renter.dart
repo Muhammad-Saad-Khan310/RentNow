@@ -4,33 +4,68 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:rentnow/screens/profile_screen.dart';
+import 'package:rentnow/screens/user_products_screen.dart';
 import '../providers/renter.dart';
 import './rentItems.dart';
 import '../models/http_exception.dart';
 import '../Api/firebase_api.dart';
 import 'package:image_picker/image_picker.dart';
 
-class BecomeRenter extends StatefulWidget {
-  static const routeName = "/become-renter";
-  const BecomeRenter({Key? key}) : super(key: key);
+class UpdateRenter extends StatefulWidget {
+  static const routeName = "/update-renter";
+  const UpdateRenter({Key? key}) : super(key: key);
 
   @override
-  State<BecomeRenter> createState() => _BecomeRenterState();
+  State<UpdateRenter> createState() => _UpdateRenterState();
 }
 
-class _BecomeRenterState extends State<BecomeRenter> {
+class _UpdateRenterState extends State<UpdateRenter> {
   File? file;
   UploadTask? task;
+  bool imageSelected = false;
 
-  Map<String, String> _renterData = {
-    "userName": "",
-    'imageUrl': "",
-    'dateOfBirth': "",
+  final _formKey = GlobalKey<FormState>();
+
+  var _updateRenter = RenterClass(
+      id: "",
+      userName: "",
+      dateOfBirth: "",
+      phoneNumber: "",
+      address: "",
+      imageUrl: "");
+
+  var _initValues = {
+    'userName': '',
+    'dateOfBirth': '',
+    'imageUrl': '',
     'phoneNumber': '',
     'address': '',
   };
+  var _isInit = true;
+  var _isLoading = false;
 
-  final _formKey = GlobalKey<FormState>();
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      final renterId = ModalRoute.of(context)!.settings.arguments as String?;
+
+      // if (renterId != null) {
+      _updateRenter =
+          Provider.of<Renter>(context, listen: false).findById(renterId!);
+      // print(_addItem.imageUrl.);
+      _initValues = {
+        'userName': _updateRenter.userName,
+        'dateOfBirth': _updateRenter.dateOfBirth,
+        'phoneNumber': _updateRenter.phoneNumber,
+        'imageUrl': _updateRenter.imageUrl,
+        'address': _updateRenter.address,
+      };
+      // }
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   // Widget InputField(String InputFieldName, IconData iconName) {
   InputDecoration _fieldDecoration(String fieldName, IconData iconName) {
@@ -55,17 +90,13 @@ class _BecomeRenterState extends State<BecomeRenter> {
     }
     _formKey.currentState!.save();
     try {
-      await Provider.of<Renter>(context, listen: false).addRenter(
-          _renterData['userName']!,
-          _renterData['imageUrl']!,
-          _renterData['dateOfBirth']!,
-          _renterData['phoneNumber']!,
-          _renterData['address']!);
+      await Provider.of<Renter>(context, listen: false)
+          .updateRenter(_updateRenter.id, _updateRenter);
     } on HttpException catch (error) {
       await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text("somer error"),
+                title: Text("some error"),
                 content: Text(error.toString()),
                 actions: [
                   TextButton(
@@ -93,42 +124,8 @@ class _BecomeRenterState extends State<BecomeRenter> {
       );
     }
 
-    Navigator.of(context).pushNamed(RentItem.routeName);
+    Navigator.of(context).pushNamed(ProfileScreen.routeName);
   }
-
-  // Widget selectFile(String btnName) {
-  //   return ElevatedButton(
-  //     child: file != null
-  //         ? basename(file!.path)
-  //         : Text(
-  //             "⍓︎ " + btnName,
-  //             style: const TextStyle(
-  //                 fontSize: 20,
-  //                 fontWeight: FontWeight.bold,
-  //                 color: Colors.teal),
-  //           ),
-  //     onPressed: () async {
-  //       try {
-  //         final image =
-  //             await ImagePicker().pickImage(source: ImageSource.gallery);
-  //         if (image == null) return;
-  //         final imageTemporary = File(image.path);
-  //         file = imageTemporary;
-  //         setState(() {
-  //           file = imageTemporary;
-  //         });
-  //       } on PlatformException catch (e) {
-  //         print("failed to pick image");
-  //       }
-  //     },
-  //     style: ElevatedButton.styleFrom(
-  //         primary: Colors.white,
-  //         minimumSize: const Size.fromHeight(60),
-  //         shape: RoundedRectangleBorder(
-  //             side: const BorderSide(color: Colors.teal),
-  //             borderRadius: BorderRadius.circular(15.0))),
-  //   );
-  // }
 
   Future<void> selectImage() async {
     try {
@@ -137,7 +134,9 @@ class _BecomeRenterState extends State<BecomeRenter> {
       final imageTemporary = File(image.path);
       file = imageTemporary;
       print("image seelected");
+
       setState(() {
+        imageSelected = true;
         file = imageTemporary;
       });
     } on PlatformException catch (e) {
@@ -164,13 +163,21 @@ class _BecomeRenterState extends State<BecomeRenter> {
           task = FirebaseApi.uploadFile(destination, file!);
           setState(() {});
           if (task == null) {
+            imageSelected = false;
             print("i m executinnalflakfjkajf");
             return;
           }
           final snapshot = await task!.whenComplete(() {});
           final urlDownload = await snapshot.ref.getDownloadURL();
-
-          _renterData['imageUrl'] = urlDownload;
+          imageSelected = true;
+          _updateRenter = RenterClass(
+            id: _updateRenter.id,
+            userName: _updateRenter.userName,
+            dateOfBirth: _updateRenter.dateOfBirth,
+            phoneNumber: _updateRenter.phoneNumber,
+            imageUrl: urlDownload,
+            address: _updateRenter.address,
+          );
           _submit();
 
           return;
@@ -212,16 +219,6 @@ class _BecomeRenterState extends State<BecomeRenter> {
 
   @override
   Widget build(BuildContext context) {
-    // File _image;
-    // ImagePicker picker = ImagePicker();
-    // Future getImage() async {
-    //   XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    //   setState(() {
-    //     _image = image as File;
-    //     print("image Path $_image");
-    //   });
-    // }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -232,7 +229,7 @@ class _BecomeRenterState extends State<BecomeRenter> {
                 const Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 55.0, 0, 10.0),
                   child: Text(
-                    "Become Renter",
+                    "Update Profile",
                     style:
                         TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                   ),
@@ -260,10 +257,12 @@ class _BecomeRenterState extends State<BecomeRenter> {
                                         child: file != null
                                             ? Image.file(
                                                 file!,
-                                                fit: BoxFit.cover,
+                                                fit: BoxFit.contain,
                                               )
                                             : Image.network(
-                                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")),
+                                                _updateRenter.imageUrl,
+                                                fit: BoxFit.cover,
+                                              )),
                                   ),
                                 ),
                               ),
@@ -283,11 +282,19 @@ class _BecomeRenterState extends State<BecomeRenter> {
                         height: 15,
                       ),
                       TextFormField(
+                        initialValue: _initValues["userName"],
                         decoration: _fieldDecoration("User Name", Icons.person),
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.name,
                         onSaved: (value) {
-                          _renterData['userName'] = value!;
+                          _updateRenter = RenterClass(
+                            id: _updateRenter.id,
+                            userName: value!,
+                            dateOfBirth: _updateRenter.dateOfBirth,
+                            phoneNumber: _updateRenter.phoneNumber,
+                            imageUrl: _updateRenter.imageUrl,
+                            address: _updateRenter.address,
+                          );
                         },
                       ),
                       const SizedBox(
@@ -306,23 +313,39 @@ class _BecomeRenterState extends State<BecomeRenter> {
                       // ),
 
                       TextFormField(
+                        initialValue: _initValues["dateOfBirth"],
                         decoration: _fieldDecoration(
                             "Date Of Birth", Icons.calendar_today_rounded),
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.name,
                         onSaved: (value) {
-                          _renterData['dateOfBirth'] = value!;
+                          _updateRenter = RenterClass(
+                            id: _updateRenter.id,
+                            userName: _updateRenter.userName,
+                            dateOfBirth: value!,
+                            phoneNumber: _updateRenter.phoneNumber,
+                            imageUrl: _updateRenter.imageUrl,
+                            address: _updateRenter.address,
+                          );
                         },
                       ),
                       const SizedBox(height: 15),
                       // InputField("Phone Number", Icons.phone),
                       TextFormField(
+                        initialValue: _initValues["phoneNumber"],
                         decoration:
                             _fieldDecoration("Phone Number", Icons.phone),
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.name,
                         onSaved: (value) {
-                          _renterData['phoneNumber'] = value!;
+                          _updateRenter = RenterClass(
+                            id: _updateRenter.id,
+                            userName: _updateRenter.userName,
+                            dateOfBirth: _updateRenter.dateOfBirth,
+                            phoneNumber: value!,
+                            imageUrl: _updateRenter.imageUrl,
+                            address: _updateRenter.address,
+                          );
                         },
                       ),
                       const SizedBox(
@@ -330,18 +353,63 @@ class _BecomeRenterState extends State<BecomeRenter> {
                       ),
                       // InputField("Address", Icons.house),
                       TextFormField(
+                        initialValue: _initValues["address"],
                         decoration: _fieldDecoration("Address", Icons.house),
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.name,
                         onSaved: (value) {
-                          _renterData['address'] = value!;
+                          _updateRenter = RenterClass(
+                            id: _updateRenter.id,
+                            userName: _updateRenter.userName,
+                            dateOfBirth: _updateRenter.dateOfBirth,
+                            phoneNumber: _updateRenter.phoneNumber,
+                            imageUrl: _updateRenter.imageUrl,
+                            address: value!,
+                          );
                         },
                       ),
                       task != null ? buildUploadStatus(task!) : Container(),
                       const SizedBox(
                         height: 55,
                       ),
-                      uploadFile("Submit")
+                      imageSelected
+                          ? uploadFile("Update")
+                          : ButtonTheme(
+                              minWidth: MediaQuery.of(context).size.width,
+                              height: 60.0,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  padding:
+                                      MaterialStateProperty.all<EdgeInsets>(
+                                    const EdgeInsets.only(
+                                        left: 130.0,
+                                        right: 130.0,
+                                        top: 20,
+                                        bottom: 20),
+                                  ),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Submit",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  _submit();
+                                },
+                              ),
+                            ),
+
+                      // RaisedButton(
+                      //     onPressed: () {
+                      //       _submit();
+                      //     },
+                      //     child: Text("Update"),
+                      //   ),
+
                       // ButtonTheme(
                       //   minWidth: MediaQuery.of(context).size.width,
                       //   height: 60.0,
