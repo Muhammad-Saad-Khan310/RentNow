@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './imageView.dart';
+import "./reportProduct.dart";
 
 import '../providers/items.dart';
 
@@ -151,7 +152,10 @@ class ProductOverview extends StatelessWidget {
                             //   ),
                             // ),
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(ReportProduct.routeName);
+                                },
                                 child: const Text("Report Item"))
                           ],
                         ),

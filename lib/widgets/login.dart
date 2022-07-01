@@ -53,7 +53,7 @@ class _LoginState extends State<Login> {
           color: Colors.teal,
         ),
         filled: true,
-        fillColor: const Color.fromRGBO(255, 255, 255, 100),
+        fillColor: Colors.grey.shade100,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)));
   }
 
@@ -125,142 +125,180 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(0, 85, 0, 10),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage('assets/images/app_logo.png'),
-                  //   NetworkImage(
-                  //       "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="),
-                ),
-              ),
-              const Text(
-                "Login",
-                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 22,
-              ),
-              Container(
-                margin: const EdgeInsets.all(20),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      // InputField("Email", Icons.email),
-                      TextFormField(
-                        // here we will get the email entered
-
-                        decoration: Decoration("Email", Icons.email),
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please enter email";
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _authData['email'] = value!;
-                        },
-                      ),
-
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      // InputField("Password", Icons.lock),
-
-                      TextFormField(
-                        keyboardType: TextInputType.name,
-                        obscureText: true,
-                        decoration: Decoration("Password", Icons.lock),
-                        textInputAction: TextInputAction.next,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please enter Password";
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _authData['password'] = value!;
-                        },
-                      ),
-
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [Text("Forgot Password ?")],
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      _isLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : ButtonTheme(
-                              minWidth: MediaQuery.of(context).size.width,
-                              height: 60.0,
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  padding:
-                                      MaterialStateProperty.all<EdgeInsets>(
-                                    const EdgeInsets.only(
-                                        left: 130.0,
-                                        right: 130.0,
-                                        top: 20,
-                                        bottom: 20),
-                                  ),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Log In",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                onPressed: () {
-                                  _submit();
-                                },
-
-                                // shape: RoundedRectangleBorder(
-                                //   borderRadius: BorderRadius.circular(15),
-                                // ),
-                              ),
-                            ),
-                      const SizedBox(
-                        height: 35,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Don't have account yet? "),
-                          GestureDetector(
-                            child: const Text(
-                              "Sign Up",
-                              style:
-                                  TextStyle(color: Colors.blue, fontSize: 16),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pushNamed(SignUp.routeName);
-                            },
-                          )
-                        ],
-                      )
-                    ],
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/signup.PNG"),
+              fit: BoxFit.cover)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Stack(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(130, 120, 0, 10),
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage('assets/images/app_logo.png'),
+                    //   NetworkImage(
+                    //       "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="),
                   ),
                 ),
-              )
-            ],
+                Container(
+                  padding: EdgeInsets.only(left: 0, top: 220),
+                  child: Center(
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                          fontSize: 30.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 22,
+                ),
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  padding: EdgeInsetsDirectional.only(
+                      top: MediaQuery.of(context).size.height * 0.4),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        // InputField("Email", Icons.email),
+                        TextFormField(
+                          // here we will get the email entered
+
+                          decoration: Decoration("Email", Icons.email),
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Please enter email";
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _authData['email'] = value!;
+                          },
+                        ),
+
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        // InputField("Password", Icons.lock),
+
+                        TextFormField(
+                          keyboardType: TextInputType.name,
+                          obscureText: true,
+                          decoration: Decoration("Password", Icons.lock),
+                          textInputAction: TextInputAction.next,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Please enter Password";
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _authData['password'] = value!;
+                          },
+                        ),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: const [Text("Forgot Password ?")],
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        _isLoading
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            :
+                            // Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceAround,
+                            //     children: [
+                            //       Text(
+                            //         "Login",
+                            //         style: TextStyle(
+                            //             fontSize: 30,
+                            //             fontWeight: FontWeight.w700),
+                            //       ),
+                            //       CircleAvatar(
+                            //         radius: 30,
+                            //         backgroundColor: Colors.teal,
+                            //         child: IconButton(
+                            //             onPressed: () {
+                            //               _submit();
+                            //             },
+                            //             icon: Icon(Icons.arrow_forward)),
+                            //       )
+                            //     ],
+                            //   )
+                            ButtonTheme(
+                                minWidth: MediaQuery.of(context).size.width,
+                                height: 60.0,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                      const EdgeInsets.only(
+                                          left: 130.0,
+                                          right: 130.0,
+                                          top: 20,
+                                          bottom: 20),
+                                    ),
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "Log In",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    _submit();
+                                  },
+
+                                  // shape: RoundedRectangleBorder(
+                                  //   borderRadius: BorderRadius.circular(15),
+                                  // ),
+                                ),
+                              ),
+                        const SizedBox(
+                          height: 35,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Don't have account yet? "),
+                            GestureDetector(
+                              child: const Text(
+                                "Sign Up",
+                                style:
+                                    TextStyle(color: Colors.blue, fontSize: 16),
+                              ),
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(SignUp.routeName);
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

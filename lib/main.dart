@@ -21,7 +21,7 @@ import './widgets/update_renter.dart';
 import './screens/categories_items_screen.dart';
 import './widgets/categories_widgets.dart';
 import './screens/user_products_screen.dart';
-import './widgets/login.dart';
+import './widgets/reportProduct.dart';
 
 import './providers/items.dart';
 import './screens/selected_category_screen.dart';
@@ -107,6 +107,7 @@ class MyApp extends StatelessWidget {
             SelectedCategoryScreen.routeName: (ctx) => SelectedCategoryScreen(),
             ProfileScreen.routeName: (ctx) => ProfileScreen(),
             UpdateRenter.routeName: (ctx) => UpdateRenter(),
+            ReportProduct.routeName: (ctx) => ReportProduct(),
           },
         ),
       ),
