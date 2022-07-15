@@ -44,7 +44,8 @@ class _AddProductState extends State<AddProduct> {
       categoryId: "",
       categoryTitle: "Car",
       available: true,
-      validItem: false);
+      validItem: false,
+      userEmail: "");
 
   var _initValues = {
     'title': '',
@@ -56,6 +57,7 @@ class _AddProductState extends State<AddProduct> {
     'categoryTitle': '',
     'available': bool,
     'validItem': bool,
+    'userEmail': "",
   };
   var _isInit = true;
   var _isLoading = false;
@@ -84,6 +86,7 @@ class _AddProductState extends State<AddProduct> {
           'categoryTitle': _addItem.categoryTitle,
           'available': _addItem.available,
           'validItem': _addItem.validItem,
+          'userEmail': _addItem.userEmail,
         };
       }
     }
@@ -101,7 +104,7 @@ class _AddProductState extends State<AddProduct> {
       filled: true,
       fillColor: const Color.fromRGBO(255, 255, 255, 100),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
       ),
     );
   }
@@ -119,13 +122,12 @@ class _AddProductState extends State<AddProduct> {
         filled: true,
         fillColor: const Color.fromRGBO(255, 255, 255, 100),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
       ),
-      // textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.next,
       keyboardType: TextInputType.multiline,
       maxLines: 3,
-      textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) {
         _saveForm();
       },
@@ -141,7 +143,8 @@ class _AddProductState extends State<AddProduct> {
             categoryId: _addItem.categoryId,
             categoryTitle: selectedValue,
             available: _available,
-            validItem: _addItem.validItem);
+            validItem: _addItem.validItem,
+            userEmail: _addItem.userEmail);
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -259,7 +262,7 @@ class _AddProductState extends State<AddProduct> {
           minimumSize: const Size.fromHeight(60),
           shape: RoundedRectangleBorder(
               side: const BorderSide(color: Colors.teal),
-              borderRadius: BorderRadius.circular(15.0))),
+              borderRadius: BorderRadius.circular(10.0))),
     );
   }
 
@@ -299,7 +302,8 @@ class _AddProductState extends State<AddProduct> {
                 categoryId: _addItem.categoryId,
                 categoryTitle: selectedValue,
                 available: _available,
-                validItem: _addItem.validItem);
+                validItem: _addItem.validItem,
+                userEmail: _addItem.userEmail);
 
             _saveForm();
 
@@ -318,7 +322,8 @@ class _AddProductState extends State<AddProduct> {
               categoryId: _addItem.categoryId,
               categoryTitle: selectedValue,
               available: _available,
-              validItem: _addItem.validItem);
+              validItem: _addItem.validItem,
+              userEmail: _addItem.userEmail);
 
           _saveForm();
         }
@@ -508,7 +513,8 @@ class _AddProductState extends State<AddProduct> {
                                     categoryId: _addItem.categoryId,
                                     categoryTitle: selectedValue,
                                     available: _available,
-                                    validItem: _addItem.validItem);
+                                    validItem: _addItem.validItem,
+                                    userEmail: _addItem.userEmail);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -562,7 +568,8 @@ class _AddProductState extends State<AddProduct> {
                                     categoryId: _addItem.categoryId,
                                     categoryTitle: selectedValue,
                                     available: _available,
-                                    validItem: _addItem.validItem);
+                                    validItem: _addItem.validItem,
+                                    userEmail: _addItem.userEmail);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -597,7 +604,8 @@ class _AddProductState extends State<AddProduct> {
                                     categoryId: _addItem.categoryId,
                                     categoryTitle: selectedValue,
                                     available: _available,
-                                    validItem: _addItem.validItem);
+                                    validItem: _addItem.validItem,
+                                    userEmail: _addItem.userEmail);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -633,7 +641,8 @@ class _AddProductState extends State<AddProduct> {
                                     categoryId: _addItem.categoryId,
                                     categoryTitle: selectedValue,
                                     available: _available,
-                                    validItem: _addItem.validItem);
+                                    validItem: _addItem.validItem,
+                                    userEmail: _addItem.userEmail);
                               },
                               validator: (value) {
                                 if (value!.isEmpty) {

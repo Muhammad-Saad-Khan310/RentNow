@@ -52,211 +52,213 @@ class _AppDrawerState extends State<AppDrawer> {
     var renterData = Provider.of<Renter>(context);
 
     return Drawer(
-      child: Column(
-        children: [
-          // AppBar(
-          //   title: const Text("Rent Now"),
-          //   automaticallyImplyLeading: false,
-          // ),
-          Container(
-            height: 120,
-            width: double.infinity,
-            padding: const EdgeInsets.only(top: 30, left: 30),
-            alignment: Alignment.centerLeft,
-            color: Theme.of(context).accentColor,
-            child: const Text(
-              'RENT NOW!',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
-                fontSize: 30,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // AppBar(
+            //   title: const Text("Rent Now"),
+            //   automaticallyImplyLeading: false,
+            // ),
+            Container(
+              height: 120,
+              width: double.infinity,
+              padding: const EdgeInsets.only(top: 30, left: 30),
+              alignment: Alignment.centerLeft,
+              color: Theme.of(context).accentColor,
+              child: const Text(
+                'RENT NOW!',
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                  fontSize: 30,
+                ),
               ),
             ),
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(
-              Icons.home,
-              size: 35,
-              color: Colors.teal,
+            const Divider(),
+            ListTile(
+              leading: const Icon(
+                Icons.home,
+                size: 35,
+                color: Colors.teal,
+              ),
+              title: const Text("All Items"),
+              onTap: () async {
+                Navigator.of(context).pushNamed(RentItem.routeName);
+              },
             ),
-            title: const Text("All Items"),
-            onTap: () async {
-              Navigator.of(context).pushNamed(RentItem.routeName);
-            },
-          ),
-          userData.isAllowed ? const Divider() : Container(),
+            userData.isAllowed ? const Divider() : Container(),
 
-          // ListTile(
-          //   leading: const Icon(Icons.add_box),
-          //   title: const Text("Add Product"),
-          //   onTap: () {
-          //     if (userData.isAllowed) {
-          //       Navigator.of(context).pushNamed(AddProduct.routeName);
-          //     } else {
-          //       String errorMessage = "Please login first then add product";
-          //       _showErrorDialog(errorMessage, context);
-          //     }
-          //   },
-          // ),
-          // FutureBuilder<bool>(
-          //     future: renterData.showAddProductForm(),
-          //     builder: (ctx, AsyncSnapshot<bool> snapshot) {
-          //       if (snapshot.data == true) {
-          //         return ListTile(
-          //           leading: const Icon(Icons.add_box),
-          //           title: const Text("Add Product"),
-          //           onTap: () {
-          //             Navigator.of(context).pushNamed(AddProduct.routeName);
-          //           },
-          //         );
-          //       } else {
-          //         return const Text("");
-          //       }
-          //     }),
-          userData.isAuth
-              ? ListTile(
-                  leading: const Icon(
-                    Icons.add_box,
-                    size: 35,
-                    color: Colors.teal,
+            // ListTile(
+            //   leading: const Icon(Icons.add_box),
+            //   title: const Text("Add Product"),
+            //   onTap: () {
+            //     if (userData.isAllowed) {
+            //       Navigator.of(context).pushNamed(AddProduct.routeName);
+            //     } else {
+            //       String errorMessage = "Please login first then add product";
+            //       _showErrorDialog(errorMessage, context);
+            //     }
+            //   },
+            // ),
+            // FutureBuilder<bool>(
+            //     future: renterData.showAddProductForm(),
+            //     builder: (ctx, AsyncSnapshot<bool> snapshot) {
+            //       if (snapshot.data == true) {
+            //         return ListTile(
+            //           leading: const Icon(Icons.add_box),
+            //           title: const Text("Add Product"),
+            //           onTap: () {
+            //             Navigator.of(context).pushNamed(AddProduct.routeName);
+            //           },
+            //         );
+            //       } else {
+            //         return const Text("");
+            //       }
+            //     }),
+            userData.isAuth
+                ? ListTile(
+                    leading: const Icon(
+                      Icons.add_box,
+                      size: 35,
+                      color: Colors.teal,
+                    ),
+                    title: const Text("Add Item"),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AddProduct.routeName);
+                    },
+                  )
+                : Container(),
+
+            // userData.isAuth
+            //     ? ListTile(
+            //         leading: const Icon(
+            //           Icons.add_box,
+            //           color: Colors.teal,
+            //         ),
+            //         title: const Text("Add Product"),
+            //         onTap: () {
+            //           renterData.showAddProductForm().then((value) => {
+            //                 if (value)
+            //                   {
+            //                     Navigator.of(context)
+            //                         .pushNamed(AddProduct.routeName)
+            //                   }
+            //                 else
+            //                   {
+            //                     // String errorMessage =
+            //                     // "Please fill become renter then add product";
+            //                     _showErrorDialog(
+            //                         "Please provide become renter data then add product",
+            //                         context)
+            //                   }
+            //               });
+
+            // FutureBuilder<bool>(
+            //   future: renterData.showAddProductForm(),
+            //   builder: (ctx, AsyncSnapshot<bool> snapshot) {
+            //     if (snapshot.data == true) {
+            //       Navigator.of(context).pushNamed(AddProduct.routeName);
+
+            //       // ListTile(
+            //       //   leading: const Icon(Icons.add_box),
+            //       //   title: const Text("Add Product"),
+            //       //   onTap: () {
+            //       //     ;
+            //       //   },
+            //       // );
+            //     } else {
+            //       String errorMessage =
+            //           "Please fill become renter then add product";
+            //       _showErrorDialog(errorMessage, context);
+            //     }
+            //     return const Text("saf");
+            //   },
+            // );
+            // },
+            // )
+            // : Container(),
+
+            const Divider(),
+            userData.isAuth
+                ? ListTile(
+                    leading: const Icon(
+                      Icons.person,
+                      size: 35,
+                      color: Colors.teal,
+                    ),
+                    title: const Text("User Profile"),
+                    onTap: () {
+                      print(userData.userId);
+                      Navigator.of(context).pushNamed(ProfileScreen.routeName);
+                    })
+                : Container(),
+
+            // userData.isAllowed ? const Divider() : Container(),
+
+            // renterData.showAddProductForm().then((value) => {
+
+            // }
+            // )
+
+            userData.isAllowed
+                ? Container()
+                : ListTile(
+                    leading: const Icon(
+                      Icons.person_add,
+                      size: 35,
+                      color: Colors.teal,
+                    ),
+                    title: const Text("SignUp"),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(SignUp.routeName);
+                    },
                   ),
-                  title: const Text("Add Item"),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(AddProduct.routeName);
-                  },
-                )
-              : Container(),
 
-          // userData.isAuth
-          //     ? ListTile(
-          //         leading: const Icon(
-          //           Icons.add_box,
-          //           color: Colors.teal,
-          //         ),
-          //         title: const Text("Add Product"),
-          //         onTap: () {
-          //           renterData.showAddProductForm().then((value) => {
-          //                 if (value)
-          //                   {
-          //                     Navigator.of(context)
-          //                         .pushNamed(AddProduct.routeName)
-          //                   }
-          //                 else
-          //                   {
-          //                     // String errorMessage =
-          //                     // "Please fill become renter then add product";
-          //                     _showErrorDialog(
-          //                         "Please provide become renter data then add product",
-          //                         context)
-          //                   }
-          //               });
-
-          // FutureBuilder<bool>(
-          //   future: renterData.showAddProductForm(),
-          //   builder: (ctx, AsyncSnapshot<bool> snapshot) {
-          //     if (snapshot.data == true) {
-          //       Navigator.of(context).pushNamed(AddProduct.routeName);
-
-          //       // ListTile(
-          //       //   leading: const Icon(Icons.add_box),
-          //       //   title: const Text("Add Product"),
-          //       //   onTap: () {
-          //       //     ;
-          //       //   },
-          //       // );
-          //     } else {
-          //       String errorMessage =
-          //           "Please fill become renter then add product";
-          //       _showErrorDialog(errorMessage, context);
-          //     }
-          //     return const Text("saf");
-          //   },
-          // );
-          // },
-          // )
-          // : Container(),
-
-          const Divider(),
-          userData.isAuth
-              ? ListTile(
-                  leading: const Icon(
-                    Icons.person,
-                    size: 35,
-                    color: Colors.teal,
+            const Divider(),
+            userData.isAllowed
+                ? ListTile(
+                    leading: const Icon(
+                      Icons.shopping_bag,
+                      size: 35,
+                      color: Colors.teal,
+                    ),
+                    title: const Text("My Items"),
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(UserProductsScreen.routeName);
+                    },
+                  )
+                : ListTile(
+                    leading: const Icon(
+                      Icons.login,
+                      size: 35,
+                      color: Colors.teal,
+                    ),
+                    title: const Text("Login"),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Login.routeName);
+                    },
                   ),
-                  title: const Text("User Profile"),
-                  onTap: () {
-                    print(userData.userId);
-                    Navigator.of(context).pushNamed(ProfileScreen.routeName);
-                  })
-              : Container(),
+            // const Divider(),
 
-          // userData.isAllowed ? const Divider() : Container(),
-
-          // renterData.showAddProductForm().then((value) => {
-
-          // }
-          // )
-
-          userData.isAllowed
-              ? Container()
-              : ListTile(
-                  leading: const Icon(
-                    Icons.person_add,
-                    size: 35,
-                    color: Colors.teal,
-                  ),
-                  title: const Text("SignUp"),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(SignUp.routeName);
-                  },
-                ),
-
-          const Divider(),
-          userData.isAllowed
-              ? ListTile(
-                  leading: const Icon(
-                    Icons.shopping_bag,
-                    size: 35,
-                    color: Colors.teal,
-                  ),
-                  title: const Text("My Items"),
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(UserProductsScreen.routeName);
-                  },
-                )
-              : ListTile(
-                  leading: const Icon(
-                    Icons.login,
-                    size: 35,
-                    color: Colors.teal,
-                  ),
-                  title: const Text("Login"),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(Login.routeName);
-                  },
-                ),
-          // const Divider(),
-
-          const Divider(),
-          userData.isAllowed
-              ? ListTile(
-                  leading: const Icon(
-                    Icons.exit_to_app,
-                    size: 35,
-                    color: Colors.teal,
-                  ),
-                  title: const Text("Logout"),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushReplacementNamed("/");
-                    userData.logout();
-                  },
-                )
-              : const Text("")
-        ],
+            const Divider(),
+            userData.isAllowed
+                ? ListTile(
+                    leading: const Icon(
+                      Icons.exit_to_app,
+                      size: 35,
+                      color: Colors.teal,
+                    ),
+                    title: const Text("Logout"),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed("/");
+                      userData.logout();
+                    },
+                  )
+                : const Text("")
+          ],
+        ),
       ),
     );
   }

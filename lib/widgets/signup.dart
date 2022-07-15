@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rentnow/widgets/rentItems.dart';
 import 'package:rentnow/widgets/userProfile.dart';
 
 import '../providers/renter.dart';
@@ -57,7 +58,7 @@ class _SignUpState extends State<SignUp> {
         ),
         filled: true,
         fillColor: const Color.fromRGBO(255, 255, 255, 100),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)));
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)));
   }
 
   Future<void> _submit() async {
@@ -78,7 +79,7 @@ class _SignUpState extends State<SignUp> {
         await data.signup(_authData['email']!, _authData['password']!);
 
         if (data.isAuth) {
-          Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
+          Navigator.of(context).pushReplacementNamed(RentItem.routeName);
         }
       } on HttpException catch (error) {
         var errorMessage = "Authenticate failed";
@@ -112,7 +113,7 @@ class _SignUpState extends State<SignUp> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/signup.PNG"),
+              image: AssetImage("assets/images/background.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -120,8 +121,9 @@ class _SignUpState extends State<SignUp> {
           child: SafeArea(
             child: Stack(
               children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(130, 120, 0, 10),
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.1,
+                  left: MediaQuery.of(context).size.width * 0.4,
                   child: CircleAvatar(
                       radius: 50,
                       backgroundImage: AssetImage('assets/images/app_logo.png')
@@ -131,23 +133,23 @@ class _SignUpState extends State<SignUp> {
                       //     ),
                       ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(left: 0, top: 220),
-                  child: Center(
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(
-                          fontSize: 30.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 22,
-                ),
+                // Container(
+                //   padding: EdgeInsets.only(left: 0, top: 220),
+                //   child: const Center(
+                //     child: Text(
+                //       "Sign Up",
+                //       style: TextStyle(
+                //           fontSize: 30.0, fontWeight: FontWeight.bold),
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 22,
+                // ),
                 Container(
                   margin: const EdgeInsets.all(20),
                   padding: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).size.height * 0.4),
+                      top: MediaQuery.of(context).size.height * 0.35),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -235,7 +237,7 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                     shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
                                   ),

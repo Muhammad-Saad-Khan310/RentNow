@@ -111,7 +111,13 @@ class Items with ChangeNotifier {
 
   final String authToken;
   final String userId;
-  Items(this.authToken, this.userId, this._items);
+  final String userEmail;
+  Items(
+    this.authToken,
+    this.userId,
+    this.userEmail,
+    this._items,
+  );
 
   List<ProductItem> get items {
     return [..._items];
@@ -157,7 +163,8 @@ class Items with ChangeNotifier {
                   categoryTitle: itemData['categoryTitle'],
                   categoryId: itemData['categoryId'],
                   available: itemData['available'],
-                  validItem: itemData!['validItem']));
+                  validItem: itemData!['validItem'],
+                  userEmail: itemData['userEmail']));
         }
       });
       if (filterByUser) {
@@ -190,6 +197,7 @@ class Items with ChangeNotifier {
           'creatorId': userId,
           'available': product.available,
           'validItem': product.validItem,
+          'userEmail': userEmail,
         }),
       );
       // final newProduct = ProductItem(
@@ -234,6 +242,27 @@ class Items with ChangeNotifier {
       notifyListeners();
     } else {
       print("product with that id not exsit");
+    }
+  }
+
+  Future<void> reportPorduct(String report, String itemImage, String itemId,
+      String itemOwnerEmail) async {
+    final url = Uri.parse(
+        "https://rentnow-f12ca-default-rtdb.firebaseio.com/ReportItems.json?auth=$authToken");
+
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({
+          'itemReport': report,
+          'itemOwnerEmail': itemOwnerEmail,
+          'itemImage': itemImage,
+          'itemId': itemId
+        }),
+      );
+      notifyListeners();
+    } catch (error) {
+      rethrow;
     }
   }
 

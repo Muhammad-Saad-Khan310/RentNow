@@ -1,7 +1,11 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:provider/provider.dart';
+import 'package:rentnow/providers/auth.dart';
+// import 'package:url_launcher/url_launcher.dart';
 import './imageView.dart';
 import "./reportProduct.dart";
 
@@ -16,10 +20,7 @@ class ProductOverview extends StatelessWidget {
     final itemId = ModalRoute.of(context)!.settings.arguments as String;
     // Provider.of<Items>(context).items.firstWhere((prod) ==> prod.id == itemId);
     final loadedItem = Provider.of<Items>(context).findById(itemId);
-
-    // final iData = Provider.of<Items>(context).items
-    // final d = iData.items;
-
+    final userData = Provider.of<Auth>(context, listen: false);
     return Scaffold(
       body: Stack(
         children: [
@@ -65,10 +66,23 @@ class ProductOverview extends StatelessWidget {
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
-                        const Text(
-                          "10 Min ago",
-                          style: TextStyle(color: Colors.blue, fontSize: 18),
-                        ),
+                        loadedItem.available
+                            ? const Text(
+                                "Available",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue),
+                              )
+                            : const Text(
+                                "Not Available",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red),
+                              ),
+                        // const Text(
+                        //   "10 Min ago",
+                        //   style: TextStyle(color: Colors.blue, fontSize: 18),
+                        // ),
                       ],
                     ),
                     Container(
@@ -77,7 +91,7 @@ class ProductOverview extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.location_on,
-                            color: Colors.black,
+                            color: Colors.red,
                           ),
                           const SizedBox(
                             width: 10,
@@ -93,9 +107,29 @@ class ProductOverview extends StatelessWidget {
                       margin: const EdgeInsets.only(top: 20),
                       child: Row(
                         children: [
-                          const Icon(
-                            Icons.phone,
-                            color: Colors.black,
+                          // IconButton(
+                          //     onPressed: () async {
+                          //       var num = loadedItem.phoneNumber;
+                          //       final Uri url = Uri.parse("tel://$num");
+                          //       // launchUrl("tel://$num");
+                          //       launchUrl(url);
+                          //     },
+                          //     icon: const Icon(
+                          //       Icons.phone,
+                          //       color: Colors.blue,
+
+                          //     )),
+                          GestureDetector(
+                            onTap: () {
+                              var num = loadedItem.phoneNumber;
+                              final Uri url = Uri.parse("tel://$num");
+                              // launchUrl("tel://$num");
+                              launchUrl(url);
+                            },
+                            child: const Icon(
+                              Icons.phone,
+                              color: Colors.green,
+                            ),
                           ),
                           const SizedBox(
                             width: 10,
@@ -109,6 +143,7 @@ class ProductOverview extends StatelessWidget {
                     ),
                     Column(
                       // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: const EdgeInsets.only(top: 14),
@@ -131,32 +166,36 @@ class ProductOverview extends StatelessWidget {
                         child: Align(
                       alignment: FractionalOffset.bottomCenter,
                       child: Container(
+                        height: 40,
                         decoration: const BoxDecoration(
                             color: Color.fromRGBO(249, 251, 252, 1)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("RS " + loadedItem.price.toString()),
-                            loadedItem.available
-                                ? const Text("Available")
-                                : const Text(
-                                    "Not Available",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                            Text(
+                              "RS:   " + loadedItem.price.toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+
                             // Text(
                             //   loadedItem.available,
                             //   style: TextStyle(
                             //     fontWeight: FontWeight.bold,
                             //   ),
                             // ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(ReportProduct.routeName);
-                                },
-                                child: const Text("Report Item"))
+                            Provider.of<Auth>(context, listen: false).isAuth
+                                ? ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed(
+                                          ReportProduct.routeName,
+                                          arguments: {
+                                            "image": loadedItem.imageUrl,
+                                            "itemID": loadedItem.id,
+                                            "ownerEmail": loadedItem.userEmail,
+                                          });
+                                    },
+                                    child: const Text("Report Item"))
+                                : Container()
                           ],
                         ),
                       ),

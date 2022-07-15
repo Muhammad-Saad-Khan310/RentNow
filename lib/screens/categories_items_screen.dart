@@ -54,7 +54,7 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
       filled: true,
       fillColor: const Color.fromRGBO(255, 255, 255, 100),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
       ),
     );
   }
@@ -126,7 +126,7 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
                           title = categoryData[index].CategoryTitle;
                           imageUrl = categoryData[index].CategoryImage;
                           String categoryId = categoryData[index].CategoryId;
-                          // categoryData.map((catData) => CategoriesWidget()).toList();
+                          
                           return CategoriesWidget(id, title, imageUrl,
                               categoryId, categoryData[index].CategoryTitle);
                         },

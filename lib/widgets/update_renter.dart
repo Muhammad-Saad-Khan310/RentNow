@@ -78,7 +78,7 @@ class _UpdateRenterState extends State<UpdateRenter> {
       filled: true,
       fillColor: const Color.fromRGBO(255, 255, 255, 100),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
       ),
     );
   }
@@ -389,7 +389,7 @@ class _UpdateRenterState extends State<UpdateRenter> {
                                   ),
                                   shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
                                 ),

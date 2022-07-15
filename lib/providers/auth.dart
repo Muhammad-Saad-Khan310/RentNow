@@ -9,6 +9,7 @@ class Auth with ChangeNotifier {
   String? _token;
   DateTime? _expiryDate;
   String? _userId;
+  String? _userEmail;
   bool isAllowed = false;
   Timer? _authTimer;
   bool _showForm = false;
@@ -19,6 +20,10 @@ class Auth with ChangeNotifier {
 
   bool get showForm {
     return _showForm;
+  }
+
+  String? get userEmail {
+    return _userEmail;
   }
 
   String? get userId {
@@ -55,6 +60,7 @@ class Auth with ChangeNotifier {
         throw HttpException(responseData["error"]["message"]);
       }
       _token = responseData["idToken"];
+      _userEmail = email;
       _userId = responseData['localId'];
       _expiryDate = DateTime.now().add(
         Duration(
@@ -68,6 +74,7 @@ class Auth with ChangeNotifier {
       final userData = json.encode({
         'token': _token,
         'userId': _userId,
+        'userEmail': _userEmail,
         'expiryDate': _expiryDate!.toIso8601String()
       });
       prefs.setString('userData', userData);
@@ -92,6 +99,7 @@ class Auth with ChangeNotifier {
         throw HttpException(responseData["error"]["message"]);
       }
       _token = responseData["idToken"];
+      _userEmail = email;
       _userId = responseData['localId'];
       _expiryDate = DateTime.now().add(
         Duration(
@@ -106,6 +114,7 @@ class Auth with ChangeNotifier {
       final userData = json.encode({
         'token': _token,
         'userId': _userId,
+        'userEmail': email,
         'expiryDate': _expiryDate!.toIso8601String()
       });
       prefs.setString('userData', userData);
@@ -145,6 +154,7 @@ class Auth with ChangeNotifier {
     }
     _token = extractedUserData['token'] as String;
     _userId = extractedUserData['userId'] as String;
+    _userEmail = extractedUserData['userEmail'] as String;
     _expiryDate = expiryDate;
     notifyListeners();
     _autoLogout();
@@ -154,6 +164,7 @@ class Auth with ChangeNotifier {
   Future<void> logout() async {
     _token = null;
     _userId = null;
+    _userEmail = null;
     _expiryDate = null;
     isAllowed = false;
     if (_authTimer != null) {

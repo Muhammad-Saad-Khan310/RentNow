@@ -54,7 +54,7 @@ class _LoginState extends State<Login> {
         ),
         filled: true,
         fillColor: Colors.grey.shade100,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)));
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)));
   }
 
   @override
@@ -96,9 +96,9 @@ class _LoginState extends State<Login> {
       var data = Provider.of<Auth>(context, listen: false);
       await data.login(_authData['email']!, _authData['password']!);
 
-      if (data.isAllowed) {
-        Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
-      }
+      // if (data.isAllowed) {
+      Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
+      // }
     } on HttpException catch (error) {
       var errorMessage = "Authenticate failed";
       if (error.toString().contains("EMAIL_NOT_FOUND")) {
@@ -128,7 +128,7 @@ class _LoginState extends State<Login> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/images/signup.PNG"),
+              image: AssetImage("assets/images/background.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -136,32 +136,30 @@ class _LoginState extends State<Login> {
           child: SafeArea(
             child: Stack(
               children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(130, 120, 0, 10),
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.1,
+                  left: MediaQuery.of(context).size.width * 0.4,
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage('assets/images/app_logo.png'),
-                    //   NetworkImage(
-                    //       "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(left: 0, top: 220),
-                  child: Center(
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                          fontSize: 30.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   top: MediaQuery.of(context).size.height * 0.3,
+                //   left: MediaQuery.of(context).size.width * 0.4,
+                //   child: Text(
+                //     "Login",
+                //     style:
+                //         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                //   ),
+                // ),
                 const SizedBox(
-                  height: 22,
+                  height: 0,
                 ),
                 Container(
-                  margin: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.only(left: 20, right: 20),
                   padding: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).size.height * 0.4),
+                      top: MediaQuery.of(context).size.height * 0.38),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -256,7 +254,7 @@ class _LoginState extends State<Login> {
                                     ),
                                     shape: MaterialStateProperty.all(
                                       RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
                                   ),

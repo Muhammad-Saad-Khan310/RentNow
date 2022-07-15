@@ -12,6 +12,7 @@ class ProductItem {
   final String categoryTitle;
   final bool available;
   final bool validItem;
+  final String userEmail;
 
   ProductItem(
       {required this.id,
@@ -24,5 +25,6 @@ class ProductItem {
       required this.categoryId,
       required this.categoryTitle,
       required this.available,
-      required this.validItem});
+      required this.validItem,
+      required this.userEmail});
 }

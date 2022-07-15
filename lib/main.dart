@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rentnow/screens/splash_screen.dart';
+import 'package:rentnow/widgets/item_detail.dart';
 import 'package:rentnow/widgets/userProfile.dart';
 import './providers/auth.dart';
 
@@ -54,10 +55,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: Auth()),
         ChangeNotifierProxyProvider<Auth, Items>(
-          create: (ctx) => Items("", "", []),
+          create: (ctx) => Items("", "", "", []),
           update: (ctx, auth, previousProduct) => Items(
               auth.token ?? "",
               auth.userId ?? "",
+              auth.userEmail ?? "",
               previousProduct == null ? [] : previousProduct.items),
         ),
         ChangeNotifierProxyProvider<Auth, Renter>(
@@ -69,7 +71,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Rent Now',
           theme: ThemeData(
             // primarySwatch: Colors.blue,
             primarySwatch: Colors.teal,
@@ -92,7 +94,7 @@ class MyApp extends StatelessWidget {
                           ? const SplashScreen()
                           : RentItem(),
                 ),
-          // home: ProfilePage(),
+          // home: ItemDetail(),
           routes: {
             CategoriesItemsScreen.routeName: (ctx) =>
                 const CategoriesItemsScreen(),
@@ -108,6 +110,7 @@ class MyApp extends StatelessWidget {
             ProfileScreen.routeName: (ctx) => ProfileScreen(),
             UpdateRenter.routeName: (ctx) => UpdateRenter(),
             ReportProduct.routeName: (ctx) => ReportProduct(),
+            ItemDetail.routeName: (ctx) => ItemDetail(),
           },
         ),
       ),

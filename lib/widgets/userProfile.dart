@@ -38,89 +38,87 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Scaffold(
-        //   appBar: AppBar(title: const Center(child: Text("User Profile"))),
-        //   body:
-        Column(
-      children: [
-        Column(
-          children: [
-            ClipPath(
-              clipper: CustomClipPath(),
-              child: Container(
-                height: 250,
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 165, 218, 212)),
-                child: Center(
-                  child: Container(
-                    // decoration: BoxDecoration(color: Colors.red),
-                    margin: const EdgeInsets.only(
-                        // top: 20.4,
-                        ),
-                    width: double.infinity,
-                    height: 130,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.teal,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Column(
+            children: [
+              ClipPath(
+                clipper: CustomClipPath(),
+                child: Container(
+                  height: 250,
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 165, 218, 212)),
+                  child: Center(
+                    child: Container(
+                      // decoration: BoxDecoration(color: Colors.red),
+                      margin: const EdgeInsets.only(
+                          // top: 20.4,
+                          ),
+                      width: double.infinity,
+                      height: 130,
                       child: CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(imageUrl),
+                        radius: 50,
+                        backgroundColor: Colors.teal,
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(imageUrl),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        userField(userName, Icons.person),
-        userField(dateOfBirth, Icons.date_range),
-        userField(phoneNumber, Icons.phone),
-        userField(address, Icons.home),
-        const SizedBox(
-          height: 25,
-        ),
-        Align(
-          alignment: FractionalOffset.bottomCenter,
-          child: ButtonTheme(
-            minWidth: MediaQuery.of(context).size.width,
-            height: 60.0,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsets>(
-                  const EdgeInsets.only(
-                      left: 130.0, right: 130.0, top: 20, bottom: 20),
-                ),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+            ],
+          ),
+          userField(userName, Icons.person),
+          userField(dateOfBirth, Icons.date_range),
+          userField(phoneNumber, Icons.phone),
+          userField(address, Icons.home),
+          const SizedBox(
+            height: 25,
+          ),
+          Align(
+            alignment: FractionalOffset.bottomCenter,
+            child: ButtonTheme(
+              minWidth: MediaQuery.of(context).size.width,
+              height: 60.0,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                    const EdgeInsets.only(
+                        left: 130.0, right: 130.0, top: 20, bottom: 20),
+                  ),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
+                child: const Text(
+                  "Update Profile",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(UpdateRenter.routeName, arguments: renterId);
+                },
               ),
-              child: const Text(
-                "Update Profile",
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(UpdateRenter.routeName, arguments: renterId);
-              },
             ),
           ),
-        ),
 
-        // GestureDetector(
-        //   onTap: (() {
-        //     Navigator.of(context)
-        //         .pushNamed(UpdateRenter.routeName, arguments: renterId);
-        //   }),
-        //   child: const Align(
-        //     alignment: Alignment.bottomCenter,
-        //     child: Text("Update"),
-        //   ),
-        // )
-      ],
+          // GestureDetector(
+          //   onTap: (() {
+          //     Navigator.of(context)
+          //         .pushNamed(UpdateRenter.routeName, arguments: renterId);
+          //   }),
+          //   child: const Align(
+          //     alignment: Alignment.bottomCenter,
+          //     child: Text("Update"),
+          //   ),
+          // )
+        ],
+      ),
     );
     //   ),
     // );

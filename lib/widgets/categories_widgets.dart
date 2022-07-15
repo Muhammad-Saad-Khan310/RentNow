@@ -29,7 +29,7 @@ class CategoriesWidget extends StatelessWidget {
               Card(
                 color: Colors.teal,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(5)),
                 elevation: 4,
                 margin: const EdgeInsets.only(
                   // left: 20,
@@ -42,8 +42,8 @@ class CategoriesWidget extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
+                            topLeft: Radius.circular(0),
+                            topRight: Radius.circular(0),
                           ),
                           child: Image.network(
                             imageUrl,

@@ -43,6 +43,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<!-- This is for indirect phone call -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+  		<string>sms</string>
+  		<string>tel</string>
+	</array>
+
 	<!-- This configuration is for ios image from calley -->
 	<key>NSCameraUsageDescription</key>
 	<string>To take user profile image</string>

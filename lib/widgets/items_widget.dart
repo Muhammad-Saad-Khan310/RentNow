@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './product_overview.dart';
+import './item_detail.dart';
 
 class ItemsWidget extends StatelessWidget {
   final String id;
@@ -27,7 +28,7 @@ class ItemsWidget extends StatelessWidget {
         InkWell(
           onTap: () {
             Navigator.of(context).pushNamed(
-              ProductOverview.routeName,
+              ItemDetail.routeName,
               arguments: id,
             );
           },
@@ -36,7 +37,7 @@ class ItemsWidget extends StatelessWidget {
               Card(
                 color: Color.fromARGB(255, 222, 230, 235),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(10)),
                 elevation: 4,
                 margin: const EdgeInsets.only(bottom: 15),
                 child: Column(
@@ -45,8 +46,8 @@ class ItemsWidget extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
                           ),
                           child: Image.network(
                             itemImage,
@@ -65,7 +66,7 @@ class ItemsWidget extends StatelessWidget {
                             decoration: const BoxDecoration(
                                 color: Colors.green,
                                 borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(15.0))),
+                                    topRight: Radius.circular(10.0))),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 8),
                             child: isAvailable
