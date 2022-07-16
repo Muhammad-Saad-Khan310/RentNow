@@ -102,15 +102,15 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   @override
   Widget build(BuildContext context) {
     final Itm = Provider.of<Items>(context);
-    if (Itm.items.isEmpty) {
-      // const _errorMessage = "No Items";
-      // print("no item found");
-      _showMessage = true;
-      // setState(() {
-      //   _isLoading = false;
-      // });
-      // _showErrorDialog(_errorMessage);
-    }
+    // if (Itm.items.isEmpty) {
+    // const _errorMessage = "No Items";
+    // print("no item found");
+    // _showMessage = true;
+    // setState(() {
+    //   _isLoading = false;
+    // });
+    // _showErrorDialog(_errorMessage);
+    // }
     if (ltmData.isEmpty) {
       ltmData = Itm.items;
     }
@@ -174,18 +174,19 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    _showMessage
-                        ? Padding(
-                            padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height * 0.1),
-                            child: const Center(
-                                child: Text(
-                              "No Item",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 30),
-                            )),
-                          )
-                        : ItemListView(ltmData),
+                    // _showMessage
+                    //     ? Padding(
+                    //         padding: EdgeInsets.only(
+                    //             top: MediaQuery.of(context).size.height * 0.1),
+                    //         child: const Center(
+                    //             child: Text(
+                    //           "No Item",
+                    //           style: TextStyle(
+                    //               fontWeight: FontWeight.bold, fontSize: 30),
+                    //         )),
+                    //       )
+                    //     :
+                    ItemListView(ltmData),
                   ],
                 ),
               ),
@@ -208,8 +209,9 @@ class ItemListView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(top: 15),
       width: MediaQuery.of(context).size.width,
-      // height: 500,
+      height: 500,
       child: ListView.builder(
+        shrinkWrap: false,
         // scrollDirection: Axis.horizontal,
         itemCount: lst.length,
         itemBuilder: (ctx, index) {
