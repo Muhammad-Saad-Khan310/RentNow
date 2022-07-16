@@ -20,10 +20,27 @@ class CategoriesItemsScreen extends StatefulWidget {
 
 class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   final controller = TextEditingController();
-  // var u = Provider.of<Items>(context);
   List<ProductItem> ltmData = [];
   var _isInit = true;
+  var _showMessage = false;
   var _isLoading = false;
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Alert!"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            child: const Text("Ok"),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -31,17 +48,25 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     if (_isInit) {
       setState(() {
         _isLoading = true;
       });
+      try {
+        await Provider.of<Items>(context).fetchAndSetItems(false).then((_) {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      } catch (error) {
+        const errorMessage = "No Item found";
 
-      Provider.of<Items>(context).fetchAndSetItems(false).then((_) {
         setState(() {
           _isLoading = false;
         });
-      });
+        _showErrorDialog(errorMessage);
+      }
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -76,8 +101,16 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: non_constant_identifier_names
     final Itm = Provider.of<Items>(context);
+    if (Itm.items.isEmpty) {
+      // const _errorMessage = "No Items";
+      // print("no item found");
+      _showMessage = true;
+      // setState(() {
+      //   _isLoading = false;
+      // });
+      // _showErrorDialog(_errorMessage);
+    }
     if (ltmData.isEmpty) {
       ltmData = Itm.items;
     }
@@ -126,7 +159,7 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
                           title = categoryData[index].CategoryTitle;
                           imageUrl = categoryData[index].CategoryImage;
                           String categoryId = categoryData[index].CategoryId;
-                          
+
                           return CategoriesWidget(id, title, imageUrl,
                               categoryId, categoryData[index].CategoryTitle);
                         },
@@ -141,7 +174,18 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    ItemListView(ltmData),
+                    _showMessage
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.1),
+                            child: const Center(
+                                child: Text(
+                              "No Item",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                            )),
+                          )
+                        : ItemListView(ltmData),
                   ],
                 ),
               ),
@@ -163,9 +207,10 @@ class ItemListView extends StatelessWidget {
     // final lst = ItemData.items;
     return Container(
       padding: const EdgeInsets.only(top: 15),
-      width: double.infinity,
-      height: 500,
+      width: MediaQuery.of(context).size.width,
+      // height: 500,
       child: ListView.builder(
+        // scrollDirection: Axis.horizontal,
         itemCount: lst.length,
         itemBuilder: (ctx, index) {
           return ItemsWidget(

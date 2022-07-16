@@ -29,7 +29,7 @@ class CategoriesWidget extends StatelessWidget {
               Card(
                 color: Colors.teal,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
+                    borderRadius: BorderRadius.circular(10)),
                 elevation: 4,
                 margin: const EdgeInsets.only(
                   // left: 20,

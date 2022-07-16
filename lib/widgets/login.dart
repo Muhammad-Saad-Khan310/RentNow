@@ -62,26 +62,6 @@ class _LoginState extends State<Login> {
     super.initState();
   }
 
-  // Widget InputField(String InputFieldName, IconData iconName) {
-  //   return TextField(
-  //     onChanged: (value) {
-  //       email = value;
-  //     },
-  //     decoration: InputDecoration(
-  //       labelText: "$InputFieldName",
-  //       prefixIcon: Icon(
-  //         iconName,
-  //         color: Colors.blue,
-  //       ),
-  //       filled: true,
-  //       fillColor: const Color.fromRGBO(255, 255, 255, 100),
-  //       border: OutlineInputBorder(
-  //         borderRadius: BorderRadius.circular(15.0),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
@@ -136,14 +116,14 @@ class _LoginState extends State<Login> {
           child: SafeArea(
             child: Stack(
               children: [
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.1,
-                  left: MediaQuery.of(context).size.width * 0.4,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage('assets/images/app_logo.png'),
-                  ),
-                ),
+                // Positioned(
+                //   top: MediaQuery.of(context).size.height * 0.1,
+                //   left: MediaQuery.of(context).size.width * 0.4,
+                //   child: CircleAvatar(
+                //     radius: 50,
+                //     backgroundImage: AssetImage('assets/images/app_logo.png'),
+                //   ),
+                // ),
                 // Positioned(
                 //   top: MediaQuery.of(context).size.height * 0.3,
                 //   left: MediaQuery.of(context).size.width * 0.4,
@@ -153,13 +133,10 @@ class _LoginState extends State<Login> {
                 //         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
                 //   ),
                 // ),
-                const SizedBox(
-                  height: 0,
-                ),
                 Container(
                   margin: const EdgeInsets.only(left: 20, right: 20),
                   padding: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).size.height * 0.38),
+                      top: MediaQuery.of(context).size.height * 0.32),
                   child: Form(
                     key: _formKey,
                     child: Column(

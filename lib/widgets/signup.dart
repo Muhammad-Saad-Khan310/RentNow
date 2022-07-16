@@ -121,18 +121,18 @@ class _SignUpState extends State<SignUp> {
           child: SafeArea(
             child: Stack(
               children: [
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.1,
-                  left: MediaQuery.of(context).size.width * 0.4,
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage('assets/images/app_logo.png')
-                      // NetworkImage(
-                      //     "https://cdn.shoplightspeed.com/shops/608305/files/31868432/rent-now-circle.png"
-                      //     // "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="
-                      //     ),
-                      ),
-                ),
+                // Positioned(
+                //   top: MediaQuery.of(context).size.height * 0.1,
+                //   left: MediaQuery.of(context).size.width * 0.4,
+                //   child: CircleAvatar(
+                //       radius: 50,
+                //       backgroundImage: AssetImage('assets/images/app_logo.png')
+                //       // NetworkImage(
+                //       //     "https://cdn.shoplightspeed.com/shops/608305/files/31868432/rent-now-circle.png"
+                //       //     // "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="
+                //       //     ),
+                //       ),
+                // ),
                 // Container(
                 //   padding: EdgeInsets.only(left: 0, top: 220),
                 //   child: const Center(
@@ -149,7 +149,7 @@ class _SignUpState extends State<SignUp> {
                 Container(
                   margin: const EdgeInsets.all(20),
                   padding: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).size.height * 0.35),
+                      top: MediaQuery.of(context).size.height * 0.3),
                   child: Form(
                     key: _formKey,
                     child: Column(

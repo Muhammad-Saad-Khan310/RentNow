@@ -1,7 +1,7 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 import 'package:provider/provider.dart';
 import 'package:rentnow/providers/auth.dart';
@@ -121,10 +121,10 @@ class ProductOverview extends StatelessWidget {
                           //     )),
                           GestureDetector(
                             onTap: () {
-                              var num = loadedItem.phoneNumber;
-                              final Uri url = Uri.parse("tel://$num");
-                              // launchUrl("tel://$num");
-                              launchUrl(url);
+                              // var num = loadedItem.phoneNumber;
+                              // final Uri url = Uri.parse("tel://$num");
+                              // // launchUrl("tel://$num");
+                              // launchUrl(url);
                             },
                             child: const Icon(
                               Icons.phone,
