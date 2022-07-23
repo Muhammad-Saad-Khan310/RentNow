@@ -6,6 +6,8 @@ import 'package:rentnow/widgets/userProfile.dart';
 import './addProduct.dart';
 import './login.dart';
 
+import "../screens/user_item_screen.dart";
+
 import "./help.dart";
 
 import './rentItems.dart';
@@ -133,6 +135,22 @@ class _AppDrawerState extends State<AppDrawer> {
                     },
                   )
                 : Container(),
+            Divider(),
+            userData.isAuth
+                ? ListTile(
+                    leading: const Icon(
+                      Icons.shopping_bag,
+                      // size: 35,
+                      color: Colors.teal,
+                    ),
+                    title: const Text("My Items"),
+                    onTap: () {
+                      // Navigator.of(context)
+                      //     .pushReplacementNamed(UserProductsScreen.routeName);
+                      Navigator.of(context).pushNamed(UserItemScreen.routeName);
+                    },
+                  )
+                : Container(),
 
             // userData.isAuth
             //     ? ListTile(
@@ -183,7 +201,7 @@ class _AppDrawerState extends State<AppDrawer> {
             // )
             // : Container(),
 
-            const Divider(),
+            userData.isAuth ? const Divider() : Container(),
             userData.isAuth
                 ? ListTile(
                     leading: const Icon(
@@ -228,7 +246,20 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.of(context).pushNamed(ContactUs.routeName);
               },
             ),
-            // Divider(),
+            !userData.isAuth ? const Divider() : Container(),
+            !userData.isAuth
+                ? ListTile(
+                    leading: const Icon(
+                      Icons.login,
+                      // size: 35,
+                      color: Colors.teal,
+                    ),
+                    title: const Text("Login"),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Login.routeName);
+                    },
+                  )
+                : Container(),
             userData.isAuth ? Container() : Divider(),
             userData.isAuth
                 ? Container()
@@ -243,33 +274,6 @@ class _AppDrawerState extends State<AppDrawer> {
                       Navigator.of(context).pushNamed(SignUp.routeName);
                     },
                   ),
-
-            const Divider(),
-            userData.isAuth
-                ? ListTile(
-                    leading: const Icon(
-                      Icons.shopping_bag,
-                      // size: 35,
-                      color: Colors.teal,
-                    ),
-                    title: const Text("My Items"),
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(UserProductsScreen.routeName);
-                    },
-                  )
-                : ListTile(
-                    leading: const Icon(
-                      Icons.login,
-                      // size: 35,
-                      color: Colors.teal,
-                    ),
-                    title: const Text("Login"),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(Login.routeName);
-                    },
-                  ),
-            // const Divider(),
 
             const Divider(),
             userData.isAuth

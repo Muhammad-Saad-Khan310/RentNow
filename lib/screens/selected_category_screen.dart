@@ -28,8 +28,7 @@ class _SelectedCategoryScreenState extends State<SelectedCategoryScreen> {
           title: Text(title),
         ),
         body: Padding(
-          padding:
-              const EdgeInsets.only(top: 0.0, left: 0, right: 0, bottom: 0),
+          padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
           child: loadedData.isEmpty
               ? Center(child: Text("No Item Found in this category"))
               : ListView.builder(

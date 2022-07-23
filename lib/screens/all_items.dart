@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rentnow/widgets/all_Item_widget.dart';
 
 import '../providers/items.dart';
+import '../widgets/items_widget.dart';
 
 class AllItems extends StatelessWidget {
   static const routeName = "/all-items";
@@ -17,16 +18,17 @@ class AllItems extends StatelessWidget {
         title: Text("All Items"),
       ),
       body: Container(
+        padding: EdgeInsets.only(left: 10, right: 10, top: 10),
         child: ListView.builder(
             itemCount: itmData.length,
-            itemBuilder: (ctx, i) {
-              return AllItemWidget(
-                  id: itmData[i].id,
-                  itemTitle: itmData[i].title,
-                  rentPrice: itmData[i].price,
-                  isAvailable: itmData[i].available,
-                  itemImage: itmData[i].imageUrl,
-                  address: itmData[i].address);
+            itemBuilder: (ctx, index) {
+              return ItemsWidget(
+                id: itmData[index].id,
+                itemTitle: itmData[index].title,
+                itemImage: itmData[index].imageUrl,
+                rentPrice: itmData[index].price,
+                isAvailable: itmData[index].available,
+              );
             }),
       ),
     );

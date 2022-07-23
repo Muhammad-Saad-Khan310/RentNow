@@ -302,7 +302,8 @@ class ItemListView extends StatelessWidget {
         Container(
       padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
       width: MediaQuery.of(context).size.width,
-      height: 500,
+      // height: 400,
+      height: MediaQuery.of(context).size.height * 0.58,
       child: ListView.builder(
         shrinkWrap: false,
         // scrollDirection: Axis.horizontal,

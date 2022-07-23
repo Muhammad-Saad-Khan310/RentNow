@@ -201,6 +201,7 @@ class _AddProductState extends State<AddProduct> {
       _isLoading = false;
     });
     // Navigator.of(context).pop();
+
     Navigator.of(context).pushNamed(RentItem.routeName);
   }
 
@@ -279,6 +280,11 @@ class _AddProductState extends State<AddProduct> {
         ],
       ),
       onPressed: () async {
+        final snackBar = SnackBar(
+          content: Text(
+              "Your Item is sending to Admin Portal for verification Process"),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
         if (imagePresent) {
           if (file != null) {
             final fileName = basename(file!.path);
@@ -680,6 +686,7 @@ class _AddProductState extends State<AddProduct> {
                             //     ),
                             //   ),
                             // ),
+
                             uploadFile("Submit"),
                           ],
                         ),

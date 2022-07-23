@@ -80,11 +80,10 @@ class UserProductsWidget extends StatelessWidget {
                                 onPressed: () async {
                                   try {
                                     Navigator.of(context).pop();
-                                    await Provider.of<Items>(context,
-                                            listen: false)
+                                    await Provider.of<Items>(context)
                                         .deleteItem(id);
                                   } catch (error) {
-                                    final snackBar = SnackBar(
+                                    SnackBar(
                                       content: const Text('Deleting failed'),
                                       backgroundColor: (Colors.black12),
                                       action: SnackBarAction(
