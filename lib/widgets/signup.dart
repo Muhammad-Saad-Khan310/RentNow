@@ -116,6 +116,7 @@ class _SignUpState extends State<SignUp> {
               image: AssetImage("assets/images/background.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
+        appBar: AppBar(title: Text("Signup")),
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: SafeArea(
@@ -149,7 +150,7 @@ class _SignUpState extends State<SignUp> {
                 Container(
                   margin: const EdgeInsets.all(20),
                   padding: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).size.height * 0.3),
+                      top: MediaQuery.of(context).size.height * 0.23),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -214,7 +215,7 @@ class _SignUpState extends State<SignUp> {
                           },
                         ),
                         const SizedBox(
-                          height: 25,
+                          height: 50,
                         ),
 
                         // Sign Up button

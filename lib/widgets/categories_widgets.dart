@@ -48,7 +48,7 @@ class CategoriesWidget extends StatelessWidget {
                           child: Image.network(
                             imageUrl,
                             height: 80,
-                            width: 140,
+                            width: 120,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -62,7 +62,7 @@ class CategoriesWidget extends StatelessWidget {
                           Text(
                             title,
                             style: const TextStyle(
-                                fontSize: 25, color: Colors.white),
+                                fontSize: 20, color: Colors.white),
                           ),
                         ],
                       ),

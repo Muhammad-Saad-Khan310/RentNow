@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:provider/provider.dart';
 import 'package:rentnow/providers/auth.dart';
@@ -103,10 +103,10 @@ class ItemDetail extends StatelessWidget {
                           children: [
                             GestureDetector(
                                 onTap: () {
-                                  // var num = loadedItem.phoneNumber;
-                                  // final Uri url = Uri.parse("tel://$num");
+                                  var num = loadedItem.phoneNumber;
+                                  final Uri url = Uri.parse("tel://$num");
 
-                                  // launchUrl(url);
+                                  launchUrl(url);
                                 },
                                 child: Icon(
                                   Icons.phone_android_outlined,

@@ -10,7 +10,6 @@ class Auth with ChangeNotifier {
   DateTime? _expiryDate;
   String? _userId;
   String? _userEmail;
-  bool isAllowed = false;
   Timer? _authTimer;
   bool _showForm = false;
 
@@ -34,7 +33,6 @@ class Auth with ChangeNotifier {
     if (_expiryDate != null &&
         _expiryDate!.isAfter(DateTime.now()) &&
         _token != null) {
-      isAllowed = true;
       return _token;
     }
     return null;
@@ -67,7 +65,7 @@ class Auth with ChangeNotifier {
           seconds: int.parse(responseData["expiresIn"]),
         ),
       );
-      isAllowed = true;
+
       _autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
@@ -166,7 +164,7 @@ class Auth with ChangeNotifier {
     _userId = null;
     _userEmail = null;
     _expiryDate = null;
-    isAllowed = false;
+
     if (_authTimer != null) {
       _authTimer!.cancel();
       _authTimer = null;

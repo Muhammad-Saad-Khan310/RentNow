@@ -22,9 +22,18 @@ class UserProductsWidget extends StatelessWidget {
         Container(
           margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
           decoration: BoxDecoration(
-              color: const Color.fromRGBO(211, 218, 222, 100),
-              borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(color: Colors.grey)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.18),
+                blurRadius: 5,
+                offset: Offset(0, 4), // changes position of shadow
+              ),
+            ],
+
+            borderRadius: BorderRadius.circular(8.0),
+            // border: Border.all(color: Colors.grey)
+          ),
           child: ListTile(
             contentPadding: const EdgeInsets.only(left: 0.0),
             title: Text(
@@ -38,7 +47,7 @@ class UserProductsWidget extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8.0),
                     bottomLeft: Radius.circular(8.0)),
-                child: Image.network(imageUrl, fit: BoxFit.fill),
+                child: Image.network(imageUrl, fit: BoxFit.cover),
               ),
             ),
             trailing: Container(

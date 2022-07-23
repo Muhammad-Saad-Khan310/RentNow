@@ -111,6 +111,7 @@ class _LoginState extends State<Login> {
               image: AssetImage("assets/images/background.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
+        appBar: AppBar(title: Text("Login")),
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: SafeArea(
@@ -136,7 +137,7 @@ class _LoginState extends State<Login> {
                 Container(
                   margin: const EdgeInsets.only(left: 20, right: 20),
                   padding: EdgeInsetsDirectional.only(
-                      top: MediaQuery.of(context).size.height * 0.32),
+                      top: MediaQuery.of(context).size.height * 0.26),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -180,15 +181,15 @@ class _LoginState extends State<Login> {
                           },
                         ),
 
+                        // const SizedBox(
+                        //   height: 10,
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.end,
+                        //   children: const [Text("Forgot Password ?")],
+                        // ),
                         const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [Text("Forgot Password ?")],
-                        ),
-                        const SizedBox(
-                          height: 25,
+                          height: 60,
                         ),
                         _isLoading
                             ? Center(

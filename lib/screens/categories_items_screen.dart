@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_new
 
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rentnow/widgets/rentItems.dart';
@@ -8,6 +10,9 @@ import '../widgets/categories_widgets.dart';
 import '../providers/product_categories.dart';
 import '../providers/items.dart';
 import '../providers/item.dart';
+import "../widgets/newFile.dart";
+
+import './all_items.dart';
 
 class CategoriesItemsScreen extends StatefulWidget {
   const CategoriesItemsScreen({Key? key}) : super(key: key);
@@ -101,6 +106,8 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     final Itm = Provider.of<Items>(context);
     // if (Itm.items.isEmpty) {
     // const _errorMessage = "No Items";
@@ -124,71 +131,136 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
               child: CircularProgressIndicator(),
             )
           : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                child: Column(
-                  // mainAxisSize: MainAxisSize.max,
-                  children: [
-                    // InputField("Search"),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        bottom: 10.0,
-                      ),
-                      child: TextField(
-                        controller: controller,
-                        decoration: fieldDecoration("Search"),
-                        onChanged: searchItem,
-                      ),
+              child: Column(
+                // mainAxisSize: MainAxisSize.max,
+                children: [
+                  // InputField("Search"),
+                  Container(
+                    margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
                     ),
-                    const Text(
-                      "Search By Categories",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    child: TextField(
+                      controller: controller,
+                      decoration: fieldDecoration("Search"),
+                      onChanged: searchItem,
                     ),
-                    Container(
-                      width: double.infinity,
-                      height: 170,
-                      child: ListView.builder(
-                        shrinkWrap: false,
-                        // padding: EdgeInsets.zero,
-                        itemBuilder: (ctx, index) {
-                          String id;
-                          String title;
-                          String imageUrl;
-                          id = categoryData[index].CategoryId;
-                          title = categoryData[index].CategoryTitle;
-                          imageUrl = categoryData[index].CategoryImage;
-                          String categoryId = categoryData[index].CategoryId;
+                  ),
+                  const Text(
+                    "Search By Categories",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 140,
+                    margin: EdgeInsets.only(left: 15.0),
+                    child: ListView.builder(
+                      shrinkWrap: false,
 
-                          return CategoriesWidget(id, title, imageUrl,
-                              categoryId, categoryData[index].CategoryTitle);
-                        },
-                        itemCount: 4,
-                        scrollDirection: Axis.horizontal,
-                      ),
+                      // padding: EdgeInsets.zero,
+                      itemBuilder: (ctx, index) {
+                        String id;
+                        String title;
+                        String imageUrl;
+                        id = categoryData[index].CategoryId;
+                        title = categoryData[index].CategoryTitle;
+                        imageUrl = categoryData[index].CategoryImage;
+                        String categoryId = categoryData[index].CategoryId;
+
+                        return CategoriesWidget(id, title, imageUrl, categoryId,
+                            categoryData[index].CategoryTitle);
+                      },
+                      itemCount: 4,
+                      scrollDirection: Axis.horizontal,
                     ),
-                    const Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Rent Now",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  ),
+                  // const Align(
+                  //   alignment: Alignment.topLeft,
+                  //   child: Text(
+                  //     "Rent Now",
+                  //     style: TextStyle(fontWeight: FontWeight.bold),
+                  //   ),
+                  // ),
+                  SizedBox(
+                      // height: 10,
+                      )
+                  // Container(
+                  //   margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                  //   height: height * 0.12,
+                  //   width: MediaQuery.of(context).size.width,
+                  //   decoration: BoxDecoration(
+                  //       // color: Color.fromRGBO(67, 172, 106, 1),
+                  //       // color: Color.fromRGBO(170, 255, 202, 1),
+                  //       color: Colors.teal[100],
+                  //       borderRadius: BorderRadius.circular(10)),
+                  //   child: Stack(clipBehavior: Clip.none, children: [
+                  //     Positioned(
+                  //       bottom: -15,
+                  //       right: 2,
+                  //       child: CircleAvatar(
+                  //         radius: height * 0.08,
+                  //         backgroundImage: AssetImage(
+                  //           "assets/images/app_logo.png",
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Positioned(
+                  //         left: 10,
+                  //         bottom: 20,
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             Text(
+                  //               "Rent Now",
+                  //               style: TextStyle(
+                  //                   fontSize: 20, fontWeight: FontWeight.bold),
+                  //             ),
+                  //             SizedBox(
+                  //               height: 0.01,
+                  //             ),
+                  //             Text("Take any item on rent")
+                  //           ],
+                  //         ))
+                  //   ]),
+                  // )
+                  // _showMessage
+                  //     ? Padding(
+                  //         padding: EdgeInsets.only(
+                  //             top: MediaQuery.of(context).size.height * 0.1),
+                  //         child: const Center(
+                  //             child: Text(
+                  //           "No Item",
+                  //           style: TextStyle(
+                  //               fontWeight: FontWeight.bold, fontSize: 30),
+                  //         )),
+                  //       )
+                  //     :
+                  ,
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Rent Items",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 20),
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(AllItems.routeName);
+                            },
+                            child: const Text("View all"))
+                      ],
                     ),
-                    // _showMessage
-                    //     ? Padding(
-                    //         padding: EdgeInsets.only(
-                    //             top: MediaQuery.of(context).size.height * 0.1),
-                    //         child: const Center(
-                    //             child: Text(
-                    //           "No Item",
-                    //           style: TextStyle(
-                    //               fontWeight: FontWeight.bold, fontSize: 30),
-                    //         )),
-                    //       )
-                    //     :
-                    ItemListView(ltmData),
-                  ],
-                ),
+                  ),
+                  ItemListView(ltmData),
+                ],
               ),
             ),
     );
@@ -206,8 +278,29 @@ class ItemListView extends StatelessWidget {
     // final ItemData = Provider.of<Items>(context);
     // final item = ItemData.fetchAndSetItems();
     // final lst = ItemData.items;
-    return Container(
-      padding: const EdgeInsets.only(top: 15),
+    return
+        // Container(
+        //   padding: const EdgeInsets.only(top: 10, left: 15.0),
+        //   width: MediaQuery.of(context).size.width,
+        //   height: MediaQuery.of(context).size.height * 0.3,
+        //   child: ListView.builder(
+        //     shrinkWrap: false,
+        //     scrollDirection: Axis.horizontal,
+        //     itemCount: lst.length,
+        //     itemBuilder: (ctx, i) {
+        //       return NewFile(
+        //         id: lst[i].id,
+        //         itemTitle: lst[i].title,
+        //         rentPrice: lst[i].price,
+        //         isAvailable: lst[i].available,
+        //         itemImage: lst[i].imageUrl,
+        //         address: lst[i].address,
+        //       );
+        //     },
+        //   ),
+        // );
+        Container(
+      padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
       width: MediaQuery.of(context).size.width,
       height: 500,
       child: ListView.builder(

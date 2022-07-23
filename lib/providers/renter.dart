@@ -21,7 +21,15 @@ class RenterClass {
 }
 
 class Renter with ChangeNotifier {
-  List<RenterClass> _renter = [];
+  List<RenterClass> _renter = [
+    RenterClass(
+        id: "u1",
+        userName: "User Name",
+        dateOfBirth: "10/12/2000",
+        phoneNumber: "your number",
+        address: "Your address",
+        imageUrl: "https://www.usbji.org/sites/default/files/person.jpg")
+  ];
   // Map<String, dynamic> rent = {};
   final String userId;
   final String authToken;

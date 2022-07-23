@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rentnow/screens/all_items.dart';
 import 'package:rentnow/screens/splash_screen.dart';
+import 'package:rentnow/widgets/contact.dart';
+import 'package:rentnow/widgets/help.dart';
 import 'package:rentnow/widgets/item_detail.dart';
+import 'package:rentnow/widgets/newFile.dart';
 import 'package:rentnow/widgets/userProfile.dart';
 import './providers/auth.dart';
 
@@ -79,7 +83,7 @@ class MyApp extends StatelessWidget {
             fontFamily: "Roboto",
           ),
 
-          // home: Practice(),
+          // home: NewFile(),
 
           home: auth.isAuth
               ? RentItem()
@@ -111,6 +115,9 @@ class MyApp extends StatelessWidget {
             UpdateRenter.routeName: (ctx) => UpdateRenter(),
             ReportProduct.routeName: (ctx) => ReportProduct(),
             ItemDetail.routeName: (ctx) => ItemDetail(),
+            AllItems.routeName: (ctx) => AllItems(),
+            ContactUs.routeName: (ctx) => ContactUs(),
+            Help.routeName: (ctx) => Help(),
           },
         ),
       ),

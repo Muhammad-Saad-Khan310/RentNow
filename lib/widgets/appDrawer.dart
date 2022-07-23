@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rentnow/widgets/contact.dart';
 import 'package:rentnow/widgets/update_renter.dart';
 import 'package:rentnow/widgets/userProfile.dart';
 import './addProduct.dart';
 import './login.dart';
+
+import "./help.dart";
 
 import './rentItems.dart';
 import './becomeRenter.dart';
@@ -65,12 +68,14 @@ class _AppDrawerState extends State<AppDrawer> {
               padding: const EdgeInsets.only(top: 30, left: 30),
               alignment: Alignment.centerLeft,
               color: Theme.of(context).accentColor,
-              child: const Text(
-                'RENT NOW!',
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                  fontSize: 30,
+              child: Center(
+                child: const Text(
+                  'RENT NOW!',
+                  style: TextStyle(
+                    // fontWeight: FontWeight.w900,
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    // fontSize: 30,
+                  ),
                 ),
               ),
             ),
@@ -78,7 +83,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ListTile(
               leading: const Icon(
                 Icons.home,
-                size: 35,
+                // size: 35,
                 color: Colors.teal,
               ),
               title: const Text("All Items"),
@@ -86,7 +91,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.of(context).pushNamed(RentItem.routeName);
               },
             ),
-            userData.isAllowed ? const Divider() : Container(),
+            userData.isAuth ? const Divider() : Container(),
 
             // ListTile(
             //   leading: const Icon(Icons.add_box),
@@ -119,7 +124,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 ? ListTile(
                     leading: const Icon(
                       Icons.add_box,
-                      size: 35,
+                      // size: 35,
                       color: Colors.teal,
                     ),
                     title: const Text("Add Item"),
@@ -183,7 +188,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 ? ListTile(
                     leading: const Icon(
                       Icons.person,
-                      size: 35,
+                      // size: 35,
                       color: Colors.teal,
                     ),
                     title: const Text("User Profile"),
@@ -193,33 +198,58 @@ class _AppDrawerState extends State<AppDrawer> {
                     })
                 : Container(),
 
-            // userData.isAllowed ? const Divider() : Container(),
+            userData.isAuth ? const Divider() : Container(),
 
             // renterData.showAddProductForm().then((value) => {
 
             // }
             // )
 
-            userData.isAllowed
+            ListTile(
+              leading: Icon(
+                Icons.help,
+                color: Colors.teal,
+                // size: 35,
+              ),
+              title: Text("Help"),
+              onTap: () {
+                Navigator.of(context).pushNamed(Help.routeName);
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(
+                Icons.contacts_sharp,
+                color: Colors.teal,
+                // size: 35,
+              ),
+              title: Text("Contact Us"),
+              onTap: () {
+                Navigator.of(context).pushNamed(ContactUs.routeName);
+              },
+            ),
+            // Divider(),
+            userData.isAuth ? Container() : Divider(),
+            userData.isAuth
                 ? Container()
                 : ListTile(
                     leading: const Icon(
                       Icons.person_add,
-                      size: 35,
+                      // size: 35,
                       color: Colors.teal,
                     ),
-                    title: const Text("SignUp"),
+                    title: const Text("Signup"),
                     onTap: () {
                       Navigator.of(context).pushNamed(SignUp.routeName);
                     },
                   ),
 
             const Divider(),
-            userData.isAllowed
+            userData.isAuth
                 ? ListTile(
                     leading: const Icon(
                       Icons.shopping_bag,
-                      size: 35,
+                      // size: 35,
                       color: Colors.teal,
                     ),
                     title: const Text("My Items"),
@@ -231,7 +261,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 : ListTile(
                     leading: const Icon(
                       Icons.login,
-                      size: 35,
+                      // size: 35,
                       color: Colors.teal,
                     ),
                     title: const Text("Login"),
@@ -242,11 +272,11 @@ class _AppDrawerState extends State<AppDrawer> {
             // const Divider(),
 
             const Divider(),
-            userData.isAllowed
+            userData.isAuth
                 ? ListTile(
                     leading: const Icon(
                       Icons.exit_to_app,
-                      size: 35,
+                      // size: 35,
                       color: Colors.teal,
                     ),
                     title: const Text("Logout"),

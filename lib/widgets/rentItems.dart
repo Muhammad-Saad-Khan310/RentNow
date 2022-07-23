@@ -82,7 +82,7 @@ class _RentItemState extends State<RentItem> {
     // ];
     return Scaffold(
       appBar: AppBar(
-        title: appBarText[currentIndex],
+        title: Text("Home"),
       ),
       drawer: AppDrawer(),
       body: CategoriesItemsScreen(),
