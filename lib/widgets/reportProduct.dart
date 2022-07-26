@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rentnow/widgets/rentItems.dart';
@@ -14,7 +16,7 @@ class ReportProduct extends StatefulWidget {
 
 class _ReportProductState extends State<ReportProduct> {
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> _reportData = {
+  final Map<String, String> _reportData = {
     'report': '',
     'itemImage': "",
     'itemId': '',
@@ -42,9 +44,8 @@ class _ReportProductState extends State<ReportProduct> {
         _isLoading = false;
       });
       Navigator.of(context).pushNamed(RentItem.routeName);
-    } catch (error) {
-      print("Some thing went wrong");
-    }
+      // ignore: empty_catches
+    } catch (error) {}
   }
 
   @override
@@ -56,7 +57,7 @@ class _ReportProductState extends State<ReportProduct> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
                 left: 14.0, right: 14.0, top: 100.0, bottom: 8.0),
             child: Form(
               key: _formKey,

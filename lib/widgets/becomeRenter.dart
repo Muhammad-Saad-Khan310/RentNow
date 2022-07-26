@@ -1,14 +1,17 @@
+// ignore_for_file: file_names
+
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../providers/renter.dart';
 import './rentItems.dart';
 import '../models/http_exception.dart';
 import '../Api/firebase_api.dart';
-import 'package:image_picker/image_picker.dart';
 
 class BecomeRenter extends StatefulWidget {
   static const routeName = "/become-renter";
@@ -22,7 +25,7 @@ class _BecomeRenterState extends State<BecomeRenter> {
   File? file;
   UploadTask? task;
 
-  Map<String, String> _renterData = {
+  final Map<String, String> _renterData = {
     "userName": "",
     'imageUrl': "",
     'dateOfBirth': "",
@@ -32,7 +35,6 @@ class _BecomeRenterState extends State<BecomeRenter> {
 
   final _formKey = GlobalKey<FormState>();
 
-  // Widget InputField(String InputFieldName, IconData iconName) {
   InputDecoration _fieldDecoration(String fieldName, IconData iconName) {
     return InputDecoration(
       labelText: fieldName,
@@ -65,14 +67,14 @@ class _BecomeRenterState extends State<BecomeRenter> {
       await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text("somer error"),
+                title: const Text("somer error"),
                 content: Text(error.toString()),
                 actions: [
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Ok"))
+                      child: const Text("Ok"))
                 ],
               ));
     } catch (error) {
@@ -96,52 +98,21 @@ class _BecomeRenterState extends State<BecomeRenter> {
     Navigator.of(context).pushNamed(RentItem.routeName);
   }
 
-  // Widget selectFile(String btnName) {
-  //   return ElevatedButton(
-  //     child: file != null
-  //         ? basename(file!.path)
-  //         : Text(
-  //             "⍓︎ " + btnName,
-  //             style: const TextStyle(
-  //                 fontSize: 20,
-  //                 fontWeight: FontWeight.bold,
-  //                 color: Colors.teal),
-  //           ),
-  //     onPressed: () async {
-  //       try {
-  //         final image =
-  //             await ImagePicker().pickImage(source: ImageSource.gallery);
-  //         if (image == null) return;
-  //         final imageTemporary = File(image.path);
-  //         file = imageTemporary;
-  //         setState(() {
-  //           file = imageTemporary;
-  //         });
-  //       } on PlatformException catch (e) {
-  //         print("failed to pick image");
-  //       }
-  //     },
-  //     style: ElevatedButton.styleFrom(
-  //         primary: Colors.white,
-  //         minimumSize: const Size.fromHeight(60),
-  //         shape: RoundedRectangleBorder(
-  //             side: const BorderSide(color: Colors.teal),
-  //             borderRadius: BorderRadius.circular(15.0))),
-  //   );
-  // }
-
   Future<void> selectImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final imageTemporary = File(image.path);
       file = imageTemporary;
-      print("image seelected");
+
       setState(() {
         file = imageTemporary;
       });
-    } on PlatformException catch (e) {
-      print("failed to pick image");
+    } on PlatformException {
+      const snackBar = SnackBar(
+        content: Text("Item not Deleted"),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -164,7 +135,6 @@ class _BecomeRenterState extends State<BecomeRenter> {
           task = FirebaseApi.uploadFile(destination, file!);
           setState(() {});
           if (task == null) {
-            print("i m executinnalflakfjkajf");
             return;
           }
           final snapshot = await task!.whenComplete(() {});
@@ -212,16 +182,6 @@ class _BecomeRenterState extends State<BecomeRenter> {
 
   @override
   Widget build(BuildContext context) {
-    // File _image;
-    // ImagePicker picker = ImagePicker();
-    // Future getImage() async {
-    //   XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    //   setState(() {
-    //     _image = image as File;
-    //     print("image Path $_image");
-    //   });
-    // }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -245,41 +205,39 @@ class _BecomeRenterState extends State<BecomeRenter> {
                   child: Column(
                     children: [
                       Builder(
-                        builder: (context) => Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: CircleAvatar(
-                                  radius: 60,
-                                  child: ClipOval(
-                                    child: SizedBox(
-                                        width: 180,
-                                        height: 180.0,
-                                        child: file != null
-                                            ? Image.file(
-                                                file!,
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Image.network(
-                                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")),
-                                  ),
+                        builder: (context) => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: CircleAvatar(
+                                radius: 60,
+                                child: ClipOval(
+                                  child: SizedBox(
+                                      width: 180,
+                                      height: 180.0,
+                                      child: file != null
+                                          ? Image.file(
+                                              file!,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.network(
+                                              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 40.0),
-                                child: IconButton(
-                                    onPressed: () {
-                                      selectImage();
-                                    },
-                                    icon: Icon(Icons.camera_alt)),
-                              )
-                            ],
-                          ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 40.0),
+                              child: IconButton(
+                                  onPressed: () {
+                                    selectImage();
+                                  },
+                                  icon: const Icon(Icons.camera_alt)),
+                            )
+                          ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       TextFormField(
@@ -293,18 +251,6 @@ class _BecomeRenterState extends State<BecomeRenter> {
                       const SizedBox(
                         height: 15,
                       ),
-                      // TextFormField(
-                      //   decoration: _fieldDecoration("Image Url", Icons.image),
-                      //   textInputAction: TextInputAction.next,
-                      //   keyboardType: TextInputType.name,
-                      //   onSaved: (value) {
-                      //     _renterData['imageUrl'] = value!;
-                      //   },
-                      // ),
-                      // const SizedBox(
-                      //   height: 15,
-                      // ),
-
                       TextFormField(
                         decoration: _fieldDecoration(
                             "Date Of Birth", Icons.calendar_today_rounded),
@@ -315,7 +261,6 @@ class _BecomeRenterState extends State<BecomeRenter> {
                         },
                       ),
                       const SizedBox(height: 15),
-                      // InputField("Phone Number", Icons.phone),
                       TextFormField(
                         decoration:
                             _fieldDecoration("Phone Number", Icons.phone),
@@ -328,7 +273,6 @@ class _BecomeRenterState extends State<BecomeRenter> {
                       const SizedBox(
                         height: 15,
                       ),
-                      // InputField("Address", Icons.house),
                       TextFormField(
                         decoration: _fieldDecoration("Address", Icons.house),
                         textInputAction: TextInputAction.done,
@@ -342,22 +286,6 @@ class _BecomeRenterState extends State<BecomeRenter> {
                         height: 55,
                       ),
                       uploadFile("Submit")
-                      // ButtonTheme(
-                      //   minWidth: MediaQuery.of(context).size.width,
-                      //   height: 60.0,
-                      //   child: RaisedButton(
-                      //     child: const Text(
-                      //       "Submit",
-                      //       style: TextStyle(color: Colors.white),
-                      //     ),
-                      //     onPressed: () {
-                      //       uploadFile("Submit");
-                      //     },
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(15),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 )

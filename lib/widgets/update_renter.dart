@@ -1,16 +1,14 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:rentnow/screens/profile_screen.dart';
-import 'package:rentnow/screens/user_products_screen.dart';
+
+import '../screens/profile_screen.dart';
 import '../providers/renter.dart';
-import './rentItems.dart';
 import '../models/http_exception.dart';
 import '../Api/firebase_api.dart';
-import 'package:image_picker/image_picker.dart';
 
 class UpdateRenter extends StatefulWidget {
   static const routeName = "/update-renter";
@@ -43,17 +41,15 @@ class _UpdateRenterState extends State<UpdateRenter> {
     'address': '',
   };
   var _isInit = true;
-  var _isLoading = false;
 
   @override
   void didChangeDependencies() {
     if (_isInit) {
       final renterId = ModalRoute.of(context)!.settings.arguments as String?;
 
-      // if (renterId != null) {
       _updateRenter =
           Provider.of<Renter>(context, listen: false).findById(renterId!);
-      // print(_addItem.imageUrl.);
+
       _initValues = {
         'userName': _updateRenter.userName,
         'dateOfBirth': _updateRenter.dateOfBirth,
@@ -61,7 +57,6 @@ class _UpdateRenterState extends State<UpdateRenter> {
         'imageUrl': _updateRenter.imageUrl,
         'address': _updateRenter.address,
       };
-      // }
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -96,14 +91,14 @@ class _UpdateRenterState extends State<UpdateRenter> {
       await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text("some error"),
+                title: const Text("some error"),
                 content: Text(error.toString()),
                 actions: [
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Ok"))
+                      child: const Text("Ok"))
                 ],
               ));
     } catch (error) {
@@ -133,15 +128,13 @@ class _UpdateRenterState extends State<UpdateRenter> {
       if (image == null) return;
       final imageTemporary = File(image.path);
       file = imageTemporary;
-      print("image seelected");
 
       setState(() {
         imageSelected = true;
         file = imageTemporary;
       });
-    } on PlatformException catch (e) {
-      print("failed to pick image");
-    }
+      // ignore: empty_catches
+    } on PlatformException {}
   }
 
   Widget uploadFile(String btnName) {
@@ -164,7 +157,7 @@ class _UpdateRenterState extends State<UpdateRenter> {
           setState(() {});
           if (task == null) {
             imageSelected = false;
-            print("i m executinnalflakfjkajf");
+
             return;
           }
           final snapshot = await task!.whenComplete(() {});
@@ -242,43 +235,41 @@ class _UpdateRenterState extends State<UpdateRenter> {
                   child: Column(
                     children: [
                       Builder(
-                        builder: (context) => Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: CircleAvatar(
-                                  radius: 60,
-                                  child: ClipOval(
-                                    child: SizedBox(
-                                        width: 180,
-                                        height: 180.0,
-                                        child: file != null
-                                            ? Image.file(
-                                                file!,
-                                                fit: BoxFit.contain,
-                                              )
-                                            : Image.network(
-                                                _updateRenter.imageUrl,
-                                                fit: BoxFit.cover,
-                                              )),
-                                  ),
+                        builder: (context) => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: CircleAvatar(
+                                radius: 60,
+                                child: ClipOval(
+                                  child: SizedBox(
+                                      width: 180,
+                                      height: 180.0,
+                                      child: file != null
+                                          ? Image.file(
+                                              file!,
+                                              fit: BoxFit.contain,
+                                            )
+                                          : Image.network(
+                                              _updateRenter.imageUrl,
+                                              fit: BoxFit.cover,
+                                            )),
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 40.0),
-                                child: IconButton(
-                                    onPressed: () {
-                                      selectImage();
-                                    },
-                                    icon: Icon(Icons.camera_alt)),
-                              )
-                            ],
-                          ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 40.0),
+                              child: IconButton(
+                                  onPressed: () {
+                                    selectImage();
+                                  },
+                                  icon: const Icon(Icons.camera_alt)),
+                            )
+                          ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       TextFormField(
@@ -300,18 +291,6 @@ class _UpdateRenterState extends State<UpdateRenter> {
                       const SizedBox(
                         height: 15,
                       ),
-                      // TextFormField(
-                      //   decoration: _fieldDecoration("Image Url", Icons.image),
-                      //   textInputAction: TextInputAction.next,
-                      //   keyboardType: TextInputType.name,
-                      //   onSaved: (value) {
-                      //     _renterData['imageUrl'] = value!;
-                      //   },
-                      // ),
-                      // const SizedBox(
-                      //   height: 15,
-                      // ),
-
                       TextFormField(
                         initialValue: _initValues["dateOfBirth"],
                         decoration: _fieldDecoration(
@@ -330,7 +309,6 @@ class _UpdateRenterState extends State<UpdateRenter> {
                         },
                       ),
                       const SizedBox(height: 15),
-                      // InputField("Phone Number", Icons.phone),
                       TextFormField(
                         initialValue: _initValues["phoneNumber"],
                         decoration:
@@ -351,7 +329,6 @@ class _UpdateRenterState extends State<UpdateRenter> {
                       const SizedBox(
                         height: 15,
                       ),
-                      // InputField("Address", Icons.house),
                       TextFormField(
                         initialValue: _initValues["address"],
                         decoration: _fieldDecoration("Address", Icons.house),
@@ -402,30 +379,6 @@ class _UpdateRenterState extends State<UpdateRenter> {
                                 },
                               ),
                             ),
-
-                      // RaisedButton(
-                      //     onPressed: () {
-                      //       _submit();
-                      //     },
-                      //     child: Text("Update"),
-                      //   ),
-
-                      // ButtonTheme(
-                      //   minWidth: MediaQuery.of(context).size.width,
-                      //   height: 60.0,
-                      //   child: RaisedButton(
-                      //     child: const Text(
-                      //       "Submit",
-                      //       style: TextStyle(color: Colors.white),
-                      //     ),
-                      //     onPressed: () {
-                      //       uploadFile("Submit");
-                      //     },
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(15),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 )

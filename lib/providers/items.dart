@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -138,14 +140,16 @@ class Items with ChangeNotifier {
   }
 
   Future<void> fetchAndSetItems([bool filterByUser = false]) async {
+    print("hy");
     final filterString = filterByUser
         ? '?auth=$authToken&orderBy="creatorId"&equalTo="$userId"'
         : '';
     final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json$filterString");
+        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json/$filterString");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      // print(extractedData);
       List<ProductItem> loadedItem = [];
 
       extractedData.forEach((itemId, itemData) {
@@ -166,12 +170,52 @@ class Items with ChangeNotifier {
                   validItem: itemData!['validItem'],
                   userEmail: itemData['userEmail']));
         }
+        // print('**********************');
       });
       if (filterByUser) {
         _userItems = loadedItem;
       } else {
         _items = loadedItem;
       }
+
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> fetchAndSetUserItems([bool filterByUser = false]) async {
+    final url = Uri.parse(
+        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json");
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      List<ProductItem> loadedItem = [];
+
+      extractedData.forEach((itemId, itemData) {
+        if (itemData['userEmail'] == userEmail) {
+          loadedItem.insert(
+              0,
+              ProductItem(
+                  id: itemId,
+                  title: itemData['title'],
+                  description: itemData['description'],
+                  phoneNumber: itemData['phoneNumber'],
+                  imageUrl: itemData['imageUrl'],
+                  price: itemData['price'],
+                  address: itemData['address'],
+                  categoryTitle: itemData['categoryTitle'],
+                  categoryId: itemData['categoryId'],
+                  available: itemData['available'],
+                  validItem: itemData!['validItem'],
+                  userEmail: itemData['userEmail']));
+        }
+      });
+      // if (filterByUser) {
+      _userItems = loadedItem;
+      // } else {
+      //   _items = loadedItem;
+      // }
 
       notifyListeners();
     } catch (error) {
@@ -200,20 +244,6 @@ class Items with ChangeNotifier {
           'userEmail': userEmail,
         }),
       );
-      // final newProduct = ProductItem(
-      //     id: json.decode(response.body)['name'],
-      //     title: product.title,
-      //     description: product.description,
-      //     phoneNumber: product.phoneNumber,
-      //     imageUrl: product.imageUrl,
-      //     price: product.price,
-      //     address: product.address,
-      //     categoryId: product.categoryId,
-      //     categoryTitle: product.categoryTitle,
-      //     available: product.available,
-      //     validItem: false);
-      // _items.add(newProduct);
-      // _items.insert(0, newProduct);
 
       notifyListeners();
     } catch (error) {
@@ -270,20 +300,24 @@ class Items with ChangeNotifier {
     final url = Uri.parse(
         "https://rentnow-f12ca-default-rtdb.firebaseio.com/items/$id.json?auth=$authToken");
 
-    final existingItemIndex = _items.indexWhere((item) => item.id == id);
-    ProductItem? existingItem = _items[existingItemIndex];
-    _items.removeAt(existingItemIndex);
+    final existingItemIndex = _userItems.indexWhere((item) => item.id == id);
+    // final existingItemIndex2 = _items.indexWhere((item2) => item2.id == id);
+
+    // print(existingItemIndex);
+    // print(existingItemIndex);
+    ProductItem? existingItem = _userItems[existingItemIndex];
+    _userItems.removeAt(existingItemIndex);
+    // ProductItem? existingItem2 = _items[existingItemIndex2];
+    // _items.removeAt(existingItemIndex2);
     notifyListeners();
     final response = await http.delete(url);
     if (response.statusCode >= 400) {
-      _items.insert(existingItemIndex, existingItem);
+      _userItems.insert(existingItemIndex, existingItem);
+      // _items.insert(existingItemIndex2, existingItem2);
       notifyListeners();
       throw HttpException("Could not delete Item.");
     }
     existingItem = null;
-
-    // _items.removeWhere((item) => item.id == id);
+    // existingItem2 = null;
   }
-
-  // void
 }

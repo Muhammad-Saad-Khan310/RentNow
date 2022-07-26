@@ -11,7 +11,7 @@ class Auth with ChangeNotifier {
   String? _userId;
   String? _userEmail;
   Timer? _authTimer;
-  bool _showForm = false;
+  final bool _showForm = false;
 
   bool get isAuth {
     return token != null;
@@ -36,49 +36,6 @@ class Auth with ChangeNotifier {
       return _token;
     }
     return null;
-  }
-
-  Future<void> authenticate(
-      String email, String password, String urlSegment) async {
-    try {
-      final url = Uri.parse(
-          "https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyAqyk7TDClx0TBfEDpaQu0VVW-IPtSOIM4");
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ),
-      );
-      final responseData = json.decode(response.body);
-      if (responseData['error'] != null) {
-        throw HttpException(responseData["error"]["message"]);
-      }
-      _token = responseData["idToken"];
-      _userEmail = email;
-      _userId = responseData['localId'];
-      _expiryDate = DateTime.now().add(
-        Duration(
-          seconds: int.parse(responseData["expiresIn"]),
-        ),
-      );
-
-      _autoLogout();
-      notifyListeners();
-      final prefs = await SharedPreferences.getInstance();
-      final userData = json.encode({
-        'token': _token,
-        'userId': _userId,
-        'userEmail': _userEmail,
-        'expiryDate': _expiryDate!.toIso8601String()
-      });
-      prefs.setString('userData', userData);
-    } catch (error) {
-      rethrow;
-    }
   }
 
   Future<void> authenticate1(
@@ -181,23 +138,6 @@ class Auth with ChangeNotifier {
     }
     final timeToExpiry = _expiryDate!.difference(DateTime.now()).inSeconds;
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
-  }
-
-  Future<void> showAddItemForm() async {
-    if (_token != null) {
-      final url = Uri.parse(
-          "https://rentnow-f12ca-default-rtdb.firebaseio.com/renters/$_userId.json?auth=$_token");
-
-      final response = await http.get(url);
-      final extractedData = json.decode(response.body);
-      if (extractedData != null) {
-        _showForm = false;
-      } else {
-        _showForm = true;
-      }
-    } else {
-      _showForm = false;
-    }
   }
 
   Future<void> addRenter(String userName, String imageUrl, String dateOfBirth,

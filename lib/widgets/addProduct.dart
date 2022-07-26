@@ -1,21 +1,18 @@
+// ignore: duplicate_ignore
 // ignore: file_names
+
+// ignore_for_file: file_names, non_constant_identifier_names, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/retry.dart';
-
 import 'package:provider/provider.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:rentnow/widgets/rentItems.dart';
+import 'dart:io';
 
+import '/widgets/rentItems.dart';
 import '../providers/item.dart';
 import '../providers/items.dart';
-import '../providers/renter.dart';
 import '../Api/firebase_api.dart';
 
 class AddProduct extends StatefulWidget {
@@ -73,7 +70,6 @@ class _AddProductState extends State<AddProduct> {
         selectedValue = _addItem.categoryTitle;
         _available = _addItem.available;
 
-        // print(_addItem.imageUrl.);
         file = File(_addItem.imageUrl);
         previousUrl = _addItem.imageUrl;
         _initValues = {
@@ -189,49 +185,13 @@ class _AddProductState extends State<AddProduct> {
           ),
         );
       }
-      // finally {
-      //   setState(() {
-      //     _isLoading = false;
-      //   });
-      //   Navigator.of(context).pushNamed(RentItem.routeName);
-      //   // Navigator.of(context).pop();
-      // }
     }
     setState(() {
       _isLoading = false;
     });
-    // Navigator.of(context).pop();
-
     Navigator.of(context).pushNamed(RentItem.routeName);
   }
 
-  // Widget selectFile(String btnName) {
-  //   return ElevatedButton(
-  //     child: file != null
-  //         ? basename(file!.path)
-  //         : Text(
-  //             "⍓︎ " + btnName,
-  //             style: const TextStyle(color: Colors.black),
-  //           ),
-  //     onPressed: () async {
-  //       imagePresent = true;
-  //       final result =
-  //           await FilePicker.platform.pickFiles(allowMultiple: false);
-  //       if (result == null) {
-  //         imagePresent = false;
-  //         return;
-  //       }
-
-  //       final path = result.files.single.path!;
-  //       setState(() => file = File(path));
-  //     },
-  //     style: ElevatedButton.styleFrom(
-  //         primary: Colors.white,
-  //         minimumSize: const Size.fromHeight(60),
-  //         shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(15.0))),
-  //   );
-  // }
   Widget selectFile(String btnName) {
     return ElevatedButton(
       child: file != null
@@ -254,6 +214,7 @@ class _AddProductState extends State<AddProduct> {
           setState(() {
             file = imageTemporary;
           });
+          // ignore: unused_catch_clause
         } on PlatformException catch (e) {
           print("failed to pick image");
         }
@@ -280,7 +241,7 @@ class _AddProductState extends State<AddProduct> {
         ],
       ),
       onPressed: () async {
-        final snackBar = SnackBar(
+        const snackBar = SnackBar(
           content: Text(
               "Your Item is sending to Admin Portal for verification Process"),
         );
@@ -335,7 +296,6 @@ class _AddProductState extends State<AddProduct> {
         }
       },
 
-      // style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
       style: ButtonStyle(
         padding: MaterialStateProperty.all<EdgeInsets>(
           const EdgeInsets.only(left: 120.0, right: 100.0, top: 20, bottom: 20),
@@ -349,36 +309,6 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  //   Future<void> uploadFile() async {
-  //       if (file != null) {
-  //         final fileName = basename(file!.path);
-  //         final destination = 'files/$fileName';
-
-  //         task = FirebaseApi.uploadFile(destination, file!);
-  //         if (task == null) {
-  //           return;
-  //         }
-  //         final snapshot = await task!.whenComplete(() {});
-  //         final urlDownload = await snapshot.ref.getDownloadURL();
-  //         _addItem = ProductItem(
-  //                                   id: _addItem.id,
-  //                                   title: _addItem.title,
-  //                                   description: _addItem.description,
-  //                                   phoneNumber: _addItem.phoneNumber,
-  //                                   imageUrl: urlDownload,
-  //                                   price: _addItem.price,
-  //                                   address: _addItem.address,
-  //                                   categoryId: _addItem.categoryId,
-  //                                   categoryTitle: selectedValue,
-  //                                   available: _available);
-  //         print(urlDownload);
-  //         _saveForm();
-
-  //         return;
-  //       }
-  //       return;
-  //     }
-  // }
   Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
         stream: task.snapshotEvents,
         builder: (context, snapshot) {
@@ -405,9 +335,6 @@ class _AddProductState extends State<AddProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("Add Product"),
-      // ),
       body: _isLoading
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -420,9 +347,6 @@ class _AddProductState extends State<AddProduct> {
                 )
               ],
             )
-          // const Center(
-          //     child: CircularProgressIndicator(),
-          //   )
           : SingleChildScrollView(
               child: SafeArea(
                 child: Form(
@@ -444,60 +368,55 @@ class _AddProductState extends State<AddProduct> {
                         margin: const EdgeInsets.all(20),
                         child: Column(
                           children: [
-                            Container(
-                              // decoration:
-                              //     BoxDecoration(color: Colors.lightBlue),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("Select Category"),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      DropdownButton<String>(
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            selectedValue = newValue!;
-                                          });
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Select Category"),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    DropdownButton<String>(
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          selectedValue = newValue!;
+                                        });
+                                      },
+                                      value: selectedValue,
+                                      items:
+                                          items.map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
                                         },
-                                        value: selectedValue,
-                                        items:
-                                            items.map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
+                                      ).toList(),
+                                    ),
+                                    Row(
+                                      // height: 50,
+                                      // width: 32,
+                                      children: [
+                                        const Text("Available"),
+                                        Switch(
+                                          activeColor: Colors.blue,
+                                          value: _available,
+                                          onChanged: (bool value) {
+                                            setState(() {
+                                              _available = value;
+                                            });
                                           },
-                                        ).toList(),
-                                      ),
-                                      Row(
-                                        // height: 50,
-                                        // width: 32,
-                                        children: [
-                                          const Text("Available"),
-                                          Switch(
-                                            activeColor: Colors.blue,
-                                            value: _available,
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                _available = value;
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
                             ),
                             const SizedBox(
                               height: 10,
                             ),
                             selectFile("Select Image"),
-
                             const SizedBox(
                               height: 15,
                             ),
@@ -529,34 +448,9 @@ class _AddProductState extends State<AddProduct> {
                                 return null;
                               },
                             ),
-                            // InputField(
-                            //     "Product Title", Icons.add_box, TextInputType.name),
-
-                            // InputField("Image Url", Icons.image, TextInputType.url),
-
-                            // TextFormField(
-                            //   initialValue: _initValues["imageUrl"] as String,
-                            //   decoration: _Decoration("Image Url", Icons.image),
-                            //   textInputAction: TextInputAction.next,
-                            //   keyboardType: TextInputType.url,
-                            //   onSaved: (value) {
-                            //     _addItem = ProductItem(
-                            //         id: _addItem.id,
-                            //         title: _addItem.title,
-                            //         description: _addItem.description,
-                            //         phoneNumber: _addItem.phoneNumber,
-                            //         imageUrl: value!,
-                            //         price: _addItem.price,
-                            //         address: _addItem.address,
-                            //         categoryId: _addItem.categoryId,
-                            //         categoryTitle: selectedValue,
-                            //         available: _available);
-                            //   },
-                            // ),
                             const SizedBox(
                               height: 15,
                             ),
-
                             TextFormField(
                               initialValue: _initValues["price"] as String,
                               decoration: _Decoration("Price", Icons.money),
@@ -591,7 +485,6 @@ class _AddProductState extends State<AddProduct> {
                               },
                             ),
                             const SizedBox(height: 15),
-                            // InputField("Phone No", Icons.phone, TextInputType.number),
                             TextFormField(
                               initialValue:
                                   _initValues["phoneNumber"] as String,
@@ -620,16 +513,13 @@ class _AddProductState extends State<AddProduct> {
                                 if (int.tryParse(value) == null) {
                                   return "Please enter a valid number.";
                                 }
-                                // if (value.length != 11) {
-                                //   return "Please enter a valid number.";
-                                // }
+
                                 return null;
                               },
                             ),
                             const SizedBox(
                               height: 15,
                             ),
-                            // InputField("Address", Icons.home, TextInputType.name),
                             TextFormField(
                               initialValue: _initValues["address"] as String,
                               decoration: _Decoration("Address", Icons.home),
@@ -670,23 +560,6 @@ class _AddProductState extends State<AddProduct> {
                             const SizedBox(
                               height: 45,
                             ),
-                            // ButtonTheme(
-                            //   minWidth: MediaQuery.of(context).size.width,
-                            //   height: 60.0,
-                            //   child: RaisedButton(
-                            //     child: const Text(
-                            //       "Submit",
-                            //       style: TextStyle(color: Colors.white),
-                            //     ),
-                            //     onPressed: () {
-                            //       _saveForm();
-                            //     },
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.circular(15),
-                            //     ),
-                            //   ),
-                            // ),
-
                             uploadFile("Submit"),
                           ],
                         ),

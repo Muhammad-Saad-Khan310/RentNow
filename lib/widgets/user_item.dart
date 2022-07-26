@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rentnow/providers/items.dart';
 
+import '../providers/items.dart';
 import 'addProduct.dart';
 
 class UserItems extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
-  UserItems({required this.id, required this.imageUrl, required this.title});
-
-  // const UserItems({Key? key}) : super(key: key);
+  const UserItems(
+      {Key? key, required this.id, required this.imageUrl, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final scaffold = Scaffold.of(context);
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.08,
@@ -27,26 +25,24 @@ class UserItems extends StatelessWidget {
           BoxShadow(
             color: Colors.grey.withOpacity(0.18),
             blurRadius: 5,
-            offset: Offset(0, 4), // changes position of shadow
+            offset: const Offset(0, 4), // changes position of shadow
           ),
         ],
       ),
-      margin: EdgeInsets.only(left: 10, right: 10, top: 20),
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
+          SizedBox(
             width: width * 0.25,
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   bottomLeft: Radius.circular(10)),
               child: Image(
                 // height: height * 0.08,
                 // width: width * 0.25,
-                image: NetworkImage(imageUrl
-                    // "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                    ),
+                image: NetworkImage(imageUrl),
                 fit: BoxFit.cover,
                 // width: width * 0.25,
               ),
@@ -54,7 +50,7 @@ class UserItems extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Row(
             children: [
@@ -63,7 +59,7 @@ class UserItems extends StatelessWidget {
                     Navigator.of(context)
                         .pushNamed(AddProduct.routeName, arguments: id);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.edit,
                     color: Colors.blue,
                   )),
@@ -73,13 +69,15 @@ class UserItems extends StatelessWidget {
                       await Provider.of<Items>(context, listen: false)
                           .deleteItem(id);
                     } catch (error) {
-                      final snackBar = SnackBar(
+                      print(error);
+
+                      const snackBar = SnackBar(
                         content: Text("Item not Deleted"),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.delete,
                     color: Colors.red,
                   )),

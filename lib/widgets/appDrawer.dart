@@ -1,28 +1,16 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rentnow/widgets/contact.dart';
-import 'package:rentnow/widgets/update_renter.dart';
-import 'package:rentnow/widgets/userProfile.dart';
+
+import '/widgets/contact.dart';
 import './addProduct.dart';
 import './login.dart';
-
 import "../screens/user_item_screen.dart";
-
 import "./help.dart";
-
 import './rentItems.dart';
-import './becomeRenter.dart';
 import './signup.dart';
-import './product_overview.dart';
-
 import '../screens/profile_screen.dart';
-import '../widgets/new.dart';
-
-import 'signup.dart';
-import '../providers/auth.dart';
-import '../providers/renter.dart';
-import '../providers/items.dart';
-import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -33,48 +21,25 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
-  void _showErrorDialog(String message, ctx) {
-    showDialog(
-      context: ctx,
-      builder: (ctx) => AlertDialog(
-        title: const Text("Alert!"),
-        content: Text(message),
-        actions: [
-          TextButton(
-            child: const Text("Ok"),
-            onPressed: () {
-              Navigator.of(ctx).pushReplacementNamed(BecomeRenter.routeName);
-            },
-          )
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var userData = Provider.of<Auth>(context);
-    var renterData = Provider.of<Renter>(context);
 
     return Drawer(
       child: SingleChildScrollView(
         child: Column(
           children: [
-            // AppBar(
-            //   title: const Text("Rent Now"),
-            //   automaticallyImplyLeading: false,
-            // ),
             Container(
               height: 120,
               width: double.infinity,
               padding: const EdgeInsets.only(top: 30, left: 30),
               alignment: Alignment.centerLeft,
+              // ignore: deprecated_member_use
               color: Theme.of(context).accentColor,
-              child: Center(
-                child: const Text(
+              child: const Center(
+                child: Text(
                   'RENT NOW!',
                   style: TextStyle(
-                    // fontWeight: FontWeight.w900,
                     color: Color.fromRGBO(255, 255, 255, 1),
                     // fontSize: 30,
                   ),
@@ -94,34 +59,6 @@ class _AppDrawerState extends State<AppDrawer> {
               },
             ),
             userData.isAuth ? const Divider() : Container(),
-
-            // ListTile(
-            //   leading: const Icon(Icons.add_box),
-            //   title: const Text("Add Product"),
-            //   onTap: () {
-            //     if (userData.isAllowed) {
-            //       Navigator.of(context).pushNamed(AddProduct.routeName);
-            //     } else {
-            //       String errorMessage = "Please login first then add product";
-            //       _showErrorDialog(errorMessage, context);
-            //     }
-            //   },
-            // ),
-            // FutureBuilder<bool>(
-            //     future: renterData.showAddProductForm(),
-            //     builder: (ctx, AsyncSnapshot<bool> snapshot) {
-            //       if (snapshot.data == true) {
-            //         return ListTile(
-            //           leading: const Icon(Icons.add_box),
-            //           title: const Text("Add Product"),
-            //           onTap: () {
-            //             Navigator.of(context).pushNamed(AddProduct.routeName);
-            //           },
-            //         );
-            //       } else {
-            //         return const Text("");
-            //       }
-            //     }),
             userData.isAuth
                 ? ListTile(
                     leading: const Icon(
@@ -135,72 +72,19 @@ class _AppDrawerState extends State<AppDrawer> {
                     },
                   )
                 : Container(),
-            Divider(),
+            const Divider(),
             userData.isAuth
                 ? ListTile(
                     leading: const Icon(
                       Icons.shopping_bag,
-                      // size: 35,
                       color: Colors.teal,
                     ),
                     title: const Text("My Items"),
                     onTap: () {
-                      // Navigator.of(context)
-                      //     .pushReplacementNamed(UserProductsScreen.routeName);
                       Navigator.of(context).pushNamed(UserItemScreen.routeName);
                     },
                   )
                 : Container(),
-
-            // userData.isAuth
-            //     ? ListTile(
-            //         leading: const Icon(
-            //           Icons.add_box,
-            //           color: Colors.teal,
-            //         ),
-            //         title: const Text("Add Product"),
-            //         onTap: () {
-            //           renterData.showAddProductForm().then((value) => {
-            //                 if (value)
-            //                   {
-            //                     Navigator.of(context)
-            //                         .pushNamed(AddProduct.routeName)
-            //                   }
-            //                 else
-            //                   {
-            //                     // String errorMessage =
-            //                     // "Please fill become renter then add product";
-            //                     _showErrorDialog(
-            //                         "Please provide become renter data then add product",
-            //                         context)
-            //                   }
-            //               });
-
-            // FutureBuilder<bool>(
-            //   future: renterData.showAddProductForm(),
-            //   builder: (ctx, AsyncSnapshot<bool> snapshot) {
-            //     if (snapshot.data == true) {
-            //       Navigator.of(context).pushNamed(AddProduct.routeName);
-
-            //       // ListTile(
-            //       //   leading: const Icon(Icons.add_box),
-            //       //   title: const Text("Add Product"),
-            //       //   onTap: () {
-            //       //     ;
-            //       //   },
-            //       // );
-            //     } else {
-            //       String errorMessage =
-            //           "Please fill become renter then add product";
-            //       _showErrorDialog(errorMessage, context);
-            //     }
-            //     return const Text("saf");
-            //   },
-            // );
-            // },
-            // )
-            // : Container(),
-
             userData.isAuth ? const Divider() : Container(),
             userData.isAuth
                 ? ListTile(
@@ -209,39 +93,31 @@ class _AppDrawerState extends State<AppDrawer> {
                       // size: 35,
                       color: Colors.teal,
                     ),
-                    title: const Text("User Profile"),
+                    title: const Text("Profile"),
                     onTap: () {
-                      print(userData.userId);
                       Navigator.of(context).pushNamed(ProfileScreen.routeName);
                     })
                 : Container(),
-
             userData.isAuth ? const Divider() : Container(),
-
-            // renterData.showAddProductForm().then((value) => {
-
-            // }
-            // )
-
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.help,
                 color: Colors.teal,
                 // size: 35,
               ),
-              title: Text("Help"),
+              title: const Text("Help"),
               onTap: () {
                 Navigator.of(context).pushNamed(Help.routeName);
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.contacts_sharp,
                 color: Colors.teal,
                 // size: 35,
               ),
-              title: Text("Contact Us"),
+              title: const Text("Contact Us"),
               onTap: () {
                 Navigator.of(context).pushNamed(ContactUs.routeName);
               },
@@ -260,7 +136,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     },
                   )
                 : Container(),
-            userData.isAuth ? Container() : Divider(),
+            userData.isAuth ? Container() : const Divider(),
             userData.isAuth
                 ? Container()
                 : ListTile(
@@ -274,7 +150,6 @@ class _AppDrawerState extends State<AppDrawer> {
                       Navigator.of(context).pushNamed(SignUp.routeName);
                     },
                   ),
-
             const Divider(),
             userData.isAuth
                 ? ListTile(
@@ -286,7 +161,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     title: const Text("Logout"),
                     onTap: () {
                       Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacementNamed("/");
+                      Navigator.of(context).pushNamed(Login.routeName);
                       userData.logout();
                     },
                   )

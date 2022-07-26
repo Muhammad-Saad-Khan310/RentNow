@@ -7,14 +7,15 @@ class Help extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    // final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(title: Text("Help")),
+      appBar: AppBar(title: const Text("Help")),
       body: SingleChildScrollView(
         child: Container(
             height: height * 0.35,
-            padding: EdgeInsets.only(top: 20, right: 15, left: 15, bottom: 20),
-            margin: EdgeInsets.only(
+            padding:
+                const EdgeInsets.only(top: 20, right: 15, left: 15, bottom: 20),
+            margin: const EdgeInsets.only(
               top: 80,
               right: 15,
               left: 15,
@@ -22,7 +23,7 @@ class Help extends StatelessWidget {
             decoration: BoxDecoration(border: Border.all(color: Colors.black)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+              children: const [
                 Text(
                   "Process",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

@@ -2,17 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rentnow/widgets/rentItems.dart';
-import 'package:rentnow/widgets/userProfile.dart';
 
-import '../providers/renter.dart';
-import '../screens/profile_screen.dart';
+import '../widgets/rentItems.dart';
 import '../widgets/login.dart';
 import '../providers/auth.dart';
 import '../models/http_exception.dart';
-import '../screens/user_products_screen.dart';
-import './login.dart';
 
 class SignUp extends StatefulWidget {
   static const routeName = "/SignUp";
@@ -24,7 +18,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
     'confirmPassword': '',
@@ -38,7 +32,7 @@ class _SignUpState extends State<SignUp> {
         content: Text(message),
         actions: [
           TextButton(
-            child: Text("Ok"),
+            child: const Text("Ok"),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -48,7 +42,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Widget InputField(String InputFieldName, IconData icon,) {
+  // ignore: non_constant_identifier_names
   InputDecoration Decoration(String fieldName, IconData iconName) {
     return InputDecoration(
         labelText: fieldName,
@@ -76,11 +70,11 @@ class _SignUpState extends State<SignUp> {
     } else {
       try {
         var data = Provider.of<Auth>(context, listen: false);
-        await data.signup(_authData['email']!, _authData['password']!);
-
-        if (data.isAuth) {
+        await data
+            .signup(_authData['email']!, _authData['password']!)
+            .then((value) {
           Navigator.of(context).pushReplacementNamed(RentItem.routeName);
-        }
+        });
       } on HttpException catch (error) {
         var errorMessage = "Authenticate failed";
         if (error.toString().contains("EMAIL_EXISTS")) {
@@ -96,12 +90,6 @@ class _SignUpState extends State<SignUp> {
             "Could not authenticate you. Please try again later.";
         _showErrorDialog(errorMessage);
       }
-
-      // if (_authMode == AuthMode.Login) {
-      //   // Log user in
-      // } else {
-      //   // Sign user up
-      // }
     }
     setState(() {
       _isLoading = false;
@@ -111,42 +99,17 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/images/background.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
-        appBar: AppBar(title: Text("Signup")),
+        appBar: AppBar(title: const Text("Signup")),
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: SafeArea(
             child: Stack(
               children: [
-                // Positioned(
-                //   top: MediaQuery.of(context).size.height * 0.1,
-                //   left: MediaQuery.of(context).size.width * 0.4,
-                //   child: CircleAvatar(
-                //       radius: 50,
-                //       backgroundImage: AssetImage('assets/images/app_logo.png')
-                //       // NetworkImage(
-                //       //     "https://cdn.shoplightspeed.com/shops/608305/files/31868432/rent-now-circle.png"
-                //       //     // "https://media.istockphoto.com/photos/dome-and-main-building-of-islamia-college-university-peshawar-picture-id497967720?k=20&m=497967720&s=612x612&w=0&h=L66Z7NQ_fQ5k16qcHQqAuYgXOuBnMsJaZociBZmysZU="
-                //       //     ),
-                //       ),
-                // ),
-                // Container(
-                //   padding: EdgeInsets.only(left: 0, top: 220),
-                //   child: const Center(
-                //     child: Text(
-                //       "Sign Up",
-                //       style: TextStyle(
-                //           fontSize: 30.0, fontWeight: FontWeight.bold),
-                //     ),
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 22,
-                // ),
                 Container(
                   margin: const EdgeInsets.all(20),
                   padding: EdgeInsetsDirectional.only(

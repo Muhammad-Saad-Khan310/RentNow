@@ -1,14 +1,11 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth.dart';
 import '../screens/profile_screen.dart';
-import './rentItems.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rentnow/widgets/becomeRenter.dart';
 import './signup.dart';
 import '../models/http_exception.dart';
-// import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../screens/user_products_screen.dart';
 
 class Login extends StatefulWidget {
   static const routeName = '/Login';
@@ -43,8 +40,6 @@ class _LoginState extends State<Login> {
     );
   }
 
-  // Widget InputField(String InputFieldName, IconData icon,) {
-  // ignore: non_constant_identifier_names
   InputDecoration Decoration(String fieldName, IconData iconName) {
     return InputDecoration(
         labelText: fieldName,
@@ -76,9 +71,7 @@ class _LoginState extends State<Login> {
       var data = Provider.of<Auth>(context, listen: false);
       await data.login(_authData['email']!, _authData['password']!);
 
-      // if (data.isAllowed) {
       Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
-      // }
     } on HttpException catch (error) {
       var errorMessage = "Authenticate failed";
       if (error.toString().contains("EMAIL_NOT_FOUND")) {
@@ -88,15 +81,9 @@ class _LoginState extends State<Login> {
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
-      print(error);
       var errorMessage = "Could not authenticate you. Please try again later.";
       _showErrorDialog(errorMessage);
     }
-    // if (_authMode == AuthMode.Login) {
-    //   // Log user in
-    // } else {
-    //   // Sign user up
-    // }
 
     setState(() {
       _isLoading = false;
@@ -106,34 +93,17 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/images/background.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
-        appBar: AppBar(title: Text("Login")),
+        appBar: AppBar(title: const Text("Login")),
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: SafeArea(
             child: Stack(
               children: [
-                // Positioned(
-                //   top: MediaQuery.of(context).size.height * 0.1,
-                //   left: MediaQuery.of(context).size.width * 0.4,
-                //   child: CircleAvatar(
-                //     radius: 50,
-                //     backgroundImage: AssetImage('assets/images/app_logo.png'),
-                //   ),
-                // ),
-                // Positioned(
-                //   top: MediaQuery.of(context).size.height * 0.3,
-                //   left: MediaQuery.of(context).size.width * 0.4,
-                //   child: Text(
-                //     "Login",
-                //     style:
-                //         TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-                //   ),
-                // ),
                 Container(
                   margin: const EdgeInsets.only(left: 20, right: 20),
                   padding: EdgeInsetsDirectional.only(
@@ -142,10 +112,7 @@ class _LoginState extends State<Login> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        // InputField("Email", Icons.email),
                         TextFormField(
-                          // here we will get the email entered
-
                           decoration: Decoration("Email", Icons.email),
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.name,
@@ -159,12 +126,9 @@ class _LoginState extends State<Login> {
                             _authData['email'] = value!;
                           },
                         ),
-
                         const SizedBox(
                           height: 15,
                         ),
-                        // InputField("Password", Icons.lock),
-
                         TextFormField(
                           keyboardType: TextInputType.name,
                           obscureText: true,
@@ -180,44 +144,14 @@ class _LoginState extends State<Login> {
                             _authData['password'] = value!;
                           },
                         ),
-
-                        // const SizedBox(
-                        //   height: 10,
-                        // ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.end,
-                        //   children: const [Text("Forgot Password ?")],
-                        // ),
                         const SizedBox(
                           height: 60,
                         ),
                         _isLoading
-                            ? Center(
+                            ? const Center(
                                 child: CircularProgressIndicator(),
                               )
-                            :
-                            // Row(
-                            //     mainAxisAlignment:
-                            //         MainAxisAlignment.spaceAround,
-                            //     children: [
-                            //       Text(
-                            //         "Login",
-                            //         style: TextStyle(
-                            //             fontSize: 30,
-                            //             fontWeight: FontWeight.w700),
-                            //       ),
-                            //       CircleAvatar(
-                            //         radius: 30,
-                            //         backgroundColor: Colors.teal,
-                            //         child: IconButton(
-                            //             onPressed: () {
-                            //               _submit();
-                            //             },
-                            //             icon: Icon(Icons.arrow_forward)),
-                            //       )
-                            //     ],
-                            //   )
-                            ButtonTheme(
+                            : ButtonTheme(
                                 minWidth: MediaQuery.of(context).size.width,
                                 height: 60.0,
                                 child: ElevatedButton(
@@ -243,10 +177,6 @@ class _LoginState extends State<Login> {
                                   onPressed: () {
                                     _submit();
                                   },
-
-                                  // shape: RoundedRectangleBorder(
-                                  //   borderRadius: BorderRadius.circular(15),
-                                  // ),
                                 ),
                               ),
                         const SizedBox(

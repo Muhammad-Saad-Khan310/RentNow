@@ -1,17 +1,14 @@
-// ignore_for_file: unnecessary_new
-
-// import 'dart:html';
+// ignore_for_file: unnecessary_new, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rentnow/widgets/rentItems.dart';
+
+import '../widgets/rentItems.dart';
 import '../widgets/items_widget.dart';
 import '../widgets/categories_widgets.dart';
-import '../providers/product_categories.dart';
+import '../providers/item_categories.dart';
 import '../providers/items.dart';
 import '../providers/item.dart';
-import "../widgets/newFile.dart";
-
 import './all_items.dart';
 
 class CategoriesItemsScreen extends StatefulWidget {
@@ -25,27 +22,10 @@ class CategoriesItemsScreen extends StatefulWidget {
 
 class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   final controller = TextEditingController();
+  var _showError = false;
   List<ProductItem> ltmData = [];
   var _isInit = true;
-  var _showMessage = false;
   var _isLoading = false;
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text("Alert!"),
-        content: Text(message),
-        actions: [
-          TextButton(
-            child: const Text("Ok"),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          )
-        ],
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -65,12 +45,13 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
           });
         });
       } catch (error) {
-        const errorMessage = "No Item found";
+        // const errorMessage = "No Item found";
 
         setState(() {
           _isLoading = false;
+          _showError = true;
         });
-        _showErrorDialog(errorMessage);
+        // _showErrorDialog(errorMessage);
       }
     }
     _isInit = false;
@@ -107,17 +88,8 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     final Itm = Provider.of<Items>(context);
-    // if (Itm.items.isEmpty) {
-    // const _errorMessage = "No Items";
-    // print("no item found");
-    // _showMessage = true;
-    // setState(() {
-    //   _isLoading = false;
-    // });
-    // _showErrorDialog(_errorMessage);
-    // }
+
     if (ltmData.isEmpty) {
       ltmData = Itm.items;
     }
@@ -132,11 +104,9 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
             )
           : SingleChildScrollView(
               child: Column(
-                // mainAxisSize: MainAxisSize.max,
                 children: [
-                  // InputField("Search"),
                   Container(
-                    margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                    margin: const EdgeInsets.only(left: 15.0, right: 15.0),
                     padding: const EdgeInsets.only(
                       top: 10.0,
                       bottom: 10.0,
@@ -154,11 +124,9 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
                   Container(
                     width: double.infinity,
                     height: 140,
-                    margin: EdgeInsets.only(left: 15.0),
+                    margin: const EdgeInsets.only(left: 15.0),
                     child: ListView.builder(
                       shrinkWrap: false,
-
-                      // padding: EdgeInsets.zero,
                       itemBuilder: (ctx, index) {
                         String id;
                         String title;
@@ -175,91 +143,35 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
                       scrollDirection: Axis.horizontal,
                     ),
                   ),
-                  // const Align(
-                  //   alignment: Alignment.topLeft,
-                  //   child: Text(
-                  //     "Rent Now",
-                  //     style: TextStyle(fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
                   SizedBox(
-                      // height: 10,
-                      )
-                  // Container(
-                  //   margin: EdgeInsets.only(left: 15.0, right: 15.0),
-                  //   height: height * 0.12,
-                  //   width: MediaQuery.of(context).size.width,
-                  //   decoration: BoxDecoration(
-                  //       // color: Color.fromRGBO(67, 172, 106, 1),
-                  //       // color: Color.fromRGBO(170, 255, 202, 1),
-                  //       color: Colors.teal[100],
-                  //       borderRadius: BorderRadius.circular(10)),
-                  //   child: Stack(clipBehavior: Clip.none, children: [
-                  //     Positioned(
-                  //       bottom: -15,
-                  //       right: 2,
-                  //       child: CircleAvatar(
-                  //         radius: height * 0.08,
-                  //         backgroundImage: AssetImage(
-                  //           "assets/images/app_logo.png",
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     Positioned(
-                  //         left: 10,
-                  //         bottom: 20,
-                  //         child: Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Text(
-                  //               "Rent Now",
-                  //               style: TextStyle(
-                  //                   fontSize: 20, fontWeight: FontWeight.bold),
-                  //             ),
-                  //             SizedBox(
-                  //               height: 0.01,
-                  //             ),
-                  //             Text("Take any item on rent")
-                  //           ],
-                  //         ))
-                  //   ]),
-                  // )
-                  // _showMessage
-                  //     ? Padding(
-                  //         padding: EdgeInsets.only(
-                  //             top: MediaQuery.of(context).size.height * 0.1),
-                  //         child: const Center(
-                  //             child: Text(
-                  //           "No Item",
-                  //           style: TextStyle(
-                  //               fontWeight: FontWeight.bold, fontSize: 30),
-                  //         )),
-                  //       )
-                  //     :
-                  ,
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
+                      // height: height * 0.03,
+                      ),
                   Container(
-                    margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                    margin: const EdgeInsets.only(left: 15.0, right: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Rent Items",
                           style: TextStyle(
                               fontWeight: FontWeight.w900, fontSize: 20),
                         ),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(AllItems.routeName);
-                            },
-                            child: const Text("View all"))
+                        _showError
+                            ? Container()
+                            : TextButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(AllItems.routeName);
+                                },
+                                child: const Text("View all"))
                       ],
                     ),
                   ),
-                  ItemListView(ltmData),
+                  _showError
+                      ? Center(
+                          child: Text("No Item found"),
+                        )
+                      : ItemListView(ltmData),
                 ],
               ),
             ),
@@ -267,46 +179,19 @@ class _CategoriesItemsScreenState extends State<CategoriesItemsScreen> {
   }
 }
 
+// ignore: must_be_immutable
 class ItemListView extends StatelessWidget {
   List<ProductItem> lst;
-  // const ItemListView({
-  //   Key? key,
-  // }) : super(key: key);
-  ItemListView(this.lst);
+
+  ItemListView(this.lst, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // final ItemData = Provider.of<Items>(context);
-    // final item = ItemData.fetchAndSetItems();
-    // final lst = ItemData.items;
-    return
-        // Container(
-        //   padding: const EdgeInsets.only(top: 10, left: 15.0),
-        //   width: MediaQuery.of(context).size.width,
-        //   height: MediaQuery.of(context).size.height * 0.3,
-        //   child: ListView.builder(
-        //     shrinkWrap: false,
-        //     scrollDirection: Axis.horizontal,
-        //     itemCount: lst.length,
-        //     itemBuilder: (ctx, i) {
-        //       return NewFile(
-        //         id: lst[i].id,
-        //         itemTitle: lst[i].title,
-        //         rentPrice: lst[i].price,
-        //         isAvailable: lst[i].available,
-        //         itemImage: lst[i].imageUrl,
-        //         address: lst[i].address,
-        //       );
-        //     },
-        //   ),
-        // );
-        Container(
-      padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+    return Container(
+      padding: const EdgeInsets.only(top: 0, left: 15, right: 15),
       width: MediaQuery.of(context).size.width,
-      // height: 400,
       height: MediaQuery.of(context).size.height * 0.58,
       child: ListView.builder(
         shrinkWrap: false,
-        // scrollDirection: Axis.horizontal,
         itemCount: lst.length,
         itemBuilder: (ctx, index) {
           return ItemsWidget(

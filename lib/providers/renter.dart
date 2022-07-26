@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -143,61 +145,5 @@ class Renter with ChangeNotifier {
     });
     _renter = loadedItem;
     notifyListeners();
-  }
-
-  // Future<void> showRentForm() async {
-  //   if (authToken != "") {
-  //     final url = Uri.parse(
-  //         "https://rentnow-f12ca-default-rtdb.firebaseio.com/renters/$userId.json?auth=$authToken");
-
-  //     final response = await http.get(url);
-  //     final extractedData = json.decode(response.body);
-  //     print(extractedData);
-  //     if (extractedData == null) {
-
-  //       showform = true;
-  //       // return true;
-  //     } else {
-
-  //       showform = false;
-  //     }
-  //   } else {
-
-  //     showform = false;
-  //   }
-  // }
-
-  Future<bool> userType() async {
-    if (authToken != "") {
-      final url = Uri.parse(
-          "https://rentnow-f12ca-default-rtdb.firebaseio.com/renters/$userId.json?auth=$authToken");
-
-      final response = await http.get(url);
-      final extractedData = json.decode(response.body);
-      if (extractedData != null) {
-        return false;
-      } else {
-        return true;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  Future<bool> showAddProductForm() async {
-    if (authToken != "") {
-      final url = Uri.parse(
-          "https://rentnow-f12ca-default-rtdb.firebaseio.com/renters/$userId.json?auth=$authToken");
-
-      final response = await http.get(url);
-      final extractedData = json.decode(response.body);
-      if (extractedData != null) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
   }
 }

@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
-import './product_overview.dart';
+
 import './item_detail.dart';
 
 class ItemsWidget extends StatelessWidget {
   final String id;
-  // final String categoryTitle;
   final String itemTitle;
-  // final String categoryImage;
   final String itemImage;
   final String rentPrice;
   final bool isAvailable;
 
-  // const Categores_Items({ Key? key }) : super(key: key);
-  ItemsWidget(
-      {required this.id,
-      // required this.categoryTitle,
+  const ItemsWidget(
+      {Key? key,
+      required this.id,
       required this.itemTitle,
-      // required this.categoryImage,
       required this.itemImage,
       required this.rentPrice,
-      required this.isAvailable});
+      required this.isAvailable})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +32,7 @@ class ItemsWidget extends StatelessWidget {
           child: Column(
             children: [
               Card(
-                color: Color.fromARGB(255, 222, 230, 235),
+                color: const Color.fromARGB(255, 222, 230, 235),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 elevation: 4,
@@ -49,13 +46,19 @@ class ItemsWidget extends StatelessWidget {
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
                           ),
-                          child: Image.network(
-                            itemImage,
-                            // height: 250,
-                            height: 150,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
+                          child: Hero(
+                              tag: id,
+                              child: FadeInImage(
+                                placeholder: const AssetImage(
+                                  "assets/images/placeholder.png",
+                                ),
+                                image: NetworkImage(
+                                  itemImage,
+                                ),
+                                height: 150,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              )),
                         ),
                         Positioned(
                           top: 0,
@@ -89,17 +92,17 @@ class ItemsWidget extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             itemTitle,
-                            style: TextStyle(fontSize: 25),
+                            style: const TextStyle(fontSize: 25),
                           ),
                           Text(
-                            "RS " + "$rentPrice",
-                            style: TextStyle(
+                            "RS " + rentPrice,
+                            style: const TextStyle(
                               fontSize: 20,
                             ),
                           )

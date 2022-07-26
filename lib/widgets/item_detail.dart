@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'package:provider/provider.dart';
-import 'package:rentnow/providers/auth.dart';
-// import 'package:url_launcher/url_launcher.dart';
+
+import '../providers/auth.dart';
 import './imageView.dart';
 import "./reportProduct.dart";
-
 import '../providers/items.dart';
 
 class ItemDetail extends StatelessWidget {
@@ -17,10 +15,11 @@ class ItemDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final itemId = ModalRoute.of(context)!.settings.arguments as String;
     final loadedItem = Provider.of<Items>(context).findById(itemId);
+    // ignore: unused_local_variable
     final userData = Provider.of<Auth>(context, listen: false);
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Stack(children: [
@@ -32,12 +31,15 @@ class ItemDetail extends StatelessWidget {
                     Navigator.of(context).pushNamed(ImageView.routeName,
                         arguments: loadedItem.imageUrl);
                   }),
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.5,
-                    child: Image(
-                      image: NetworkImage(loadedItem.imageUrl),
-                      fit: BoxFit.cover,
+                    child: Hero(
+                      tag: itemId,
+                      child: Image(
+                        image: NetworkImage(loadedItem.imageUrl),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 )),
@@ -50,11 +52,12 @@ class ItemDetail extends StatelessWidget {
                   // color: Colors.amber,
                   decoration: BoxDecoration(
                       color: Colors.grey[300],
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(40),
                           topRight: Radius.circular(40))),
                   child: Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20, top: 25),
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 25),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -63,15 +66,15 @@ class ItemDetail extends StatelessWidget {
                           children: [
                             Text(
                               loadedItem.title,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 25),
                             ),
                             loadedItem.available
-                                ? Text(
+                                ? const Text(
                                     "Available",
                                     style: TextStyle(color: Colors.blue),
                                   )
-                                : Text(
+                                : const Text(
                                     "Not Available",
                                     style: TextStyle(color: Colors.red),
                                   )
@@ -83,11 +86,11 @@ class ItemDetail extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_on,
                               color: Colors.red,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Text(
@@ -108,12 +111,12 @@ class ItemDetail extends StatelessWidget {
 
                                   launchUrl(url);
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   Icons.phone_android_outlined,
                                   color: Colors.green,
                                 )),
                             // Icon(Icons.phone_android),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Text(loadedItem.phoneNumber)
@@ -122,12 +125,12 @@ class ItemDetail extends StatelessWidget {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                        Text(
+                        const Text(
                           "Description",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text(loadedItem.description),
@@ -138,14 +141,14 @@ class ItemDetail extends StatelessWidget {
                                 width: MediaQuery.of(context).size.width,
                                 height:
                                     MediaQuery.of(context).size.height * 0.05,
-                                margin: EdgeInsets.only(bottom: 30),
+                                margin: const EdgeInsets.only(bottom: 30),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "RS:  " + loadedItem.price,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Provider.of<Auth>(context, listen: false)

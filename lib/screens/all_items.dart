@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rentnow/widgets/all_Item_widget.dart';
 
 import '../providers/items.dart';
 import '../widgets/items_widget.dart';
@@ -15,10 +14,10 @@ class AllItems extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("All Items"),
+        title: const Text("All Items"),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
         child: ListView.builder(
             itemCount: itmData.length,
             itemBuilder: (ctx, index) {

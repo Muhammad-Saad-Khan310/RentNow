@@ -1,54 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rentnow/screens/all_items.dart';
-import 'package:rentnow/screens/splash_screen.dart';
-import 'package:rentnow/screens/user_item_screen.dart';
-import 'package:rentnow/widgets/contact.dart';
-import 'package:rentnow/widgets/help.dart';
-import 'package:rentnow/widgets/item_detail.dart';
-import 'package:rentnow/widgets/newFile.dart';
-import 'package:rentnow/widgets/userProfile.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import './screens/all_items.dart';
+import './screens/splash_screen.dart';
+import './screens/user_item_screen.dart';
+
 import './providers/auth.dart';
 
-import '/screens/user_products_screen.dart';
+import './widgets/contact.dart';
+import './widgets/help.dart';
+import './widgets/item_detail.dart';
 import './widgets/signup.dart';
 import './widgets/becomeRenter.dart';
 import './widgets/addProduct.dart';
 import './widgets/rentItems.dart';
-
-import 'widgets/login.dart';
-import './widgets/product_overview.dart';
-
+import './widgets/login.dart';
 import './widgets/imageView.dart';
 import './screens/profile_screen.dart';
-import 'widgets/login.dart';
-import './widgets/practice.dart';
 import './widgets/update_renter.dart';
 import './screens/categories_items_screen.dart';
-import './widgets/categories_widgets.dart';
-import './screens/user_products_screen.dart';
 import './widgets/reportProduct.dart';
-
 import './providers/items.dart';
 import './screens/selected_category_screen.dart';
 import './providers/renter.dart';
-import './widgets/new.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import './widgets/practice2.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
-// Future main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MyApp());
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -78,16 +59,11 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Rent Now',
           theme: ThemeData(
-            // primarySwatch: Colors.blue,
             primarySwatch: Colors.teal,
-
             fontFamily: "Roboto",
           ),
-
-          // home: NewFile(),
-
           home: auth.isAuth
-              ? RentItem()
+              ? const RentItem()
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (
@@ -97,62 +73,30 @@ class MyApp extends StatelessWidget {
                       authResultSnapshot.connectionState ==
                               ConnectionState.waiting
                           ? const SplashScreen()
-                          : RentItem(),
+                          : const RentItem(),
                 ),
-          // home: ItemDetail(),
           routes: {
             CategoriesItemsScreen.routeName: (ctx) =>
                 const CategoriesItemsScreen(),
-            RentItem.routeName: (ctx) => RentItem(),
-            BecomeRenter.routeName: (ctx) => BecomeRenter(),
-            AddProduct.routeName: (ctx) => AddProduct(),
-            SignUp.routeName: (ctx) => SignUp(),
-            Login.routeName: (ctx) => Login(),
-            ProductOverview.routeName: (ctx) => ProductOverview(),
-            ImageView.routeName: (ctx) => ImageView(),
-            UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
-            SelectedCategoryScreen.routeName: (ctx) => SelectedCategoryScreen(),
-            ProfileScreen.routeName: (ctx) => ProfileScreen(),
-            UpdateRenter.routeName: (ctx) => UpdateRenter(),
-            ReportProduct.routeName: (ctx) => ReportProduct(),
-            ItemDetail.routeName: (ctx) => ItemDetail(),
-            AllItems.routeName: (ctx) => AllItems(),
-            ContactUs.routeName: (ctx) => ContactUs(),
-            Help.routeName: (ctx) => Help(),
-            UserItemScreen.routeName: (ctx) => UserItemScreen(),
+            RentItem.routeName: (ctx) => const RentItem(),
+            BecomeRenter.routeName: (ctx) => const BecomeRenter(),
+            AddProduct.routeName: (ctx) => const AddProduct(),
+            SignUp.routeName: (ctx) => const SignUp(),
+            Login.routeName: (ctx) => const Login(),
+            ImageView.routeName: (ctx) => const ImageView(),
+            SelectedCategoryScreen.routeName: (ctx) =>
+                const SelectedCategoryScreen(),
+            ProfileScreen.routeName: (ctx) => const ProfileScreen(),
+            UpdateRenter.routeName: (ctx) => const UpdateRenter(),
+            ReportProduct.routeName: (ctx) => const ReportProduct(),
+            ItemDetail.routeName: (ctx) => const ItemDetail(),
+            AllItems.routeName: (ctx) => const AllItems(),
+            ContactUs.routeName: (ctx) => const ContactUs(),
+            Help.routeName: (ctx) => const Help(),
+            UserItemScreen.routeName: (ctx) => const UserItemScreen(),
           },
         ),
       ),
     );
   }
 }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-//   final String title;
-
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: const <Widget>[
-//             Text(
-//               'You have pushed the button this many times:',
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

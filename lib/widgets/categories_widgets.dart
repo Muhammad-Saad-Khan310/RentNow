@@ -8,8 +8,10 @@ class CategoriesWidget extends StatelessWidget {
   final String imageUrl;
   final String categoryId;
   final String categoryTitle;
-  CategoriesWidget(
-      this.id, this.title, this.imageUrl, this.categoryId, this.categoryTitle);
+  const CategoriesWidget(
+      this.id, this.title, this.imageUrl, this.categoryId, this.categoryTitle,
+      {Key? key})
+      : super(key: key);
   // const CategoriesWidget({Key? key}) : super(key: key);
 
   @override
@@ -45,8 +47,10 @@ class CategoriesWidget extends StatelessWidget {
                             topLeft: Radius.circular(0),
                             topRight: Radius.circular(0),
                           ),
-                          child: Image.network(
-                            imageUrl,
+                          child: FadeInImage(
+                            placeholder: const AssetImage(
+                                "assets/images/placeholder.png"),
+                            image: NetworkImage(imageUrl),
                             height: 80,
                             width: 120,
                             fit: BoxFit.cover,
