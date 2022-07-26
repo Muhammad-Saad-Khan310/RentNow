@@ -43,11 +43,7 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    // This line is added for  test build apk
-    lintOptions {
-        disable 'InvalidPackage'
-        checkReleaseBuilds false //<- add this line
-    }
+ 
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
