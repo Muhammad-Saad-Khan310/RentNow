@@ -44,8 +44,7 @@ class Renter with ChangeNotifier {
   }
 
   Future<void> fetchRenter() async {
-    final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/renters/$userId.json/?auth=$authToken");
+    final url = Uri.parse("your api");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body);
@@ -72,8 +71,7 @@ class Renter with ChangeNotifier {
 
   Future<void> addRenter(String userName, String imageUrl, String dateOfBirth,
       String phoneNumber, String address) async {
-    final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/renters/$userId.json?auth=$authToken");
+    final url = Uri.parse("your api");
 
     try {
       final response = await http.post(
@@ -105,8 +103,7 @@ class Renter with ChangeNotifier {
   Future<void> updateRenter(String id, RenterClass newProduct) async {
     final prodIndex = _renter.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = Uri.parse(
-          "https://rentnow-f12ca-default-rtdb.firebaseio.com/renters/$userId/$id.json?auth=$authToken");
+      final url = Uri.parse("your api");
       http.patch(url,
           body: json.encode({
             'userName': newProduct.userName,
@@ -123,8 +120,7 @@ class Renter with ChangeNotifier {
   }
 
   Future<void> getUserProfile() async {
-    final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/renters/$userId.json?auth=$authToken");
+    final url = Uri.parse("your api");
     final response = await http.get(url);
     final extractedData = json.decode(response.body);
     List<RenterClass> loadedItem = [];

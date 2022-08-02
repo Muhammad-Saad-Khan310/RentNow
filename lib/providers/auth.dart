@@ -49,6 +49,9 @@ class Auth with ChangeNotifier {
             {"email": email, "password": password, "returnSecureToken": true}),
       );
       final responseData = json.decode(response.body);
+      print("+____55555");
+
+      print(responseData);
 
       if (responseData['error'] != null) {
         throw HttpException(responseData["error"]["message"]);

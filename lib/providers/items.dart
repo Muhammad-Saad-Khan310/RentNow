@@ -144,12 +144,11 @@ class Items with ChangeNotifier {
     final filterString = filterByUser
         ? '?auth=$authToken&orderBy="creatorId"&equalTo="$userId"'
         : '';
-    final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json/$filterString");
+    final url = Uri.parse("your api");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      // print(extractedData);
+
       List<ProductItem> loadedItem = [];
 
       extractedData.forEach((itemId, itemData) {
@@ -170,7 +169,6 @@ class Items with ChangeNotifier {
                   validItem: itemData!['validItem'],
                   userEmail: itemData['userEmail']));
         }
-        // print('**********************');
       });
       if (filterByUser) {
         _userItems = loadedItem;
@@ -185,8 +183,7 @@ class Items with ChangeNotifier {
   }
 
   Future<void> fetchAndSetUserItems([bool filterByUser = false]) async {
-    final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json");
+    final url = Uri.parse("your api");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -224,8 +221,7 @@ class Items with ChangeNotifier {
   }
 
   Future<void> addItem(ProductItem product) async {
-    final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items.json?auth=$authToken");
+    final url = Uri.parse("your api");
     try {
       final response = await http.post(
         url,
@@ -254,8 +250,7 @@ class Items with ChangeNotifier {
   Future<void> updateItem(String id, ProductItem newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = Uri.parse(
-          "https://rentnow-f12ca-default-rtdb.firebaseio.com/items/$id.json?auth=$authToken");
+      final url = Uri.parse("your api");
       http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -277,8 +272,7 @@ class Items with ChangeNotifier {
 
   Future<void> reportPorduct(String report, String itemImage, String itemId,
       String itemOwnerEmail) async {
-    final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/ReportItems.json?auth=$authToken");
+    final url = Uri.parse("your api");
 
     try {
       final response = await http.post(
@@ -297,8 +291,7 @@ class Items with ChangeNotifier {
   }
 
   Future<void> deleteItem(String id) async {
-    final url = Uri.parse(
-        "https://rentnow-f12ca-default-rtdb.firebaseio.com/items/$id.json?auth=$authToken");
+    final url = Uri.parse("your api");
 
     final existingItemIndex = _userItems.indexWhere((item) => item.id == id);
     // final existingItemIndex2 = _items.indexWhere((item2) => item2.id == id);
